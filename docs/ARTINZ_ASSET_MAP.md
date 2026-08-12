@@ -33,7 +33,7 @@ rather than duplicated.
 |------------|------|--------|--------|
 | Bottle (product still life) | `public/artinz/diar/bottle.webp` | `diar.webp` | Available — 1086×1448 |
 | Animal (falcon, cutout) | `public/artinz/diar/animal.png` | `eaglediar.webp` | Available — 1024×1536 RGBA |
-| Animal source | `public/artinz/diar/animal-source.jpg` | studio original | Available |
+| Animal source | `public/artinz/diar/animal-source.jpg` | studio original | Available — reference only, excluded from deploys |
 | Ingredient — raspberry | `public/artinz/diar/ingredient-raspberry.webp` | `diarraspberry.webp` | Available — 1536×1024 |
 | Ingredient — citrus + cinnamon | `public/artinz/diar/ingredient-citrus-cinnamon.webp` | `diarlemon.webp` | Available — 1536×1024 |
 

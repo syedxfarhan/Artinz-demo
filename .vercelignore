@@ -17,3 +17,7 @@ yarn-error.log*
 /diarraspberry.webp
 /diarlemon.webp
 /eaglediar.webp
+
+# The uncut falcon original. Kept in the repository for the studio, but nothing
+# requests it at runtime, so it does not need a public URL.
+/public/artinz/diar/animal-source.jpg
