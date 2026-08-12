@@ -6,6 +6,7 @@ import {
   HourLine,
   HouseProvider,
   Navigation,
+  RayanChapter,
 } from "@/components/artinz";
 import { SkipLink } from "@/components/artinz/SkipLink";
 
@@ -22,6 +23,7 @@ export default function Home() {
       <main id="top">
         <h1 className="visually-hidden">ARTINZ — one house, four hours</h1>
         <DiarChapter />
+        <RayanChapter />
         <CollectionIndex />
       </main>
       <Footer />

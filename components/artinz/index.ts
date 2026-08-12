@@ -7,5 +7,6 @@ export { BottleStage } from "./BottleStage";
 export { AnimalLayer } from "./AnimalLayer";
 export { IngredientLayer } from "./IngredientLayer";
 export { DiarChapter } from "./DiarChapter";
+export { RayanChapter } from "./RayanChapter";
 export { CollectionIndex } from "./CollectionIndex";
 export { Footer } from "./Footer";

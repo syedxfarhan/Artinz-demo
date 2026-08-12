@@ -51,15 +51,11 @@
   margin-top: -47vh;
 }
 
-.chapter--diar .bottle-stage__frame {
-  -webkit-mask-image: radial-gradient(
-      92% 94% at 54% 47%,
-      black 46%,
-      transparent 96%
-    ),
-    linear-gradient(90deg, transparent 0%, black 38%);
-  mask-image: radial-gradient(92% 94% at 54% 47%, black 46%, transparent 96%),
-    linear-gradient(90deg, transparent 0%, black 38%);
+.chapter--diar .bottle-stage__image {
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 34%),
+    linear-gradient(270deg, transparent 0%, black 12%);
+  mask-image: linear-gradient(90deg, transparent 0%, black 34%),
+    linear-gradient(270deg, transparent 0%, black 12%);
   -webkit-mask-composite: source-in;
   mask-composite: intersect;
 }
@@ -276,13 +272,13 @@
     margin: 0.35rem calc(var(--gutter) * -1) 0;
   }
 
-  .chapter--diar .bottle-stage__frame {
-    -webkit-mask-image: radial-gradient(
-      104% 64% at 50% 50%,
-      black 38%,
-      transparent 94%
-    );
-    mask-image: radial-gradient(104% 64% at 50% 50%, black 38%, transparent 94%);
+  .chapter--diar .bottle-stage__image {
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 14%),
+      linear-gradient(270deg, transparent 0%, black 14%);
+    mask-image: linear-gradient(90deg, transparent 0%, black 14%),
+      linear-gradient(270deg, transparent 0%, black 14%);
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
   }
 
   /* Falcon holds the right of the photograph, cropped by the edge */
