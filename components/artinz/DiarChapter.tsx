@@ -66,7 +66,7 @@ export function DiarChapter({ fragrance }: DiarChapterProps) {
 
   const animalX = pointer.x * -18 - progress * 24;
   const animalY = pointer.y * -10 + progress * 40;
-  const animalOpacity = 0.2 + progress * 0.32;
+  const animalOpacity = 0.32 + progress * 0.28;
   const bottleShift = progress * -36;
   const storyOpacity = Math.min(1, Math.max(0, (progress - 0.18) / 0.35));
   const ingredientOpacity = Math.min(1, Math.max(0, (progress - 0.28) / 0.42));
