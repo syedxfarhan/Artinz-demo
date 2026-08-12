@@ -1,0 +1,22 @@
+# Local / tooling — not needed on Vercel
+.cursor
+.impeccable
+.next
+node_modules
+.git
+
+# Dev artifacts
+*.tsbuildinfo
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Duplicate source assets already copied into public/artinz/
+# (keeps the deployment upload lean; runtime still serves public/)
+/diar.webp
+/diarraspberry.webp
+/diarlemon.webp
+/eaglediar.webp
+/Rayan.webp
+/Sanam.webp
+/Lameis.webp
