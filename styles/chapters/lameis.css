@@ -1,0 +1,247 @@
+/**
+ * LAMEIS — 21:15, night. The close of the day.
+ *
+ * One photograph: the leopard and the product in the same pool of light. The
+ * hour is formal and symmetrical where the earlier hours were asymmetric — the
+ * type sits directly under the image, close to it, and the story is a whisper
+ * out at the left. Near-black, burgundy, bronze; nothing else.
+ *
+ * Masks below use black/transparent as alpha, not as palette colour.
+ */
+
+.chapter--lameis .chapter__stage {
+  background: linear-gradient(
+    180deg,
+    var(--ground-sanam) 0%,
+    var(--ground-lameis) 32%
+  );
+}
+
+/* One lamp behind the still life */
+.chapter--lameis .chapter__stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(
+    46% 52% at 50% 38%,
+    color-mix(in srgb, var(--night-accent) 26%, transparent) 0%,
+    transparent 76%
+  );
+  pointer-events: none;
+}
+
+/* Night closes in at the edges so the type has ground to sit on */
+.chapter--lameis .chapter__stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  background: radial-gradient(
+    88% 78% at 50% 40%,
+    transparent 42%,
+    color-mix(in srgb, var(--void) 62%, transparent) 100%
+  );
+  pointer-events: none;
+}
+
+/* ── One photograph: product and leopard together ── */
+
+.chapter--lameis .bottle-stage {
+  top: -10%;
+  left: 50%;
+  width: min(43vw, 590px);
+  height: 78vh;
+  margin-left: calc(min(43vw, 590px) / -2);
+}
+
+.chapter--lameis .bottle-stage__image {
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 12%),
+    linear-gradient(270deg, transparent 0%, black 12%);
+  mask-image: linear-gradient(90deg, transparent 0%, black 12%),
+    linear-gradient(270deg, transparent 0%, black 12%);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+
+/* ── Type: centred under the photograph ── */
+
+.chapter--lameis .chapter__copy {
+  left: 50%;
+  bottom: clamp(2.5rem, 5.5vh, 3.5rem);
+  align-items: center;
+  width: min(46rem, 84vw);
+  margin-left: calc(min(46rem, 84vw) / -2);
+  text-align: center;
+}
+
+.chapter--lameis .chapter__hour {
+  justify-content: center;
+}
+
+.chapter--lameis .chapter__notes {
+  justify-content: center;
+}
+
+.chapter--lameis .chapter__lead,
+.chapter--lameis .chapter__tail {
+  align-items: center;
+  opacity: clamp(0, calc((0.9 - var(--progress)) / 0.1), 1);
+}
+
+/* The story arrives out at the left, quietly */
+.chapter--lameis .chapter__depth {
+  left: var(--gutter);
+  top: 30%;
+  max-width: min(19rem, 24vw);
+}
+
+/* ── Ingredients: rose, saffron, pepper at the edge of the light ── */
+
+.chapter--lameis .ingredient-layer[data-ingredient="rose-saffron-pepper"] {
+  right: -8%;
+  bottom: 12%;
+  width: min(30vw, 400px);
+  z-index: 3;
+  opacity: calc(clamp(0, calc((var(--progress) - 0.2) / 0.3), 1) * 0.72);
+  transform: translateY(
+    calc(
+      (1 - clamp(0, calc((var(--progress) - 0.2) / 0.3), 1)) * 26px *
+        var(--motion-scale)
+    )
+  );
+  -webkit-mask-image: radial-gradient(
+    66% 64% at 46% 48%,
+    black 36%,
+    transparent 82%
+  );
+  mask-image: radial-gradient(66% 64% at 46% 48%, black 36%, transparent 82%);
+}
+
+/* ── Tablet ── */
+
+@media (max-width: 1024px) {
+  .chapter--lameis .bottle-stage {
+    width: min(58vw, 470px);
+    height: 68vh;
+    margin-left: calc(min(58vw, 470px) / -2);
+  }
+
+  .chapter--lameis .chapter__copy {
+    width: min(34rem, 88vw);
+    margin-left: calc(min(34rem, 88vw) / -2);
+  }
+
+  .chapter--lameis .chapter__depth {
+    top: auto;
+    bottom: clamp(3.5rem, 11vh, 6rem);
+    max-width: min(15rem, 30vw);
+  }
+
+  .chapter--lameis .ingredient-layer[data-ingredient="rose-saffron-pepper"] {
+    right: -14%;
+    bottom: 22%;
+    width: min(44vw, 320px);
+  }
+}
+
+/* ── Mobile: the poster — photograph, then the hour beneath it ── */
+
+@media (max-width: 768px) {
+  .chapter--lameis .chapter__stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: calc(var(--nav-height) + 0.6rem) var(--gutter) 3.1rem;
+    text-align: center;
+  }
+
+  .chapter--lameis .chapter__stage::after {
+    background: radial-gradient(
+      120% 62% at 50% 34%,
+      transparent 46%,
+      color-mix(in srgb, var(--void) 58%, transparent) 100%
+    );
+  }
+
+  .chapter--lameis .bottle-stage {
+    order: 1;
+    position: relative;
+    top: auto;
+    left: auto;
+    width: calc(100% + 2 * var(--gutter));
+    height: auto;
+    flex: 1 1 auto;
+    min-height: 0;
+    margin: 0 calc(var(--gutter) * -1);
+  }
+
+  .chapter--lameis .bottle-stage__image {
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 12%),
+      linear-gradient(270deg, transparent 0%, black 12%);
+    mask-image: linear-gradient(90deg, transparent 0%, black 12%),
+      linear-gradient(270deg, transparent 0%, black 12%);
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+  }
+
+  .chapter--lameis .chapter__copy {
+    position: static;
+    width: auto;
+    margin-left: 0;
+    display: contents;
+  }
+
+  .chapter--lameis .chapter__lead {
+    order: 2;
+    align-items: center;
+  }
+
+  .chapter--lameis .chapter__tail {
+    order: 3;
+    align-items: center;
+    position: relative;
+    z-index: 12;
+  }
+
+  .chapter--lameis .chapter__notes {
+    margin-top: 0.8rem;
+  }
+
+  .chapter--lameis .chapter__cta {
+    margin-top: 0.9rem;
+  }
+
+  .chapter--lameis .chapter__depth {
+    top: auto;
+    left: 0;
+    right: 0;
+    bottom: 6.4rem;
+    max-width: none;
+    padding: 2.5rem var(--gutter) 0.6rem;
+    text-align: center;
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      color-mix(in srgb, var(--ground-lameis) 76%, transparent) 42%,
+      color-mix(in srgb, var(--ground-lameis) 94%, transparent) 100%
+    );
+  }
+
+  .chapter--lameis .chapter__story {
+    max-width: 24rem;
+    margin: 0 auto;
+  }
+
+  .chapter--lameis .chapter__product {
+    justify-content: center;
+  }
+
+  .chapter--lameis .ingredient-layer[data-ingredient="rose-saffron-pepper"] {
+    right: -20%;
+    bottom: auto;
+    top: 16%;
+    width: 52vw;
+    opacity: calc(clamp(0, calc((var(--progress) - 0.2) / 0.3), 1) * 0.55);
+  }
+}

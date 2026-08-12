@@ -4,6 +4,7 @@ import "@/styles/artinz.css";
 import "@/styles/chapters/diar.css";
 import "@/styles/chapters/rayan.css";
 import "@/styles/chapters/sanam.css";
+import "@/styles/chapters/lameis.css";
 
 /* latin-ext carries the German umlauts and ß in the same faces as English. */
 const fraunces = Fraunces({

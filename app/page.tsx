@@ -5,6 +5,7 @@ import {
   Footer,
   HourLine,
   HouseProvider,
+  LameisChapter,
   Navigation,
   RayanChapter,
   SanamChapter,
@@ -26,6 +27,7 @@ export default function Home() {
         <DiarChapter />
         <RayanChapter />
         <SanamChapter />
+        <LameisChapter />
         <CollectionIndex />
       </main>
       <Footer />

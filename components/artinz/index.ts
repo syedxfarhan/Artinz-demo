@@ -9,5 +9,6 @@ export { IngredientLayer } from "./IngredientLayer";
 export { DiarChapter } from "./DiarChapter";
 export { RayanChapter } from "./RayanChapter";
 export { SanamChapter } from "./SanamChapter";
+export { LameisChapter } from "./LameisChapter";
 export { CollectionIndex } from "./CollectionIndex";
 export { Footer } from "./Footer";
