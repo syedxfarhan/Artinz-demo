@@ -1,0 +1,303 @@
+/**
+ * SANAM — 18:30, dusk. The house as the light goes.
+ *
+ * Everything sits low: the peacock spread wide from the left like the last
+ * light, the product standing on that horizon at the right. The upper frame is
+ * empty plum sky, and the type lives in it — so the reading order runs from air
+ * down into the photograph.
+ *
+ * Masks below use black/transparent as alpha, not as palette colour.
+ */
+
+.chapter--sanam .chapter__stage {
+  background: linear-gradient(
+    180deg,
+    var(--ground-rayan) 0%,
+    var(--ground-sanam) 30%
+  );
+}
+
+/* Fading light gathers at the horizon, not in the sky */
+.chapter--sanam .chapter__stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(
+    76% 52% at 46% 92%,
+    color-mix(in srgb, var(--dusk) 34%, transparent) 0%,
+    transparent 78%
+  );
+  pointer-events: none;
+}
+
+/* Settles the top of the photography so the type keeps its air */
+.chapter--sanam .chapter__stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--ground-sanam) 62%, transparent) 0%,
+    color-mix(in srgb, var(--ground-sanam) 20%, transparent) 30%,
+    transparent 52%
+  );
+  pointer-events: none;
+}
+
+/* ── Product still life: low right, standing on the horizon ── */
+
+.chapter--sanam .bottle-stage {
+  right: 7%;
+  bottom: -8%;
+  width: min(40vw, 545px);
+  height: 88vh;
+}
+
+.chapter--sanam .bottle-stage__image {
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 16%),
+    linear-gradient(270deg, transparent 0%, black 14%);
+  mask-image: linear-gradient(90deg, transparent 0%, black 16%),
+    linear-gradient(270deg, transparent 0%, black 14%);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+
+/* ── Peacock: dusk identity, spread wide and low ── */
+
+.chapter--sanam .animal-layer {
+  left: -6%;
+  bottom: -19%;
+  width: min(54vw, 745px);
+  mix-blend-mode: screen;
+  opacity: calc(0.94 - var(--progress) * 0.42);
+  transform: translate3d(
+    calc(
+      var(--pointer-x) * -13px * var(--motion-scale) + var(--progress) * -1.5vw
+    ),
+    calc(var(--pointer-y) * -7px * var(--motion-scale) + var(--progress) * 7vh),
+    0
+  );
+}
+
+.chapter--sanam .animal-layer__image {
+  -webkit-mask-image: radial-gradient(
+      74% 84% at 40% 52%,
+      black 42%,
+      transparent 92%
+    ),
+    linear-gradient(180deg, transparent 0%, black 16%);
+  mask-image: radial-gradient(74% 84% at 40% 52%, black 42%, transparent 92%),
+    linear-gradient(180deg, transparent 0%, black 16%);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+  filter: brightness(1.02) saturate(0.94);
+}
+
+/* ── Type: in the sky ── */
+
+.chapter--sanam .chapter__copy {
+  top: 17%;
+  left: var(--gutter);
+  max-width: min(24rem, 28vw);
+}
+
+.chapter--sanam .chapter__lead,
+.chapter--sanam .chapter__tail {
+  opacity: clamp(0, calc((0.88 - var(--progress)) / 0.12), 1);
+}
+
+.chapter--sanam .chapter__depth {
+  top: 19%;
+  right: var(--gutter);
+  max-width: min(23rem, 28vw);
+  text-align: right;
+}
+
+.chapter--sanam .chapter__story {
+  max-width: none;
+}
+
+.chapter--sanam .chapter__product {
+  justify-content: flex-end;
+}
+
+/* ── Ingredient: pear and blossom, a pool at the base ── */
+
+.chapter--sanam .ingredient-layer[data-ingredient="pear-blossom"] {
+  left: 30%;
+  bottom: -14%;
+  width: min(26vw, 340px);
+  z-index: 7;
+  opacity: calc(clamp(0, calc((var(--progress) - 0.22) / 0.3), 1) * 0.7);
+  transform: translateY(
+    calc(
+      (1 - clamp(0, calc((var(--progress) - 0.22) / 0.3), 1)) * 28px *
+        var(--motion-scale)
+    )
+  );
+  -webkit-mask-image: radial-gradient(
+    64% 62% at 50% 44%,
+    black 38%,
+    transparent 80%
+  );
+  mask-image: radial-gradient(64% 62% at 50% 44%, black 38%, transparent 80%);
+}
+
+/* ── Tablet ── */
+
+@media (max-width: 1024px) {
+  .chapter--sanam .bottle-stage {
+    right: 2%;
+    width: min(48vw, 420px);
+    height: 66vh;
+  }
+
+  .chapter--sanam .chapter__copy {
+    top: 14%;
+    max-width: min(20rem, 44vw);
+  }
+
+  .chapter--sanam .chapter__depth {
+    top: 16%;
+    max-width: min(18rem, 40vw);
+  }
+
+  .chapter--sanam .animal-layer {
+    left: -20%;
+    bottom: -14%;
+    width: min(88vw, 700px);
+  }
+
+  .chapter--sanam .ingredient-layer[data-ingredient="pear-blossom"] {
+    left: 6%;
+    width: min(42vw, 300px);
+  }
+}
+
+/* ── Mobile: type right, photograph centre, peacock across the base ── */
+
+@media (max-width: 768px) {
+  .chapter--sanam .chapter__stage {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding: calc(var(--nav-height) + 0.9rem) var(--gutter) 3.1rem;
+    text-align: right;
+  }
+
+  .chapter--sanam .chapter__stage::after {
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--ground-sanam) 76%, transparent) 0%,
+      color-mix(in srgb, var(--ground-sanam) 22%, transparent) 26%,
+      transparent 44%
+    );
+  }
+
+  .chapter--sanam .chapter__lead {
+    order: 1;
+    align-items: flex-end;
+  }
+
+  .chapter--sanam .chapter__hour {
+    flex-direction: row-reverse;
+  }
+
+  .chapter--sanam .bottle-stage {
+    order: 2;
+    position: relative;
+    right: auto;
+    bottom: auto;
+    width: calc(100% + 2 * var(--gutter));
+    height: auto;
+    flex: 1 1 auto;
+    min-height: 0;
+    margin: 0.35rem calc(var(--gutter) * -1) 0;
+  }
+
+  .chapter--sanam .bottle-stage__image {
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 14%),
+      linear-gradient(270deg, transparent 0%, black 14%);
+    mask-image: linear-gradient(90deg, transparent 0%, black 14%),
+      linear-gradient(270deg, transparent 0%, black 14%);
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+  }
+
+  .chapter--sanam .chapter__tail {
+    order: 3;
+    align-items: flex-end;
+    position: relative;
+    z-index: 12;
+  }
+
+  .chapter--sanam .chapter__notes {
+    justify-content: flex-end;
+    margin-top: 0.85rem;
+  }
+
+  .chapter--sanam .chapter__cta {
+    margin-top: 0.95rem;
+  }
+
+  /* Identity gets its own band: product above, peacock below */
+  .chapter--sanam .animal-layer {
+    order: 3;
+    position: relative;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    width: calc(100% + 2 * var(--gutter));
+    height: clamp(88px, 17vh, 150px);
+    margin: 0.2rem calc(var(--gutter) * -1) 0;
+    overflow: hidden;
+    opacity: calc(0.92 - var(--progress) * 0.35);
+    transform: translate3d(0, calc(var(--progress) * 3vh), 0);
+  }
+
+  .chapter--sanam .animal-layer__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 26% 12%;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 12%),
+      linear-gradient(270deg, transparent 0%, black 10%),
+      linear-gradient(180deg, transparent 0%, black 14%, black 86%, transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0%, black 12%),
+      linear-gradient(270deg, transparent 0%, black 10%),
+      linear-gradient(180deg, transparent 0%, black 14%, black 86%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+  }
+
+  .chapter--sanam .chapter__tail {
+    order: 4;
+  }
+
+  .chapter--sanam .chapter__depth {
+    top: auto;
+    right: 0;
+    left: 0;
+    bottom: 6.4rem;
+    max-width: none;
+    padding: 2.5rem var(--gutter) 0.6rem;
+    text-align: right;
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      color-mix(in srgb, var(--ground-sanam) 74%, transparent) 42%,
+      color-mix(in srgb, var(--ground-sanam) 92%, transparent) 100%
+    );
+  }
+
+  .chapter--sanam .ingredient-layer[data-ingredient="pear-blossom"] {
+    left: auto;
+    right: -18%;
+    top: 19%;
+    bottom: auto;
+    width: 46vw;
+    opacity: calc(clamp(0, calc((var(--progress) - 0.22) / 0.3), 1) * 0.55);
+  }
+}
