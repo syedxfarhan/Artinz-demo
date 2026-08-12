@@ -8,43 +8,44 @@
  * Masks below use black/transparent as alpha, not as palette colour.
  *
  * Scroll timeline — one --progress (0 at chapter start, 1 at chapter end):
- *   0.00–0.35  opening hold: bottle + falcon, type stable, no ingredients
- *   0.35–0.55  falcon departure: opacity + translate + scale
- *   0.50–0.75  ingredient arrival, overlapping the falcon's exit
- *   0.70–1.00  story, then product — the scene concluding
+ *   0.00–0.28  opening hold: bottle + falcon, type stable, no ingredient layers
+ *   0.28–0.60  falcon departure: opacity + translate + scale (ease-in)
+ *   0.40–0.72  ingredient arrival, overlapping the falcon's exit (ease-out)
+ *   0.68–1.00  story, then product — the scene concluding
  */
 
 .chapter--diar {
   /* Sticky stage is 100vh; 220vh of travel ≈ 2.2 viewports of choreography */
   height: 320vh;
 
-  --diar-hold: clamp(0, calc(var(--progress) / 0.35), 1);
+  --diar-hold: clamp(0, calc(var(--progress) / 0.28), 1);
 
-  --diar-falcon-t: clamp(0, calc((var(--progress) - 0.35) / 0.2), 1);
+  /* Ease-in cubic: the falcon stays present, then recedes */
+  --diar-falcon-t: clamp(0, calc((var(--progress) - 0.28) / 0.32), 1);
   --diar-falcon: calc(
-    var(--diar-falcon-t) * var(--diar-falcon-t) *
-      calc(3 - 2 * var(--diar-falcon-t))
+    var(--diar-falcon-t) * var(--diar-falcon-t) * var(--diar-falcon-t)
   );
 
-  --diar-ing-a-t: clamp(0, calc((var(--progress) - 0.5) / 0.25), 1);
+  /* Ease-out cubic: ingredients rise and settle */
+  --diar-ing-a-t: clamp(0, calc((var(--progress) - 0.4) / 0.32), 1);
   --diar-ing-a-u: calc(1 - var(--diar-ing-a-t));
   --diar-ing-a: calc(
     1 - var(--diar-ing-a-u) * var(--diar-ing-a-u) * var(--diar-ing-a-u)
   );
 
-  --diar-ing-b-t: clamp(0, calc((var(--progress) - 0.54) / 0.24), 1);
+  --diar-ing-b-t: clamp(0, calc((var(--progress) - 0.44) / 0.32), 1);
   --diar-ing-b-u: calc(1 - var(--diar-ing-b-t));
   --diar-ing-b: calc(
     1 - var(--diar-ing-b-u) * var(--diar-ing-b-u) * var(--diar-ing-b-u)
   );
 
-  --diar-story-t: clamp(0, calc((var(--progress) - 0.7) / 0.16), 1);
+  --diar-story-t: clamp(0, calc((var(--progress) - 0.68) / 0.18), 1);
   --diar-story-u: calc(1 - var(--diar-story-t));
   --diar-story: calc(
     1 - var(--diar-story-u) * var(--diar-story-u) * var(--diar-story-u)
   );
 
-  --diar-product-t: clamp(0, calc((var(--progress) - 0.82) / 0.12), 1);
+  --diar-product-t: clamp(0, calc((var(--progress) - 0.8) / 0.14), 1);
   --diar-product-u: calc(1 - var(--diar-product-t));
   --diar-product: calc(
     1 - var(--diar-product-u) * var(--diar-product-u) * var(--diar-product-u)
@@ -113,16 +114,16 @@
   transform: translate3d(
       calc(
         var(--pointer-x) * -14px * var(--motion-scale) + var(--diar-hold) *
-          -0.45vw * var(--motion-scale) + var(--diar-falcon) * -3.4vw *
+          -0.4vw * var(--motion-scale) + var(--diar-falcon) * -4.2vw *
           var(--motion-scale)
       ),
       calc(
-        var(--pointer-y) * -9px * var(--motion-scale) + var(--diar-hold) * 1vh *
-          var(--motion-scale) + var(--diar-falcon) * -2.6vh * var(--motion-scale)
+        var(--pointer-y) * -9px * var(--motion-scale) + var(--diar-hold) * 0.8vh *
+          var(--motion-scale) + var(--diar-falcon) * -3.2vh * var(--motion-scale)
       ),
       0
     )
-    scale(calc(1 - var(--diar-falcon) * 0.08 * var(--motion-scale)));
+    scale(calc(1 - var(--diar-falcon) * 0.1 * var(--motion-scale)));
 }
 
 .chapter--diar .animal-layer__image {
@@ -179,11 +180,11 @@
   transform-origin: 50% 82%;
   opacity: calc(var(--diar-ing-a) * 0.72);
   transform: translate3d(
-      calc((1 - var(--diar-ing-a)) * -10px * var(--motion-scale)),
-      calc((1 - var(--diar-ing-a)) * 46px * var(--motion-scale)),
+      calc((1 - var(--diar-ing-a)) * -12px * var(--motion-scale)),
+      calc((1 - var(--diar-ing-a)) * 56px * var(--motion-scale)),
       0
     )
-    scale(calc(1 - (1 - var(--diar-ing-a)) * 0.07 * var(--motion-scale)));
+    scale(calc(1 - (1 - var(--diar-ing-a)) * 0.08 * var(--motion-scale)));
   -webkit-mask-image: radial-gradient(
     70% 66% at 50% 46%,
     black 34%,
@@ -199,11 +200,11 @@
   transform-origin: 50% 78%;
   opacity: calc(var(--diar-ing-b) * 0.72);
   transform: translate3d(
-      calc((1 - var(--diar-ing-b)) * 8px * var(--motion-scale)),
-      calc((1 - var(--diar-ing-b)) * 34px * var(--motion-scale)),
+      calc((1 - var(--diar-ing-b)) * 10px * var(--motion-scale)),
+      calc((1 - var(--diar-ing-b)) * 42px * var(--motion-scale)),
       0
     )
-    scale(calc(1 - (1 - var(--diar-ing-b)) * 0.05 * var(--motion-scale)));
+    scale(calc(1 - (1 - var(--diar-ing-b)) * 0.06 * var(--motion-scale)));
   -webkit-mask-image: radial-gradient(
     68% 64% at 50% 44%,
     black 32%,
@@ -244,7 +245,7 @@
   animation-delay: 0.1s;
 }
 
-.chapter--diar .animal-layer {
+.chapter--diar .animal-layer__image {
   animation: house-fade 1.2s var(--ease) 0.42s backwards;
 }
 
