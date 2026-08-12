@@ -7,49 +7,53 @@
  *
  * Masks below use black/transparent as alpha, not as palette colour.
  *
- * Scroll timeline — one --progress (0 at chapter start, 1 at chapter end):
- *   0.00–0.28  opening hold: bottle + falcon, type stable, no ingredient layers
- *   0.28–0.60  falcon departure: opacity + translate + scale (ease-in)
- *   0.40–0.72  ingredient arrival, overlapping the falcon's exit (ease-out)
- *   0.68–1.00  story, then product — the scene concluding
+ * Scroll timeline — one --progress (0 at chapter start, 1 at chapter end).
+ * Ranges overlap so the camera never cuts:
+ *   0.00–0.30  opening hold
+ *   0.25–0.50  falcon still primary
+ *   0.40–0.70  falcon out + ingredients in (smoothstep crossfade)
+ *   0.60–0.82  money frame: bottle + scent + story + price + add
+ *   0.78–1.00  final conversion state, held until RAYAN
  */
 
 .chapter--diar {
-  /* Sticky stage is 100vh; 220vh of travel ≈ 2.2 viewports of choreography */
-  height: 320vh;
+  /* Sticky stage is 100vh; 240vh of travel ≈ 2.4 viewports of choreography */
+  height: 340vh;
 
-  --diar-hold: clamp(0, calc(var(--progress) / 0.28), 1);
+  --diar-hold: clamp(0, calc(var(--progress) / 0.3), 1);
 
-  /* Ease-in cubic: the falcon stays present, then recedes */
-  --diar-falcon-t: clamp(0, calc((var(--progress) - 0.28) / 0.32), 1);
+  /* Smoothstep: t²(3−2t). Photographic drift, no hard ease-in or ease-out. */
+  --diar-falcon-t: clamp(0, calc((var(--progress) - 0.4) / 0.3), 1);
   --diar-falcon: calc(
-    var(--diar-falcon-t) * var(--diar-falcon-t) * var(--diar-falcon-t)
+    var(--diar-falcon-t) * var(--diar-falcon-t) *
+      calc(3 - 2 * var(--diar-falcon-t))
   );
 
-  /* Ease-out cubic: ingredients rise and settle */
   --diar-ing-a-t: clamp(0, calc((var(--progress) - 0.4) / 0.32), 1);
-  --diar-ing-a-u: calc(1 - var(--diar-ing-a-t));
   --diar-ing-a: calc(
-    1 - var(--diar-ing-a-u) * var(--diar-ing-a-u) * var(--diar-ing-a-u)
+    var(--diar-ing-a-t) * var(--diar-ing-a-t) *
+      calc(3 - 2 * var(--diar-ing-a-t))
   );
 
-  --diar-ing-b-t: clamp(0, calc((var(--progress) - 0.44) / 0.32), 1);
-  --diar-ing-b-u: calc(1 - var(--diar-ing-b-t));
+  --diar-ing-b-t: clamp(0, calc((var(--progress) - 0.42) / 0.32), 1);
   --diar-ing-b: calc(
-    1 - var(--diar-ing-b-u) * var(--diar-ing-b-u) * var(--diar-ing-b-u)
+    var(--diar-ing-b-t) * var(--diar-ing-b-t) *
+      calc(3 - 2 * var(--diar-ing-b-t))
   );
 
-  --diar-story-t: clamp(0, calc((var(--progress) - 0.68) / 0.18), 1);
-  --diar-story-u: calc(1 - var(--diar-story-t));
+  --diar-story-t: clamp(0, calc((var(--progress) - 0.58) / 0.16), 1);
   --diar-story: calc(
-    1 - var(--diar-story-u) * var(--diar-story-u) * var(--diar-story-u)
+    var(--diar-story-t) * var(--diar-story-t) *
+      calc(3 - 2 * var(--diar-story-t))
   );
 
-  --diar-product-t: clamp(0, calc((var(--progress) - 0.8) / 0.14), 1);
-  --diar-product-u: calc(1 - var(--diar-product-t));
+  --diar-product-t: clamp(0, calc((var(--progress) - 0.62) / 0.14), 1);
   --diar-product: calc(
-    1 - var(--diar-product-u) * var(--diar-product-u) * var(--diar-product-u)
+    var(--diar-product-t) * var(--diar-product-t) *
+      calc(3 - 2 * var(--diar-product-t))
   );
+
+  --diar-discover: clamp(0, calc((0.64 - var(--progress)) / 0.12), 1);
 }
 
 .chapter--diar .chapter__stage {
@@ -114,16 +118,17 @@
   transform: translate3d(
       calc(
         var(--pointer-x) * -14px * var(--motion-scale) + var(--diar-hold) *
-          -0.4vw * var(--motion-scale) + var(--diar-falcon) * -4.2vw *
+          -0.35vw * var(--motion-scale) + var(--diar-falcon) * -3.6vw *
           var(--motion-scale)
       ),
       calc(
-        var(--pointer-y) * -9px * var(--motion-scale) + var(--diar-hold) * 0.8vh *
-          var(--motion-scale) + var(--diar-falcon) * -3.2vh * var(--motion-scale)
+        var(--pointer-y) * -9px * var(--motion-scale) + var(--diar-hold) *
+          0.6vh * var(--motion-scale) + var(--diar-falcon) * -2.4vh *
+          var(--motion-scale)
       ),
       0
     )
-    scale(calc(1 - var(--diar-falcon) * 0.1 * var(--motion-scale)));
+    scale(calc(1 - var(--diar-falcon) * 0.07 * var(--motion-scale)));
 }
 
 .chapter--diar .animal-layer__image {
@@ -141,8 +146,15 @@
 }
 
 .chapter--diar .chapter__lead,
-.chapter--diar .chapter__tail {
-  opacity: clamp(0, calc((0.96 - var(--progress)) / 0.08), 1);
+.chapter--diar .chapter__notes {
+  opacity: 1;
+}
+
+.chapter--diar .chapter__cta {
+  opacity: var(--diar-discover);
+  max-height: calc(3.2rem * var(--diar-discover));
+  margin-top: calc(1.6rem * var(--diar-discover));
+  overflow: hidden;
 }
 
 .chapter--diar .chapter__depth {
@@ -165,6 +177,40 @@
   transform: translateY(
     calc((1 - var(--diar-product)) * 10px * var(--motion-scale))
   );
+  align-items: baseline;
+  gap: 1.5rem;
+  margin-top: 1.4rem;
+}
+
+.chapter--diar .chapter__price {
+  font-size: var(--type-ui-l);
+  letter-spacing: 0.16em;
+  color: color-mix(in srgb, var(--bone) 90%, transparent);
+}
+
+.chapter--diar .chapter__add {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0.5rem 0 0.35rem;
+  font-size: var(--type-ui-l);
+  letter-spacing: 0.16em;
+  color: color-mix(in srgb, var(--bone) 92%, transparent);
+  border-bottom-color: var(--chapter-accent);
+}
+
+.chapter--diar .chapter__add::after {
+  content: " →";
+}
+
+.chapter--diar .chapter__add[data-added]::after {
+  content: none;
+}
+
+.chapter--diar .chapter__add:hover,
+.chapter--diar .chapter__add:focus-visible {
+  color: var(--bone);
+  border-bottom-color: var(--accent-diar);
 }
 
 /* ── Ingredients: the scent story, arriving with depth ── */
@@ -218,7 +264,6 @@
 .chapter--diar .chapter__hour,
 .chapter--diar .chapter__name,
 .chapter--diar .chapter__notes,
-.chapter--diar .chapter__cta,
 .chapter--diar .bottle-stage {
   animation: house-rise 0.9s var(--ease) both;
 }
@@ -236,7 +281,7 @@
 }
 
 .chapter--diar .chapter__cta {
-  animation-delay: 0.66s;
+  animation: house-rise 0.9s var(--ease) 0.66s backwards;
 }
 
 .chapter--diar .bottle-stage {
@@ -329,7 +374,7 @@
   }
 
   .chapter--diar .chapter__cta {
-    margin-top: 0.95rem;
+    margin-top: calc(0.95rem * var(--diar-discover));
   }
 
   .chapter--diar .bottle-stage {
@@ -353,10 +398,18 @@
     mask-composite: intersect;
   }
 
-  /* Opening type holds, then yields as the story takes the lower frame */
+  /* Name and notes stay for the money frame; Discover recedes */
   .chapter--diar[data-depth] .chapter__lead,
+  .chapter--diar[data-depth] .chapter__notes {
+    opacity: 1;
+  }
+
+  .chapter--diar[data-depth] .chapter__cta {
+    opacity: var(--diar-discover);
+  }
+
   .chapter--diar[data-depth] .chapter__tail {
-    opacity: clamp(0, calc((0.72 - var(--progress)) / 0.12), 1);
+    opacity: 1;
   }
 
   /* Falcon holds the right of the photograph, cropped by the edge */
@@ -388,9 +441,9 @@
   .chapter--diar .chapter__depth {
     left: 0;
     right: 0;
-    bottom: 6.4rem;
+    bottom: 3.25rem;
     max-width: none;
-    padding: 2.5rem var(--gutter) 0.6rem;
+    padding: 1.4rem var(--gutter) 0.35rem;
     text-align: center;
     background: linear-gradient(
       180deg,
@@ -406,7 +459,16 @@
   }
 
   .chapter--diar .chapter__product {
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
+    gap: 0.15rem;
+    margin-top: 1rem;
+  }
+
+  .chapter--diar .chapter__add {
+    min-height: 2.75rem;
+    padding: 0.7rem 0.2rem 0.45rem;
   }
 
   /* Same handoff as desktop: raspberry left, citrus right, both behind the bottle */
