@@ -507,8 +507,13 @@ button {
   align-items: center;
   gap: 0.9rem;
   transform: translateY(-50%);
-  animation: house-fade var(--motion-slow) var(--ease) 0.7s both;
   transition: opacity var(--motion-slow) var(--ease);
+}
+
+/* The entrance sits on the parts, leaving the root's opacity free for state */
+.hour-line__now,
+.hour-line__hours {
+  animation: house-fade var(--motion-slow) var(--ease) 0.7s both;
 }
 
 /* The hour line belongs to the hours: below the last one it stands down */
@@ -850,6 +855,8 @@ button {
 .collection {
   position: relative;
   z-index: 2;
+  /* Anchor jumps from SHOP clear the fixed bar */
+  scroll-margin-top: calc(var(--nav-height) + 1rem);
   padding: clamp(4rem, 12vh, 8rem) var(--gutter) clamp(3rem, 8vh, 5rem);
   background: var(--ground-lameis);
 }
@@ -974,6 +981,10 @@ button {
   flex-wrap: wrap;
   gap: clamp(2rem, 8vw, 6rem);
   margin-top: clamp(2.5rem, 6vh, 4rem);
+}
+
+.footer__column {
+  scroll-margin-top: calc(var(--nav-height) + 1rem);
 }
 
 .footer__column p {

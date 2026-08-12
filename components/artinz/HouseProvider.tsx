@@ -86,6 +86,7 @@ export function HouseProvider({ children }: { children: React.ReactNode }) {
       const viewport = window.innerHeight;
       let next = current;
       let held = false;
+      let closest: { id: FragranceId; distance: number } | null = null;
 
       chapterIds.forEach((id, index) => {
         const element = chapters.current.get(id);
@@ -100,6 +101,9 @@ export function HouseProvider({ children }: { children: React.ReactNode }) {
         const depth = progress > 0.12 ? "open" : "closed";
         if (element.dataset.depth !== depth) element.dataset.depth = depth;
 
+        const distance = Math.abs(rect.top + rect.height / 2 - viewport / 2);
+        if (!closest || distance < closest.distance) closest = { id, distance };
+
         const holdsCentre = rect.top <= viewport * 0.5 && rect.bottom > viewport * 0.5;
         if (holdsCentre) {
           next = id;
@@ -111,6 +115,10 @@ export function HouseProvider({ children }: { children: React.ReactNode }) {
           );
         }
       });
+
+      /* Past the last hour there is no active chapter: keep the nearest one, so
+         the accent and the hour line never point at the wrong hour. */
+      if (!held && closest) next = (closest as { id: FragranceId }).id;
 
       if (next !== current) {
         current = next;
@@ -139,6 +147,11 @@ export function HouseProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     document.documentElement.lang = locale;
   }, [locale]);
+
+  /* Publish the hour immediately, so the accent is right before the first scroll. */
+  useEffect(() => {
+    document.documentElement.dataset.hour = activeId;
+  }, [activeId]);
 
   /* Pointer depth: one smoothed signal for bottle tilt and animal parallax. */
   useEffect(() => {
