@@ -1,12 +1,14 @@
+import { DiarChapter, Footer } from "@/components/artinz";
+import { diar } from "@/data/fragrances";
+
 /**
- * ARTINZ homepage — minimal scaffold.
- * Phase 1 (DIAR static art direction) has not begun.
+ * ARTINZ homepage — Phase 1: DIAR opening + first chapter only.
  */
 export default function Home() {
   return (
     <main>
-      <h1>ARTINZ</h1>
-      <p>One house. Four hours.</p>
+      <DiarChapter fragrance={diar} />
+      <Footer />
     </main>
   );
 }

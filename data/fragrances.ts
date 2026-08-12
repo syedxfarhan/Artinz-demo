@@ -1,6 +1,6 @@
 /**
  * ARTINZ fragrance data model.
- * UI for SANAM and LAMEIS is not built yet — data only.
+ * UI for RAYAN, SANAM and LAMEIS is not built yet — data only.
  */
 
 export type Fragrance = {
@@ -15,6 +15,7 @@ export type Fragrance = {
   bottle?: string;
   animalAsset?: string;
   atmosphereAsset?: string;
+  ingredientAssets?: string[];
 };
 
 export const fragrances: Fragrance[] = [
@@ -26,8 +27,15 @@ export const fragrances: Fragrance[] = [
     background: "var(--dawn)",
     story:
       "Raspberry first, then cinnamon settles as the sun clears the dunes.",
-    notes: ["RASPBERRY", "CINNAMON", "BERGAMOT"],
+    notes: ["RASPBERRY", "LEMON", "CINNAMON"],
     animal: "FALCON",
+    bottle: "/artinz/diar/bottle.webp",
+    animalAsset: "/artinz/diar/animal.png",
+    atmosphereAsset: "/artinz/diar/bottle.webp",
+    ingredientAssets: [
+      "/artinz/diar/ingredient-raspberry.webp",
+      "/artinz/diar/ingredient-citrus-cinnamon.webp",
+    ],
   },
   {
     id: "rayan",
@@ -38,6 +46,7 @@ export const fragrances: Fragrance[] = [
     story: "Apple and bergamot, cut clean like glass at midday.",
     notes: ["APPLE", "LAVENDER", "BERGAMOT"],
     animal: "FALCON",
+    bottle: "/Rayan.webp",
   },
   {
     id: "sanam",
@@ -47,6 +56,7 @@ export const fragrances: Fragrance[] = [
     background: "var(--dusk)",
     story: "",
     notes: [],
+    bottle: "/Sanam.webp",
   },
   {
     id: "lameis",
@@ -56,9 +66,12 @@ export const fragrances: Fragrance[] = [
     background: "var(--night-accent)",
     story: "",
     notes: [],
+    bottle: "/Lameis.webp",
   },
 ];
 
 export function getFragranceById(id: string): Fragrance | undefined {
   return fragrances.find((fragrance) => fragrance.id === id);
 }
+
+export const diar = getFragranceById("diar")!;
