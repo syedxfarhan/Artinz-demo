@@ -34,6 +34,14 @@ export function Footer() {
         </section>
       </div>
 
+      <div className="footer__credit">
+        <p className="footer__credit-label">{t("developedBy", locale)}</p>
+        <p className="footer__credit-name">{t("designerName", locale)}</p>
+        <p className="footer__credit-studio">{t("studioName", locale)}</p>
+      </div>
+
+      <p className="footer__context">{t("demoContext", locale)}</p>
+
       <p className="footer__demo">{t("demoNotice", locale)}</p>
       <p className="footer__legal">© {new Date().getFullYear()} ARTINZ</p>
     </footer>

@@ -24,7 +24,7 @@ export function DiarChapter() {
   const [raspberry, citrus] = diar.assets.ingredients;
 
   return (
-    <ChapterShell id="diar">
+    <ChapterShell id="diar" depthGate={0.56}>
       <BottleStage
         fragranceId="diar"
         src={diar.assets.bottle}
@@ -69,7 +69,7 @@ export function DiarChapter() {
         </div>
         <div className="chapter__tail">
           <ChapterNotes notes={diar.notes} locale={locale} />
-          <ChapterCTA fragrance={diar} />
+          <ChapterCTA fragrance={diar} progressTarget={0.74} />
         </div>
       </div>
 

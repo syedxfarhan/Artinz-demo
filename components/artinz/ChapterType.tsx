@@ -71,6 +71,7 @@ export function ChapterProduct({ fragrance }: { fragrance: Fragrance }) {
         type="button"
         className="chapter__add"
         data-demo="cart"
+        data-added={justAdded ? "true" : undefined}
         onClick={() => addLine(fragrance.id)}
       >
         {justAdded ? t("added", locale) : t("addToCart", locale)}
@@ -81,15 +82,34 @@ export function ChapterProduct({ fragrance }: { fragrance: Fragrance }) {
 }
 
 /** `DISCOVER DIAR →` — moves into the chapter's own depth. */
-export function ChapterCTA({ fragrance }: { fragrance: Fragrance }) {
+export function ChapterCTA({
+  fragrance,
+  progressTarget,
+}: {
+  fragrance: Fragrance;
+  /** If set, scroll to this chapter progress instead of a fixed viewport jump. */
+  progressTarget?: number;
+}) {
   const { locale } = useHouse();
 
   const onClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const behavior = reduce ? "auto" : "smooth";
+    const section = document.getElementById(`chapter-${fragrance.id}`);
+
+    if (section && progressTarget != null) {
+      const travel = Math.max(section.offsetHeight - window.innerHeight, 1);
+      window.scrollTo({
+        top: section.offsetTop + travel * progressTarget,
+        behavior,
+      });
+      return;
+    }
+
     window.scrollBy({
       top: Math.round(window.innerHeight * 0.6),
-      behavior: reduce ? "auto" : "smooth",
+      behavior,
     });
   };
 

@@ -52,6 +52,22 @@ export const ui = {
     en: "Skip to the fragrances",
     de: "Zu den Düften springen",
   } as Dict,
+  developedBy: {
+    en: "Developed & Designed by",
+    de: "Entwickelt & gestaltet von",
+  } as Dict,
+  designerName: {
+    en: "Syed Farhan Ahmed",
+    de: "Syed Farhan Ahmed",
+  } as Dict,
+  studioName: {
+    en: "FoundEarly Labs Pvt Ltd.",
+    de: "FoundEarly Labs Pvt Ltd.",
+  } as Dict,
+  demoContext: {
+    en: "This website demo was created purely using the existing data and brand information available on the current ARTINZ website. It was designed specifically as a desktop-focused demonstration of a possible new digital experience.",
+    de: "Diese Website-Demo entstand ausschließlich aus den vorhandenen Daten und Markenangaben der aktuellen ARTINZ-Website. Sie wurde eigens als desktop-orientierte Demonstration einer möglichen neuen digitalen Erfahrung gestaltet.",
+  } as Dict,
 } satisfies Record<string, Dict>;
 
 export type UiKey = keyof typeof ui;

@@ -15,9 +15,11 @@ import { useHouse } from "./HouseProvider";
 type ChapterShellProps = {
   id: FragranceId;
   children: React.ReactNode;
+  /** Chapter progress at which depth copy enters the accessibility tree. */
+  depthGate?: number;
 };
 
-export function ChapterShell({ id, children }: ChapterShellProps) {
+export function ChapterShell({ id, children, depthGate }: ChapterShellProps) {
   const ref = useRef<HTMLElement>(null);
   const { registerChapter } = useHouse();
 
@@ -34,6 +36,7 @@ export function ChapterShell({ id, children }: ChapterShellProps) {
       className={`chapter chapter--${id}`}
       data-chapter={id}
       aria-labelledby={`chapter-${id}-name`}
+      {...(depthGate != null ? { "data-depth-gate": String(depthGate) } : {})}
     >
       <div className="chapter__stage">
         {children}

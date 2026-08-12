@@ -104,7 +104,10 @@ export function HouseProvider({ children }: { children: React.ReactNode }) {
         element.style.setProperty("--exit", exit.toFixed(4));
         /* Depth copy is invisible until the chapter is scrolled into: keep it
            out of the tab order and the accessibility tree until then. */
-        const depth = progress > 0.12 ? "open" : "closed";
+        const gateRaw = element.dataset.depthGate;
+        const gate = gateRaw !== undefined ? Number.parseFloat(gateRaw) : 0.12;
+        const depthOpen = Number.isFinite(gate) ? gate : 0.12;
+        const depth = progress > depthOpen ? "open" : "closed";
         if (element.dataset.depth !== depth) element.dataset.depth = depth;
 
         const distance = Math.abs(rect.top + rect.height / 2 - viewport / 2);
