@@ -715,6 +715,9 @@ button {
   transform: translateX(3px);
 }
 
+/* The depth copy takes the same ground as the lead copy and the two trade
+   places on scroll, so it cannot stand at rest: while it is closed it is also
+   taken out of the tab order, since it carries the ADD TO CART control. */
 .chapter[data-depth="closed"] .chapter__depth {
   visibility: hidden;
 }
@@ -890,10 +893,14 @@ button {
   border-bottom: 1px solid color-mix(in srgb, var(--bone) 14%, transparent);
 }
 
+/* German runs long here — MORGENDÄMMERUNG, ABENDDÄMMERUNG — so the hour word
+   drops to its own line rather than pushing the row past the screen. */
 .collection__open {
   display: flex;
+  flex-wrap: wrap;
   align-items: baseline;
-  gap: 0.9rem;
+  gap: 0.35rem 0.9rem;
+  min-width: 0;
   text-align: left;
 }
 
@@ -936,9 +943,10 @@ button {
 
 .collection__buy {
   display: flex;
+  flex-wrap: wrap;
   align-items: baseline;
   justify-content: flex-end;
-  gap: 1.35rem;
+  gap: 0.5rem 1.35rem;
   margin: 0;
 }
 
@@ -1072,6 +1080,13 @@ button {
   /* Mobile chapters compose their own vertical order from the stage flow */
   .chapter__copy {
     display: contents;
+  }
+
+  /* One screen, one message: the name hands over to the story early instead of
+     holding its ground while the story rises over the top of it. */
+  .chapter[data-depth] .chapter__lead,
+  .chapter[data-depth] .chapter__tail {
+    opacity: clamp(0, calc((0.3 - var(--progress)) / 0.14), 1);
   }
 
   .nav {
