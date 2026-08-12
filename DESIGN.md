@@ -164,6 +164,14 @@ house scroll listener; every reveal and parallax reads it in CSS. Layers:
 2. **Animal layer** — the identity photograph, large, partially cropped,
    recognisable in the first viewport, quieter than the bottle.
 3. **Ingredient layers** — revealed by chapter depth, masked, never boxed.
+
+No photograph may end on a straight edge inside the frame. Each one either runs
+off a frame edge, or falls away on every side into the ground. Where a
+photograph's brightest content meets the page — SANAM's lit sky, RAYAN's table —
+the fall is lengthened until it reads as light rather than as a boundary. The
+shared horizon fade lives on `.bottle-stage__frame`; a chapter that needs a
+longer or asymmetric fall overrides it, and the fall always ends clear of the
+bottle so the product never dims.
 4. **Type** — hour + name + notes + Discover CTA; story and price arrive with
    depth.
 
@@ -177,9 +185,9 @@ Not a product grid.
 | Hour | Ground | Accent | Composition |
 |------|--------|--------|-------------|
 | DIAR 06:40 | void | dawn | Type left, falcon standing between type and product, still life right. Warm. |
-| RAYAN 12:00 | void → noon | lifted noon | Mirrored: still life left of centre, white falcon large at the right, high and crisp. |
-| SANAM 18:30 | void → dusk | lifted dusk | Peacock as the right-hand atmosphere, bottle left, type low. Soft, fading light. |
-| LAMEIS 21:15 | void → night | brass / night | One photograph: leopard and product in the same pool of light. Type split around it. |
+| RAYAN 12:00 | void → noon | lifted noon | Mirrored: still life left, hung from the bar and running off the lower frame; white falcon at the right edge; type low right. High and crisp. |
+| SANAM 18:30 | void → dusk | lifted dusk | Peacock spread wide and low from the left, still life right on the same horizon, type in the empty sky above. Soft, fading light. |
+| LAMEIS 21:15 | void → night | brass / night | One photograph: leopard and product in the same pool of light, falling away on every side. Type centred beneath it, story out at the left. |
 
 Each hour is locked when approved; later hours reuse the system and never edit an
 approved chapter's CSS (`styles/chapters/<hour>.css`).
