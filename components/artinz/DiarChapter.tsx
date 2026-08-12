@@ -24,7 +24,7 @@ export function DiarChapter() {
   const [raspberry, citrus] = diar.assets.ingredients;
 
   return (
-    <ChapterShell id="diar">
+    <ChapterShell id="diar" depthGate={0.68}>
       <BottleStage
         fragranceId="diar"
         src={diar.assets.bottle}
