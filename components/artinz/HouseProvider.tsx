@@ -96,6 +96,12 @@ export function HouseProvider({ children }: { children: React.ReactNode }) {
         const travel = Math.max(element.offsetHeight - viewport, 1);
         const progress = Math.min(Math.max(-rect.top / travel, 0), 1);
         element.style.setProperty("--progress", progress.toFixed(4));
+
+        /* How far the stage has slid out from under the next hour, 0 while it is
+           still pinned. The handover veil reads this, so a chapter leaves on a
+           dissolve instead of showing a sliced band of its own photograph. */
+        const exit = Math.min(Math.max(1 - rect.bottom / viewport, 0), 1);
+        element.style.setProperty("--exit", exit.toFixed(4));
         /* Depth copy is invisible until the chapter is scrolled into: keep it
            out of the tab order and the accessibility tree until then. */
         const depth = progress > 0.12 ? "open" : "closed";

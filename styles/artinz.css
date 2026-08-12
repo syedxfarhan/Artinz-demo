@@ -598,8 +598,42 @@ button {
 
 .chapter {
   --progress: 0;
+  --exit: 0;
   position: relative;
   height: 250vh;
+}
+
+.chapter--diar {
+  --chapter-ground: var(--ground-diar);
+}
+
+.chapter--rayan {
+  --chapter-ground: var(--ground-rayan);
+}
+
+.chapter--sanam {
+  --chapter-ground: var(--ground-sanam);
+}
+
+.chapter--lameis {
+  --chapter-ground: var(--ground-lameis);
+}
+
+/* Handover: an hour closes into its own ground as it slides out under the next
+   one. Without it the outgoing stage shows a sliced band of its photograph at
+   the seam, and bright photography passes behind the bar. Off entirely while
+   the stage is pinned. */
+.chapter__handover {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--chapter-ground) 55%, transparent) 0%,
+    var(--chapter-ground) 78%
+  );
+  opacity: clamp(0, calc(var(--exit) / 0.55), 1);
 }
 
 .chapter__stage {

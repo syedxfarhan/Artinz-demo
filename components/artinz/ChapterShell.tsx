@@ -9,7 +9,8 @@ import { useHouse } from "./HouseProvider";
  *
  * The section is taller than the viewport; the stage inside is sticky, so the
  * chapter holds still while its own depth (story, ingredients) is scrolled
- * through. Scroll position arrives as the `--progress` custom property.
+ * through. Scroll position arrives as the `--progress` custom property, and
+ * `--exit` measures how far the stage has since slid out under the next hour.
  */
 type ChapterShellProps = {
   id: FragranceId;
@@ -34,7 +35,11 @@ export function ChapterShell({ id, children }: ChapterShellProps) {
       data-chapter={id}
       aria-labelledby={`chapter-${id}-name`}
     >
-      <div className="chapter__stage">{children}</div>
+      <div className="chapter__stage">
+        {children}
+        {/* Carries the hour out: see .chapter__handover */}
+        <div className="chapter__handover" aria-hidden="true" />
+      </div>
     </section>
   );
 }
