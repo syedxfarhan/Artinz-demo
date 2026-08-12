@@ -1,0 +1,341 @@
+/**
+ * DIAR — 06:40, dawn. Locked composition.
+ *
+ * Type left, falcon standing between the type and the product, still life
+ * right. The falcon is the second thing seen: large, warm, partially cropped,
+ * dissolving into the ground at its feet — never a cutout pasted on a page.
+ *
+ * Masks below use black/transparent as alpha, not as palette colour.
+ */
+
+.chapter--diar .chapter__stage {
+  background: var(--ground-diar);
+}
+
+/* Dawn warmth sits behind the still life — the strength of light, not paint */
+.chapter--diar .chapter__stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(
+    62% 70% at 72% 52%,
+    color-mix(in srgb, var(--dawn) 12%, transparent) 0%,
+    transparent 72%
+  );
+  pointer-events: none;
+}
+
+/* Legibility veil on the type side only */
+.chapter--diar .chapter__stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--void) 72%, transparent) 0%,
+    color-mix(in srgb, var(--void) 28%, transparent) 22%,
+    transparent 44%
+  );
+  pointer-events: none;
+}
+
+/* ── Product still life ── */
+
+.chapter--diar .bottle-stage {
+  top: 50%;
+  right: -1.5%;
+  height: min(94vh, 960px);
+  margin-top: calc(min(94vh, 960px) / -2);
+}
+
+.chapter--diar .bottle-stage__image {
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 34%),
+    linear-gradient(270deg, transparent 0%, black 12%);
+  mask-image: linear-gradient(90deg, transparent 0%, black 34%),
+    linear-gradient(270deg, transparent 0%, black 12%);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+
+/* ── Falcon: secondary identity, discovered beside the bottle ── */
+
+.chapter--diar .animal-layer {
+  left: 25.5%;
+  bottom: -2%;
+  width: min(31vw, 520px);
+  opacity: calc(0.88 - var(--progress) * 0.5);
+  transform: translate3d(
+    calc(
+      var(--pointer-x) * -14px * var(--motion-scale) + var(--progress) * -2.5vw
+    ),
+    calc(var(--pointer-y) * -9px * var(--motion-scale) + var(--progress) * 9vh),
+    0
+  );
+}
+
+.chapter--diar .animal-layer__image {
+  -webkit-mask-image: linear-gradient(180deg, black 74%, transparent 99%);
+  mask-image: linear-gradient(180deg, black 74%, transparent 99%);
+  filter: saturate(0.92) brightness(0.94) contrast(1.04);
+}
+
+/* ── Type ── */
+
+.chapter--diar .chapter__copy {
+  top: 27%;
+  left: var(--gutter);
+  max-width: min(23rem, 27vw);
+}
+
+.chapter--diar .chapter__lead,
+.chapter--diar .chapter__tail {
+  opacity: clamp(0, calc((0.86 - var(--progress)) / 0.14), 1);
+}
+
+.chapter--diar .chapter__depth {
+  left: var(--gutter);
+  bottom: clamp(3.5rem, 11vh, 6.5rem);
+  max-width: min(25rem, 30vw);
+}
+
+/* ── Ingredients: the scent story, arriving with depth ── */
+
+.chapter--diar .ingredient-layer {
+  z-index: 3;
+  opacity: calc(clamp(0, calc((var(--progress) - 0.24) / 0.3), 1) * 0.72);
+}
+
+.chapter--diar .ingredient-layer[data-ingredient="raspberry"] {
+  left: 4%;
+  bottom: -7%;
+  width: min(24vw, 300px);
+  transform: translateY(
+    calc((1 - clamp(0, calc((var(--progress) - 0.24) / 0.3), 1)) * 36px)
+  );
+  -webkit-mask-image: radial-gradient(
+    70% 66% at 50% 46%,
+    black 34%,
+    transparent 82%
+  );
+  mask-image: radial-gradient(70% 66% at 50% 46%, black 34%, transparent 82%);
+}
+
+.chapter--diar .ingredient-layer[data-ingredient="citrus-cinnamon"] {
+  left: 30%;
+  bottom: -13%;
+  width: min(27vw, 340px);
+  transform: translateY(
+    calc((1 - clamp(0, calc((var(--progress) - 0.24) / 0.3), 1)) * 26px)
+  );
+  -webkit-mask-image: radial-gradient(
+    68% 64% at 50% 44%,
+    black 32%,
+    transparent 80%
+  );
+  mask-image: radial-gradient(68% 64% at 50% 44%, black 32%, transparent 80%);
+}
+
+/* ── Entrance: the opening of the house ── */
+
+.chapter--diar .chapter__hour,
+.chapter--diar .chapter__name,
+.chapter--diar .chapter__notes,
+.chapter--diar .chapter__cta,
+.chapter--diar .bottle-stage,
+.chapter--diar .animal-layer {
+  animation: house-rise 0.9s var(--ease) both;
+}
+
+.chapter--diar .chapter__hour {
+  animation-delay: 0.16s;
+}
+
+.chapter--diar .chapter__name {
+  animation-delay: 0.3s;
+}
+
+.chapter--diar .chapter__notes {
+  animation-delay: 0.52s;
+}
+
+.chapter--diar .chapter__cta {
+  animation-delay: 0.66s;
+}
+
+.chapter--diar .bottle-stage {
+  animation-name: house-fade;
+  animation-duration: 1.1s;
+  animation-delay: 0.1s;
+}
+
+.chapter--diar .animal-layer {
+  animation-name: house-fade;
+  animation-duration: 1.2s;
+  animation-delay: 0.42s;
+}
+
+/* ── Tablet ── */
+
+@media (max-width: 1024px) {
+  .chapter--diar .bottle-stage {
+    right: -6%;
+    height: min(88vh, 720px);
+    margin-top: calc(min(88vh, 720px) / -2);
+  }
+
+  .chapter--diar .chapter__copy {
+    top: 22%;
+    max-width: min(20rem, 40vw);
+  }
+
+  .chapter--diar .animal-layer {
+    left: 4%;
+    bottom: -4%;
+    width: min(42vw, 320px);
+  }
+
+  .chapter--diar .chapter__depth {
+    max-width: min(22rem, 46vw);
+  }
+
+  .chapter--diar .ingredient-layer[data-ingredient="raspberry"] {
+    left: -4%;
+    width: min(38vw, 260px);
+  }
+
+  .chapter--diar .ingredient-layer[data-ingredient="citrus-cinnamon"] {
+    right: -6%;
+    width: min(44vw, 300px);
+  }
+}
+
+/* ── Mobile: composed, not compressed ── */
+
+@media (max-width: 768px) {
+  .chapter--diar .chapter__stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: calc(var(--nav-height) + 0.9rem) var(--gutter) 3.1rem;
+    text-align: center;
+  }
+
+  /* 06:40 → DIAR → bottle → falcon → notes → CTA */
+  .chapter--diar .chapter__lead {
+    order: 1;
+    align-items: center;
+  }
+
+  .chapter--diar .bottle-stage {
+    order: 2;
+  }
+
+  .chapter--diar .chapter__tail {
+    order: 3;
+    align-items: center;
+  }
+
+  .chapter--diar .chapter__stage::after {
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--void) 78%, transparent) 0%,
+      color-mix(in srgb, var(--void) 24%, transparent) 22%,
+      transparent 40%
+    );
+  }
+
+  .chapter--diar .chapter__hour {
+    justify-content: center;
+  }
+
+  .chapter--diar .chapter__notes {
+    justify-content: center;
+    margin-top: 0.85rem;
+  }
+
+  .chapter--diar .chapter__cta {
+    margin-top: 0.95rem;
+  }
+
+  .chapter--diar .bottle-stage {
+    position: relative;
+    top: auto;
+    right: auto;
+    aspect-ratio: auto;
+    width: calc(100% + 2 * var(--gutter));
+    height: auto;
+    flex: 1 1 auto;
+    min-height: 0;
+    margin: 0.35rem calc(var(--gutter) * -1) 0;
+  }
+
+  .chapter--diar .bottle-stage__image {
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 14%),
+      linear-gradient(270deg, transparent 0%, black 14%);
+    mask-image: linear-gradient(90deg, transparent 0%, black 14%),
+      linear-gradient(270deg, transparent 0%, black 14%);
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+  }
+
+  /* Falcon holds the right of the photograph, cropped by the edge */
+  .chapter--diar .animal-layer {
+    left: auto;
+    right: -12%;
+    bottom: 21%;
+    width: min(50vw, 210px);
+    z-index: 9;
+    opacity: calc(0.82 - var(--progress) * 0.42);
+    transform: translate3d(0, calc(var(--progress) * 6vh), 0);
+  }
+
+  .chapter--diar .chapter__tail {
+    position: relative;
+    z-index: 12;
+  }
+
+  .chapter--diar .animal-layer__image {
+    -webkit-mask-image: linear-gradient(180deg, black 72%, transparent 99%);
+    mask-image: linear-gradient(180deg, black 72%, transparent 99%);
+  }
+
+  .chapter--diar .chapter__depth {
+    left: 0;
+    right: 0;
+    bottom: 6.4rem;
+    max-width: none;
+    padding: 2.5rem var(--gutter) 0.6rem;
+    text-align: center;
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      color-mix(in srgb, var(--void) 72%, transparent) 42%,
+      color-mix(in srgb, var(--void) 88%, transparent) 100%
+    );
+  }
+
+  .chapter--diar .chapter__story {
+    max-width: 24rem;
+    margin: 0 auto;
+  }
+
+  .chapter--diar .chapter__product {
+    justify-content: center;
+  }
+
+  /* One scent layer only: the still life already carries all three notes */
+  .chapter--diar .ingredient-layer[data-ingredient="raspberry"] {
+    display: none;
+  }
+
+  .chapter--diar .ingredient-layer[data-ingredient="citrus-cinnamon"] {
+    left: auto;
+    right: -16%;
+    top: 21%;
+    bottom: auto;
+    width: 46vw;
+    opacity: calc(clamp(0, calc((var(--progress) - 0.24) / 0.3), 1) * 0.6);
+  }
+}

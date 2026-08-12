@@ -1,0 +1,23 @@
+# Local / tooling — not needed on Vercel
+.cursor
+.impeccable
+.next
+node_modules
+.git
+
+# Dev artifacts
+*.tsbuildinfo
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Duplicate DIAR source uploads already copied into public/artinz/diar/
+# (keeps the deployment upload lean; runtime still serves public/)
+/diar.webp
+/diarraspberry.webp
+/diarlemon.webp
+/eaglediar.webp
+
+# The uncut falcon original. Kept in the repository for the studio, but nothing
+# requests it at runtime, so it does not need a public URL.
+/public/artinz/diar/animal-source.jpg

@@ -1,6 +1,8 @@
 /**
- * ARTINZ design tokens
- * Central foundation for all fragrance chapters.
+ * ARTINZ — foundations and the shared editorial system.
+ *
+ * Chapter composition lives in styles/chapters/*.css, one file per hour, so an
+ * approved chapter is never edited while the next one is built.
  */
 
 :root {
@@ -9,44 +11,77 @@
   --bone: #f3ede4;
   --brass: #b8935a;
 
-  /* Chapter accents */
+  /* Hour palette */
   --dawn: #c9762e;
   --noon: #3a4a5e;
   --dusk: #5b3358;
   --night-bg: #2a1b22;
   --night-accent: #8c5a4a;
 
-  /* Typography families */
-  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
-  --font-ui: "Inter", system-ui, -apple-system, sans-serif;
+  /* Hour grounds — void carried toward each hour, never flooded */
+  --ground-diar: var(--void);
+  --ground-rayan: color-mix(in srgb, var(--void) 88%, var(--noon));
+  --ground-sanam: color-mix(in srgb, var(--void) 88%, var(--dusk));
+  --ground-lameis: color-mix(in srgb, var(--void) 80%, var(--night-bg));
 
-  /* Spacing scale (foundation only — composition TBD) */
-  --space-unit: 0.25rem;
-  --space-1: calc(var(--space-unit) * 1);
-  --space-2: calc(var(--space-unit) * 2);
-  --space-3: calc(var(--space-unit) * 3);
-  --space-4: calc(var(--space-unit) * 4);
-  --space-6: calc(var(--space-unit) * 6);
-  --space-8: calc(var(--space-unit) * 8);
-  --space-12: calc(var(--space-unit) * 12);
-  --space-16: calc(var(--space-unit) * 16);
+  /* Hour accents — hairlines, markers, CTA underlines */
+  --accent-diar: var(--dawn);
+  --accent-rayan: color-mix(in srgb, var(--noon) 40%, var(--bone));
+  --accent-sanam: color-mix(in srgb, var(--dusk) 45%, var(--bone));
+  --accent-lameis: color-mix(in srgb, var(--brass) 72%, var(--night-accent));
 
-  /* Responsive breakpoints (reference values for media queries) */
-  --bp-small-mobile: 320px;
-  --bp-mobile: 390px;
-  --bp-mobile-lg: 768px;
-  --bp-tablet: 1024px;
-  --bp-desktop: 1440px;
+  --chapter-accent: var(--accent-diar);
 
-  /* Motion — respect user preference */
-  --motion-duration-fast: 150ms;
-  --motion-duration-base: 300ms;
-  --motion-duration-slow: 600ms;
-  --motion-ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+  /* Type — families */
+  --font-display: var(--font-display-loaded), "Fraunces", Georgia,
+    "Times New Roman", serif;
+  --font-ui: var(--font-ui-loaded), "Inter", system-ui, -apple-system, sans-serif;
+
+  /* Type — ramp (see DESIGN.md typography.scale) */
+  --type-display-xl: clamp(2.6rem, 8.2vw, 6.5rem);
+  --type-display-l: clamp(1.7rem, 3.4vw, 2.6rem);
+  --type-display-m: clamp(1.05rem, 1.7vw, 1.4rem);
+  --type-display-s: 1rem;
+  --type-ui-body: 0.95rem;
+  --type-ui-l: 0.85rem;
+  --type-ui-m: 0.8rem;
+  --type-ui-s: 0.75rem;
+
+  /* Spacing */
+  --gutter: clamp(1.15rem, 4vw, 3.25rem);
+  --nav-height: clamp(3.25rem, 6vh, 4.25rem);
+
+  /* Motion */
+  --motion-fast: 150ms;
+  --motion-base: 300ms;
+  --motion-slow: 620ms;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Live signals written by the house */
+  --motion-scale: 1;
+  --pointer-x: 0;
+  --pointer-y: 0;
+  --house-position: 0;
 }
 
-/* Reduced motion foundation */
+:root[data-hour="diar"] {
+  --chapter-accent: var(--accent-diar);
+}
+:root[data-hour="rayan"] {
+  --chapter-accent: var(--accent-rayan);
+}
+:root[data-hour="sanam"] {
+  --chapter-accent: var(--accent-sanam);
+}
+:root[data-hour="lameis"] {
+  --chapter-accent: var(--accent-lameis);
+}
+
 @media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-scale: 0;
+  }
+
   *,
   *::before,
   *::after {
@@ -57,7 +92,6 @@
   }
 }
 
-/* Base reset — minimal, not a design */
 *,
 *::before,
 *::after {
@@ -66,6 +100,7 @@
 
 html {
   -webkit-text-size-adjust: 100%;
+  background-color: var(--void);
 }
 
 body {
@@ -74,24 +109,1107 @@ body {
   color: var(--bone);
   font-family: var(--font-ui);
   line-height: 1.5;
+  overflow-x: hidden;
 }
 
-/* Focus foundation for keyboard navigation */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+button {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
 :focus-visible {
-  outline: 2px solid var(--brass);
-  outline-offset: 2px;
+  outline: 2px solid var(--chapter-accent);
+  outline-offset: 3px;
 }
 
-/* Future interaction hooks (not implemented) */
-[data-chapter] {
-  /* scroll-driven chapter state */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
-[data-hour-line] {
-  /* timeline / progress indicator */
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  z-index: 90;
+  transform: translate(-50%, -150%);
+  padding: 0.6rem 1rem;
+  background: var(--void);
+  border: 1px solid var(--chapter-accent);
+  font-size: var(--type-ui-s);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
 }
 
-[data-bottle-stage] {
-  /* bottle depth interaction — pointer position TBD */
+.skip-link:focus-visible {
+  transform: translate(-50%, 0.5rem);
+}
+
+/* ─────────────── Navigation ─────────────── */
+
+.nav {
+  position: fixed;
+  inset: 0 0 auto;
+  /* Above the mobile sheet: the bar keeps the wordmark and the close control */
+  z-index: 75;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 1rem;
+  min-height: var(--nav-height);
+  padding: 0 var(--gutter);
+  animation: house-fade var(--motion-slow) var(--ease) 0.05s both;
+}
+
+.nav::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 -1.5rem;
+  z-index: -1;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--void) 66%, transparent) 0%,
+    color-mix(in srgb, var(--void) 24%, transparent) 62%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+.nav__brand,
+.nav__links,
+.nav__controls {
+  /* Sit above the mobile sheet, which is a child of the same bar */
+  position: relative;
+  z-index: 80;
+}
+
+.nav__brand {
+  font-family: var(--font-display);
+  font-size: var(--type-ui-l);
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--bone);
+}
+
+.nav__links {
+  display: flex;
+  justify-content: center;
+  gap: clamp(1rem, 2.4vw, 2rem);
+}
+
+.nav__links a,
+.nav__cart,
+.nav__locale button,
+.nav__menu {
+  font-family: var(--font-ui);
+  font-size: var(--type-ui-s);
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--bone) 66%, transparent);
+  transition: color var(--motion-base) var(--ease);
+}
+
+.nav__links a:hover,
+.nav__links a:focus-visible,
+.nav__cart:hover,
+.nav__menu:hover {
+  color: var(--bone);
+}
+
+.nav__controls {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.75rem, 1.6vw, 1.35rem);
+}
+
+.nav__locale {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.nav__locale button {
+  font-size: var(--type-ui-s);
+}
+
+.nav__locale button[aria-pressed="true"] {
+  color: var(--bone);
+}
+
+.nav__locale button + button::before {
+  content: "/";
+  margin-right: 0.4rem;
+  color: color-mix(in srgb, var(--bone) 30%, transparent);
+}
+
+.nav__cart {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.45rem;
+}
+
+.nav__cart-count {
+  font-variant-numeric: tabular-nums;
+  color: var(--chapter-accent);
+  transition: color var(--motion-slow) var(--ease);
+}
+
+.nav__menu {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+}
+
+.nav__menu-icon line {
+  stroke: currentColor;
+  stroke-width: 1.25;
+}
+
+/* Mobile menu — a quiet type-only sheet */
+
+.house-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2.5rem;
+  padding: calc(var(--nav-height) + 2rem) var(--gutter) 3rem;
+  background: color-mix(in srgb, var(--void) 96%, var(--bone));
+  animation: house-fade var(--motion-base) var(--ease) both;
+}
+
+.house-menu[hidden] {
+  display: none;
+}
+
+.house-menu__hours {
+  display: flex;
+  flex-direction: column;
+  gap: 1.35rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.house-menu__hours button {
+  display: flex;
+  align-items: baseline;
+  gap: 0.85rem;
+}
+
+.house-menu__name {
+  font-family: var(--font-display);
+  font-size: var(--type-display-l);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: color-mix(in srgb, var(--bone) 74%, transparent);
+}
+
+.house-menu__hours button[data-active="true"] .house-menu__name {
+  color: var(--bone);
+}
+
+.house-menu__time {
+  font-family: var(--font-ui);
+  font-size: var(--type-ui-m);
+  letter-spacing: 0.2em;
+  color: color-mix(in srgb, var(--bone) 55%, transparent);
+  font-variant-numeric: tabular-nums;
+}
+
+.house-menu__hours button[data-active="true"] .house-menu__time {
+  color: var(--chapter-accent);
+}
+
+.house-menu__locale {
+  display: flex;
+}
+
+.house-menu__locale .nav__locale {
+  display: flex;
+}
+
+.house-menu__links {
+  display: flex;
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--type-ui-s);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--bone) 66%, transparent);
+}
+
+/* ─────────────── Demo cart ─────────────── */
+
+.cart {
+  position: fixed;
+  top: calc(var(--nav-height) + 0.5rem);
+  right: var(--gutter);
+  z-index: 80;
+  width: min(20rem, calc(100vw - 2 * var(--gutter)));
+  padding: 1.15rem 1.25rem 1.05rem;
+  background: color-mix(in srgb, var(--void) 94%, var(--bone));
+  border: 1px solid color-mix(in srgb, var(--bone) 20%, transparent);
+  animation: cart-in var(--motion-base) var(--ease) both;
+}
+
+.cart[hidden] {
+  display: none;
+}
+
+.cart__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.cart__title {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: var(--type-ui-s);
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--bone);
+}
+
+.cart__close,
+.cart__remove {
+  font-family: var(--font-ui);
+  font-size: var(--type-ui-s);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--bone) 62%, transparent);
+  transition: color var(--motion-fast) var(--ease);
+}
+
+.cart__close:hover,
+.cart__remove:hover {
+  color: var(--bone);
+}
+
+.cart__lines {
+  margin: 1.1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cart__line {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: 0.15rem 0.75rem;
+  padding: 0.7rem 0;
+  border-top: 1px solid color-mix(in srgb, var(--bone) 12%, transparent);
+}
+
+.cart__line-name {
+  font-family: var(--font-display);
+  font-size: var(--type-display-s);
+  letter-spacing: 0.1em;
+}
+
+.cart__line-meta {
+  font-size: var(--type-ui-s);
+  letter-spacing: 0.1em;
+  color: color-mix(in srgb, var(--bone) 70%, transparent);
+  font-variant-numeric: tabular-nums;
+}
+
+.cart__remove {
+  grid-column: 1;
+  justify-self: start;
+}
+
+.cart__empty {
+  margin: 1rem 0 0;
+  font-size: var(--type-ui-body);
+  color: color-mix(in srgb, var(--bone) 66%, transparent);
+}
+
+.cart__subtotal {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0.9rem 0 0;
+  padding-top: 0.8rem;
+  border-top: 1px solid color-mix(in srgb, var(--bone) 18%, transparent);
+  font-size: var(--type-ui-m);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+}
+
+.cart__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin-top: 1rem;
+}
+
+.cart__action {
+  font-size: var(--type-ui-s);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--bone) 45%, transparent);
+  cursor: not-allowed;
+}
+
+.cart__notice {
+  margin: 0.9rem 0 0;
+  font-size: var(--type-ui-s);
+  line-height: 1.55;
+  color: color-mix(in srgb, var(--bone) 62%, transparent);
+}
+
+/* ─────────────── Hour Line ─────────────── */
+
+.hour-line {
+  position: fixed;
+  top: 50%;
+  right: clamp(0.85rem, 1.8vw, 1.6rem);
+  z-index: 55;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+  transform: translateY(-50%);
+  transition: opacity var(--motion-slow) var(--ease);
+}
+
+/* The entrance sits on the parts, leaving the root's opacity free for state */
+.hour-line__now,
+.hour-line__hours {
+  animation: house-fade var(--motion-slow) var(--ease) 0.7s both;
+}
+
+/* The hour line belongs to the hours: below the last one it stands down */
+.hour-line[data-visible="false"] {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.hour-line__now {
+  font-family: var(--font-display);
+  font-size: var(--type-ui-s);
+  letter-spacing: 0.14em;
+  color: color-mix(in srgb, var(--bone) 66%, transparent);
+  writing-mode: vertical-rl;
+  font-variant-numeric: tabular-nums;
+}
+
+.hour-line__hours {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: min(30vh, 15rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hour-line__hours::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: color-mix(in srgb, var(--bone) 18%, transparent);
+  transform: translateX(-50%);
+}
+
+.hour-line__hours::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 1px;
+  height: calc(var(--house-position) * 100%);
+  background: var(--chapter-accent);
+  transform: translateX(-50%);
+  transition: background-color var(--motion-slow) var(--ease);
+}
+
+.hour-line__hour button {
+  display: grid;
+  place-items: center;
+  width: 1.4rem;
+  height: 1.4rem;
+}
+
+.hour-line__dot {
+  position: relative;
+  z-index: 1;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--bone) 32%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--void) 82%, transparent);
+  transition:
+    background-color var(--motion-base) var(--ease),
+    transform var(--motion-base) var(--ease);
+}
+
+.hour-line__hour button:hover .hour-line__dot {
+  background: color-mix(in srgb, var(--bone) 72%, transparent);
+}
+
+.hour-line__hour button[aria-current] .hour-line__dot {
+  background: var(--chapter-accent);
+  transform: scale(1.5);
+}
+
+/* ─────────────── Chapter frame + shared type ─────────────── */
+
+.chapter {
+  --progress: 0;
+  --exit: 0;
+  position: relative;
+  height: 250vh;
+}
+
+.chapter--diar {
+  --chapter-ground: var(--ground-diar);
+}
+
+.chapter--rayan {
+  --chapter-ground: var(--ground-rayan);
+}
+
+.chapter--sanam {
+  --chapter-ground: var(--ground-sanam);
+}
+
+.chapter--lameis {
+  --chapter-ground: var(--ground-lameis);
+}
+
+/* Handover: an hour closes into its own ground as it slides out under the next
+   one. Without it the outgoing stage shows a sliced band of its photograph at
+   the seam, and bright photography passes behind the bar. Off entirely while
+   the stage is pinned. */
+.chapter__handover {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--chapter-ground) 55%, transparent) 0%,
+    var(--chapter-ground) 78%
+  );
+  opacity: clamp(0, calc(var(--exit) / 0.55), 1);
+}
+
+.chapter__stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  min-height: 100svh;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.chapter__copy {
+  position: absolute;
+  z-index: 12;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  pointer-events: none;
+}
+
+.chapter__lead,
+.chapter__tail {
+  display: flex;
+  flex-direction: column;
+  align-items: inherit;
+}
+
+.chapter__copy a,
+.chapter__copy button {
+  pointer-events: auto;
+}
+
+.chapter__hour {
+  display: flex;
+  align-items: baseline;
+  gap: 0.7rem;
+  margin: 0 0 0.5rem;
+}
+
+.chapter__time {
+  font-family: var(--font-display);
+  font-size: var(--type-display-l);
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: color-mix(in srgb, var(--bone) 72%, transparent);
+  font-variant-numeric: tabular-nums;
+}
+
+.chapter__hour-name {
+  font-family: var(--font-ui);
+  font-size: var(--type-ui-s);
+  font-weight: 500;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--chapter-accent);
+  transition: color var(--motion-slow) var(--ease);
+}
+
+.chapter__name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--type-display-xl);
+  font-weight: 500;
+  line-height: 0.92;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--bone);
+}
+
+.chapter__notes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1.25rem 0 0;
+  font-family: var(--font-ui);
+  font-size: var(--type-ui-m);
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--bone) 66%, transparent);
+}
+
+/* Separators trail their note, so a wrapped line never opens with a dot */
+.chapter__note:not(:last-child)::after {
+  content: "·";
+  margin-left: 0.5rem;
+  color: color-mix(in srgb, var(--bone) 40%, transparent);
+}
+
+.chapter__cta {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 1.6rem;
+  padding-bottom: 0.35rem;
+  font-family: var(--font-ui);
+  font-size: var(--type-ui-m);
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--bone) 86%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--chapter-accent) 65%, transparent);
+  transition:
+    color var(--motion-base) var(--ease),
+    border-color var(--motion-base) var(--ease),
+    transform var(--motion-base) var(--ease);
+}
+
+.chapter__cta:hover,
+.chapter__cta:focus-visible {
+  color: var(--bone);
+  border-color: var(--chapter-accent);
+  transform: translateX(3px);
+}
+
+/* The depth copy takes the same ground as the lead copy and the two trade
+   places on scroll, so it cannot stand at rest: while it is closed it is also
+   taken out of the tab order, since it carries the ADD TO CART control. */
+.chapter[data-depth="closed"] .chapter__depth {
+  visibility: hidden;
+}
+
+.chapter__depth {
+  position: absolute;
+  z-index: 14;
+  transition: visibility var(--motion-base) linear;
+  opacity: clamp(0, calc((var(--progress) - 0.16) / 0.2), 1);
+  transform: translateY(
+    calc(
+      (1 - clamp(0, calc((var(--progress) - 0.16) / 0.2), 1)) * 18px *
+        var(--motion-scale)
+    )
+  );
+}
+
+.chapter__story {
+  margin: 0;
+  max-width: 26rem;
+  font-family: var(--font-display);
+  font-size: var(--type-display-m);
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.45;
+  color: color-mix(in srgb, var(--bone) 86%, transparent);
+}
+
+.chapter__product {
+  display: flex;
+  align-items: baseline;
+  gap: 1.25rem;
+  margin: 1.15rem 0 0;
+}
+
+.chapter__price {
+  font-family: var(--font-ui);
+  font-size: var(--type-ui-m);
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  color: color-mix(in srgb, var(--bone) 82%, transparent);
+  font-variant-numeric: tabular-nums;
+}
+
+.chapter__add,
+.collection__add {
+  font-family: var(--font-ui);
+  font-size: var(--type-ui-s);
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--bone) 64%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--bone) 24%, transparent);
+  padding-bottom: 0.25rem;
+  transition:
+    color var(--motion-fast) var(--ease),
+    border-color var(--motion-fast) var(--ease);
+}
+
+.chapter__add:hover,
+.collection__add:hover {
+  color: var(--bone);
+  border-color: var(--chapter-accent);
+}
+
+/* Photographic layers — shared behaviour; chapter CSS places them */
+
+.bottle-stage {
+  position: absolute;
+  z-index: 8;
+  /* Every still life is shot 1086×1448; the box keeps that ratio so the mask
+     dissolves the photograph's own edges, not empty letterbox space. */
+  aspect-ratio: 1086 / 1448;
+  pointer-events: none;
+  transform: perspective(1400px)
+    rotateY(calc(var(--pointer-x) * 3.5deg * var(--motion-scale)))
+    rotateX(calc(var(--pointer-y) * -3.5deg * var(--motion-scale)))
+    translate3d(0, calc(var(--progress) * -3vh * var(--motion-scale)), 0);
+  transform-style: preserve-3d;
   will-change: transform;
+}
+
+/* Shared horizon fade: no still life shows a top or bottom frame edge.
+   Chapter CSS adds the side dissolve on the image inside.
+   (The stage itself carries a 3D transform, where masks are dropped.) */
+.bottle-stage__frame {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    transparent 0%,
+    black 11%,
+    black 89%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    180deg,
+    transparent 0%,
+    black 11%,
+    black 89%,
+    transparent 100%
+  );
+}
+
+.bottle-stage__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.animal-layer {
+  position: absolute;
+  z-index: 4;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.animal-layer__image {
+  width: 100%;
+  height: auto;
+}
+
+.ingredient-layer {
+  position: absolute;
+  z-index: 5;
+  pointer-events: none;
+  opacity: clamp(0, calc((var(--progress) - 0.24) / 0.3), 1);
+}
+
+.ingredient-layer__image {
+  width: 100%;
+  height: auto;
+}
+
+/* ─────────────── The collection index ─────────────── */
+
+.collection {
+  position: relative;
+  z-index: 2;
+  /* Anchor jumps from SHOP clear the fixed bar */
+  scroll-margin-top: calc(var(--nav-height) + 1rem);
+  padding: clamp(4rem, 12vh, 8rem) var(--gutter) clamp(3rem, 8vh, 5rem);
+  background: var(--ground-lameis);
+}
+
+.collection__title {
+  margin: 0 0 clamp(2rem, 5vh, 3.25rem);
+  font-family: var(--font-ui);
+  font-size: var(--type-ui-s);
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--bone) 62%, transparent);
+}
+
+.collection__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.collection__row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 1rem clamp(2rem, 6vw, 5rem);
+  padding: clamp(1.1rem, 2.4vh, 1.75rem) 0;
+  border-top: 1px solid color-mix(in srgb, var(--bone) 14%, transparent);
+}
+
+.collection__row:last-child {
+  border-bottom: 1px solid color-mix(in srgb, var(--bone) 14%, transparent);
+}
+
+/* German runs long here — MORGENDÄMMERUNG, ABENDDÄMMERUNG — so the hour word
+   drops to its own line rather than pushing the row past the screen. */
+.collection__open {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 0.9rem;
+  min-width: 0;
+  text-align: left;
+}
+
+.collection__time {
+  font-family: var(--font-ui);
+  font-size: var(--type-ui-s);
+  letter-spacing: 0.18em;
+  color: color-mix(in srgb, var(--bone) 58%, transparent);
+  font-variant-numeric: tabular-nums;
+}
+
+.collection__name {
+  font-family: var(--font-display);
+  font-size: var(--type-display-l);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: color-mix(in srgb, var(--bone) 90%, transparent);
+  transition: color var(--motion-base) var(--ease);
+}
+
+.collection__open:hover .collection__name {
+  color: var(--bone);
+}
+
+.collection__hour {
+  font-family: var(--font-ui);
+  font-size: var(--type-ui-s);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--bone) 50%, transparent);
+}
+
+.collection__notes {
+  margin: 0;
+  font-size: var(--type-ui-s);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--bone) 62%, transparent);
+}
+
+.collection__buy {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 0.5rem 1.35rem;
+  margin: 0;
+}
+
+.collection__price {
+  font-size: var(--type-ui-m);
+  letter-spacing: 0.18em;
+  color: color-mix(in srgb, var(--bone) 82%, transparent);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ─────────────── Footer ─────────────── */
+
+.footer {
+  position: relative;
+  z-index: 2;
+  padding: clamp(3rem, 9vh, 5rem) var(--gutter) 2.5rem;
+  background: var(--ground-lameis);
+  border-top: 1px solid color-mix(in srgb, var(--bone) 12%, transparent);
+}
+
+.footer__mark {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--type-ui-l);
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--bone);
+}
+
+.footer__line {
+  margin: 0.6rem 0 0;
+  font-family: var(--font-display);
+  font-size: var(--type-display-m);
+  font-style: italic;
+  color: color-mix(in srgb, var(--bone) 80%, transparent);
+}
+
+.footer__columns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(2rem, 8vw, 6rem);
+  margin-top: clamp(2.5rem, 6vh, 4rem);
+}
+
+.footer__column {
+  scroll-margin-top: calc(var(--nav-height) + 1rem);
+}
+
+.footer__column p {
+  margin: 0.55rem 0 0;
+  max-width: 22rem;
+  font-size: var(--type-ui-body);
+  color: color-mix(in srgb, var(--bone) 72%, transparent);
+}
+
+.footer__column-title {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: var(--type-ui-s);
+  font-weight: 500;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--bone) 58%, transparent);
+}
+
+.footer__demo,
+.footer__legal {
+  margin: 2.5rem 0 0;
+  font-size: var(--type-ui-s);
+  color: color-mix(in srgb, var(--bone) 60%, transparent);
+}
+
+.footer__legal {
+  margin-top: 0.6rem;
+}
+
+/* ─────────────── Entrance ─────────────── */
+
+@keyframes house-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes house-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes cart-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ─────────────── Tablet ─────────────── */
+
+@media (max-width: 1024px) {
+  .collection__row {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .collection__notes {
+    grid-column: 1;
+  }
+
+  .collection__buy {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: center;
+  }
+}
+
+/* ─────────────── Mobile ─────────────── */
+
+@media (max-width: 768px) {
+  /* Mobile chapters compose their own vertical order from the stage flow */
+  .chapter__copy {
+    display: contents;
+  }
+
+  /* One screen, one message: the name hands over to the story early instead of
+     holding its ground while the story rises over the top of it. */
+  .chapter[data-depth] .chapter__lead,
+  .chapter[data-depth] .chapter__tail {
+    opacity: clamp(0, calc((0.3 - var(--progress)) / 0.14), 1);
+  }
+
+  .nav {
+    grid-template-columns: auto auto;
+    justify-content: space-between;
+  }
+
+  .nav__links {
+    display: none;
+  }
+
+  .nav__menu {
+    display: inline-flex;
+  }
+
+  .cart {
+    top: auto;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    width: auto;
+    padding: 1.15rem var(--gutter) 1.5rem;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 0;
+  }
+
+  .hour-line {
+    top: auto;
+    right: 0;
+    left: 0;
+    bottom: 0.85rem;
+    flex-direction: row;
+    justify-content: center;
+    transform: none;
+  }
+
+  .hour-line__now {
+    display: none;
+  }
+
+  .hour-line__hours {
+    flex-direction: row;
+    height: auto;
+    gap: 0.35rem;
+  }
+
+  .hour-line__hours::before,
+  .hour-line__hours::after {
+    display: none;
+  }
+
+  .hour-line__hour button {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .hour-line__dot {
+    width: 6px;
+    height: 6px;
+  }
+
+  .chapter__hour-name {
+    letter-spacing: 0.2em;
+  }
+
+  .chapter__notes {
+    gap: 0.4rem;
+    letter-spacing: 0.16em;
+  }
+
+  .collection__row {
+    grid-template-columns: 1fr;
+    gap: 0.7rem;
+  }
+
+  .collection__buy {
+    grid-column: 1;
+    grid-row: auto;
+    justify-content: flex-start;
+  }
+
+  .footer {
+    padding-bottom: 3.5rem;
+  }
+}
+
+@media (max-width: 390px) {
+  .nav__locale {
+    display: none;
+  }
 }

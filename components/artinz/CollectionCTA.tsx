@@ -1,10 +1,28 @@
+"use client";
+
 /**
- * Final conversion moment — structure only.
+ * Final conversion moment — text CTA only.
+ * Scrolls into the DIAR chapter depth (story / ingredients).
  */
-export function CollectionCTA() {
+type CollectionCTAProps = {
+  href?: string;
+  label?: string;
+};
+
+export function CollectionCTA({
+  href = "#diar-story",
+  label = "DISCOVER DIAR →",
+}: CollectionCTAProps) {
+  const onClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    if (!href.startsWith("#")) return;
+    event.preventDefault();
+    const depth = Math.round(window.innerHeight * 0.55);
+    window.scrollBy({ top: depth, behavior: "smooth" });
+  };
+
   return (
-    <aside aria-label="Collection">
-      {/* Collection CTA composition TBD */}
-    </aside>
+    <a className="collection-cta" href={href} onClick={onClick}>
+      {label}
+    </a>
   );
 }

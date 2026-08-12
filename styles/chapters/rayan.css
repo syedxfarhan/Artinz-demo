@@ -1,0 +1,337 @@
+/**
+ * RAYAN — 12:00, noon. Same house, mirrored and colder.
+ *
+ * The still life holds the left, the type sits low on the right, and the white
+ * falcon stands at the right edge in full daylight — screen-blended so the
+ * photograph's own black ground disappears into the page instead of being cut
+ * out. Rhythm is architectural: aligned edges, one crisp horizontal of scent.
+ *
+ * Masks below use black/transparent as alpha, not as palette colour.
+ */
+
+.chapter--rayan .chapter__stage {
+  background: linear-gradient(
+    180deg,
+    var(--ground-diar) 0%,
+    var(--ground-rayan) 28%
+  );
+}
+
+/* Midday light falls from the upper left, where the window is */
+.chapter--rayan .chapter__stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(
+    58% 64% at 26% 30%,
+    color-mix(in srgb, var(--noon) 26%, transparent) 0%,
+    transparent 74%
+  );
+  pointer-events: none;
+}
+
+/* The type sits on open ground, so the veil only settles the photograph's
+   faded edge — the falcon at the right edge stays at full daylight. */
+.chapter--rayan .chapter__stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  background: linear-gradient(
+    270deg,
+    transparent 22%,
+    color-mix(in srgb, var(--ground-rayan) 40%, transparent) 44%,
+    transparent 68%
+  );
+  pointer-events: none;
+}
+
+/* ── Product still life: left, edge-anchored ── */
+
+/* Hung from the bar and run off the lower frame: a still life that stopped
+   short of both edges read as a picture placed on the page. */
+.chapter--rayan .bottle-stage {
+  top: var(--nav-height);
+  left: -3%;
+  height: min(104vh, 1120px);
+}
+
+/* The base leaves the frame over a long fall of light, so nothing terminates
+   inside the picture. The bottle sits well above where the fall begins. */
+@media (min-width: 769px) {
+  .chapter--rayan .bottle-stage__frame {
+    -webkit-mask-image: linear-gradient(
+      180deg,
+      transparent 0%,
+      black 8%,
+      black 78%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      180deg,
+      transparent 0%,
+      black 8%,
+      black 78%,
+      transparent 100%
+    );
+  }
+}
+
+.chapter--rayan .bottle-stage__image {
+  -webkit-mask-image: linear-gradient(270deg, transparent 0%, black 32%),
+    linear-gradient(90deg, transparent 0%, black 10%);
+  mask-image: linear-gradient(270deg, transparent 0%, black 32%),
+    linear-gradient(90deg, transparent 0%, black 10%);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+
+/* ── White falcon: noon identity, light on light ── */
+
+.chapter--rayan .animal-layer {
+  right: -8%;
+  bottom: -8%;
+  width: min(32vw, 545px);
+  mix-blend-mode: screen;
+  opacity: calc(0.92 - var(--progress) * 0.45);
+  transform: translate3d(
+    calc(var(--pointer-x) * -11px * var(--motion-scale) + var(--progress) * 2vw),
+    calc(var(--pointer-y) * -7px * var(--motion-scale) + var(--progress) * 8vh),
+    0
+  );
+}
+
+.chapter--rayan .animal-layer__image {
+  -webkit-mask-image: radial-gradient(
+    76% 78% at 54% 44%,
+    black 58%,
+    transparent 98%
+  );
+  mask-image: radial-gradient(76% 78% at 54% 44%, black 58%, transparent 98%);
+  filter: brightness(1.02) contrast(1.06);
+}
+
+/* ── Type: low right, right-aligned ── */
+
+.chapter--rayan .chapter__copy {
+  right: 27%;
+  bottom: clamp(4rem, 16vh, 9rem);
+  align-items: flex-end;
+  max-width: min(24rem, 30vw);
+  text-align: right;
+}
+
+.chapter--rayan .chapter__hour {
+  flex-direction: row-reverse;
+}
+
+.chapter--rayan .chapter__notes {
+  justify-content: flex-end;
+}
+
+.chapter--rayan .chapter__lead,
+.chapter--rayan .chapter__tail {
+  opacity: clamp(0, calc((0.88 - var(--progress)) / 0.12), 1);
+}
+
+/* Story arrives above the name, not below it */
+.chapter--rayan .chapter__depth {
+  right: 27%;
+  top: clamp(5.5rem, 22vh, 11rem);
+  max-width: min(24rem, 30vw);
+  text-align: right;
+}
+
+.chapter--rayan .chapter__story {
+  max-width: none;
+}
+
+.chapter--rayan .chapter__product {
+  justify-content: flex-end;
+}
+
+/* ── Ingredients: one crisp horizontal of scent ── */
+
+.chapter--rayan .ingredient-layer {
+  z-index: 3;
+  bottom: -4%;
+  opacity: calc(clamp(0, calc((var(--progress) - 0.22) / 0.28), 1) * 0.8);
+  transform: translateY(
+    calc(
+      (1 - clamp(0, calc((var(--progress) - 0.22) / 0.28), 1)) * 30px *
+        var(--motion-scale)
+    )
+  );
+  -webkit-mask-image: radial-gradient(
+    66% 62% at 50% 46%,
+    black 40%,
+    transparent 78%
+  );
+  mask-image: radial-gradient(66% 62% at 50% 46%, black 40%, transparent 78%);
+}
+
+.chapter--rayan .ingredient-layer[data-ingredient="apple"] {
+  left: 32%;
+  width: min(22vw, 280px);
+}
+
+.chapter--rayan .ingredient-layer[data-ingredient="lavender"] {
+  left: 48%;
+  bottom: 2%;
+  width: min(20vw, 250px);
+}
+
+.chapter--rayan .ingredient-layer[data-ingredient="bergamot"] {
+  left: 62%;
+  bottom: -8%;
+  width: min(21vw, 265px);
+}
+
+/* ── Tablet ── */
+
+@media (max-width: 1024px) {
+  /* Further left at this width, so the wordmark keeps clear ground */
+  .chapter--rayan .bottle-stage {
+    left: -15%;
+    height: min(104vh, 900px);
+  }
+
+  .chapter--rayan .chapter__copy {
+    max-width: min(20rem, 44vw);
+    bottom: clamp(3.5rem, 12vh, 7rem);
+  }
+
+  .chapter--rayan .chapter__depth {
+    max-width: min(20rem, 44vw);
+    top: clamp(5rem, 16vh, 8rem);
+  }
+
+  .chapter--rayan .animal-layer {
+    right: -14%;
+    width: min(46vw, 340px);
+  }
+
+  .chapter--rayan .ingredient-layer[data-ingredient="apple"] {
+    left: 18%;
+    width: min(32vw, 220px);
+  }
+
+  .chapter--rayan .ingredient-layer[data-ingredient="lavender"] {
+    left: 40%;
+    width: min(30vw, 200px);
+  }
+
+  .chapter--rayan .ingredient-layer[data-ingredient="bergamot"] {
+    left: 62%;
+    width: min(30vw, 210px);
+  }
+}
+
+/* ── Mobile: type left, falcon left, photograph full width ── */
+
+@media (max-width: 768px) {
+  .chapter--rayan .chapter__stage {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: calc(var(--nav-height) + 0.9rem) var(--gutter) 3.1rem;
+    text-align: left;
+  }
+
+  .chapter--rayan .chapter__stage::after {
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--ground-rayan) 80%, transparent) 0%,
+      color-mix(in srgb, var(--ground-rayan) 24%, transparent) 24%,
+      transparent 42%
+    );
+  }
+
+  .chapter--rayan .chapter__lead {
+    order: 1;
+    align-items: flex-start;
+  }
+
+  .chapter--rayan .bottle-stage {
+    order: 2;
+    position: relative;
+    top: auto;
+    left: auto;
+    aspect-ratio: auto;
+    width: calc(100% + 2 * var(--gutter));
+    height: auto;
+    flex: 1 1 auto;
+    min-height: 0;
+    margin: 0.35rem calc(var(--gutter) * -1) 0;
+  }
+
+  .chapter--rayan .bottle-stage__image {
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 14%),
+      linear-gradient(270deg, transparent 0%, black 14%);
+    mask-image: linear-gradient(90deg, transparent 0%, black 14%),
+      linear-gradient(270deg, transparent 0%, black 14%);
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+  }
+
+  .chapter--rayan .chapter__tail {
+    order: 3;
+    align-items: flex-start;
+    position: relative;
+    z-index: 12;
+  }
+
+  .chapter--rayan .chapter__notes {
+    justify-content: flex-start;
+    margin-top: 0.85rem;
+  }
+
+  .chapter--rayan .chapter__cta {
+    margin-top: 0.95rem;
+  }
+
+  .chapter--rayan .animal-layer {
+    right: auto;
+    left: -22%;
+    bottom: 12%;
+    width: min(50vw, 205px);
+    z-index: 9;
+    opacity: calc(0.9 - var(--progress) * 0.4);
+    transform: translate3d(0, calc(var(--progress) * 6vh), 0);
+  }
+
+  .chapter--rayan .chapter__depth {
+    top: auto;
+    right: 0;
+    left: 0;
+    bottom: 6.4rem;
+    max-width: none;
+    padding: 2.5rem var(--gutter) 0.6rem;
+    text-align: left;
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      color-mix(in srgb, var(--ground-rayan) 74%, transparent) 42%,
+      color-mix(in srgb, var(--ground-rayan) 90%, transparent) 100%
+    );
+  }
+
+  .chapter--rayan .chapter__product {
+    justify-content: flex-start;
+  }
+
+  /* Two scent layers is one too many at this width */
+  .chapter--rayan .ingredient-layer[data-ingredient="apple"] {
+    left: auto;
+    right: -14%;
+    top: 20%;
+    bottom: auto;
+    width: 44vw;
+  }
+
+  .chapter--rayan .ingredient-layer[data-ingredient="lavender"],
+  .chapter--rayan .ingredient-layer[data-ingredient="bergamot"] {
+    display: none;
+  }
+}

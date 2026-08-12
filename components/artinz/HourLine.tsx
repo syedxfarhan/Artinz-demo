@@ -1,11 +1,42 @@
+"use client";
+
+import { t } from "@/data/copy";
+import { fragrances } from "@/data/fragrances";
+import { useHouse } from "./HouseProvider";
+
 /**
- * Timeline / progress indicator — structure only.
- * Future: scroll progress → current chapter → hour line state.
+ * Hour Line — the persistent position of the reader inside one day.
+ * Desktop: a thin vertical track with four hours. Mobile: four dots.
  */
 export function HourLine() {
+  const { activeId, goToChapter, locale, inChapters } = useHouse();
+  const active = fragrances.find((fragrance) => fragrance.id === activeId);
+
   return (
-    <div data-hour-line role="presentation" aria-hidden="true">
-      {/* Hour line composition TBD */}
-    </div>
+    <nav
+      className="hour-line"
+      data-visible={inChapters}
+      aria-label={t("hourLineLabel", locale)}
+    >
+      <span className="hour-line__now" aria-hidden="true">
+        {active?.time}
+      </span>
+      <ol className="hour-line__hours">
+        {fragrances.map((fragrance) => (
+          <li key={fragrance.id} className="hour-line__hour">
+            <button
+              type="button"
+              aria-current={activeId === fragrance.id ? "true" : undefined}
+              onClick={() => goToChapter(fragrance.id)}
+            >
+              <span className="hour-line__dot" aria-hidden="true" />
+              <span className="visually-hidden">
+                {fragrance.name}, {fragrance.time}
+              </span>
+            </button>
+          </li>
+        ))}
+      </ol>
+    </nav>
   );
 }

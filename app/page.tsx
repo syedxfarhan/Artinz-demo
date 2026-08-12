@@ -1,12 +1,36 @@
+import {
+  CartPanel,
+  CollectionIndex,
+  DiarChapter,
+  Footer,
+  HourLine,
+  HouseProvider,
+  LameisChapter,
+  Navigation,
+  RayanChapter,
+  SanamChapter,
+} from "@/components/artinz";
+import { SkipLink } from "@/components/artinz/SkipLink";
+
 /**
- * ARTINZ homepage — minimal scaffold.
- * Phase 1 (DIAR static art direction) has not begun.
+ * ARTINZ — one house, four hours, one continuous scroll.
  */
 export default function Home() {
   return (
-    <main>
-      <h1>ARTINZ</h1>
-      <p>One house. Four hours.</p>
-    </main>
+    <HouseProvider>
+      <SkipLink />
+      <Navigation />
+      <HourLine />
+      <CartPanel />
+      <main id="top">
+        <h1 className="visually-hidden">ARTINZ — one house, four hours</h1>
+        <DiarChapter />
+        <RayanChapter />
+        <SanamChapter />
+        <LameisChapter />
+        <CollectionIndex />
+      </main>
+      <Footer />
+    </HouseProvider>
   );
 }

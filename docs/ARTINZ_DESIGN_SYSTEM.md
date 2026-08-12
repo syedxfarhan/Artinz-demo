@@ -1,6 +1,10 @@
 # ARTINZ Design System
 
-Foundation documentation for the ARTINZ fragrance house website. This document records tokens and principles only — no UI has been designed yet.
+Foundation documentation for the ARTINZ fragrance house website: tokens,
+principles and the development contract. The built visual system — type ramp,
+hour grounds and accents, components, and the art direction of each hour — is
+recorded in [DESIGN.md](../DESIGN.md), which is the source of truth for design
+review.
 
 ## Colors
 
@@ -37,7 +41,9 @@ Loaded via `next/font/google` in `app/layout.tsx`. CSS variables: `--font-displa
 
 - Base unit: `0.25rem` (`--space-unit`)
 - Scale: 1, 2, 3, 4, 6, 8, 12, 16 multipliers
-- Spacing values are defined but not applied — composition is deferred to Phase 1 (DIAR)
+- One page gutter, `clamp(1.15rem, 4vw, 3.25rem)`, shared by every hour
+- Chapter compositions are asymmetric and hour-specific; the collection index and
+  footer are the only aligned grids
 - Rhythm should feel editorial and intentional, not grid-template-generic
 
 ## Image hierarchy
@@ -62,7 +68,10 @@ If an element has no clear purpose, it does not belong.
 
 ## Interaction philosophy
 
-Interaction is **not implemented** in this scaffold. The planned cascade:
+One scroll listener and one pointer listener serve the whole house
+(`components/artinz/HouseProvider.tsx`). They publish CSS custom properties —
+`--progress` per chapter, `--house-position`, `--pointer-x/y` — so scroll motion
+never re-renders React. The cascade:
 
 ```
 Scroll progress
@@ -74,13 +83,12 @@ Scroll progress
             → Navigation state
 ```
 
-Bottle interaction (future):
+Bottle interaction:
 
 ```
 Pointer position
-  → Subtle rotation
+  → Subtle rotation (±3.5°, fine pointers only)
     → Depth
-      → Specular light
 ```
 
 Rules:
@@ -101,13 +109,19 @@ Breakpoints (reference values in CSS):
 | Tablet | 1024px |
 | Desktop | 1440px+ |
 
-Responsive design is **not built yet**. Architecture supports media queries and fluid layouts. Mobile refinement comes after desktop static composition and interaction.
+Each hour composes its own mobile layout from the stage flow rather than stacking
+the desktop one: the hour and name lead, the photograph takes the remaining
+height, and notes and CTA close. Verified at 320, 375, 390, 1024, 1440 and 1920
+with no horizontal overflow.
 
 ## Accessibility
 
 - Semantic HTML with proper heading hierarchy
 - `aria-label` on navigation regions
-- `aria-hidden` on decorative layers (animal, hour line)
+- Animal photography carries descriptive alt text (it is identity, not
+  decoration); ingredient layers are `aria-hidden` with empty alt
+- Depth copy is `visibility: hidden` until its chapter is scrolled into, so it is
+  never focusable while invisible
 - `:focus-visible` outline using `--brass`
 - Global reduced-motion override in `styles/artinz.css`
 - Contrast: void/bone base pair designed for readability
@@ -125,4 +139,7 @@ Asset audit
               → Final polish
 ```
 
-Fragrance development order: DIAR → RAYAN → SANAM → LAMEIS (one at a time, each approved before the next).
+Fragrance development order: DIAR → RAYAN → SANAM → LAMEIS (one at a time, each
+approved before the next). Each hour's composition lives in its own stylesheet,
+`styles/chapters/<hour>.css`, so an approved hour is never edited while the next
+one is built.
