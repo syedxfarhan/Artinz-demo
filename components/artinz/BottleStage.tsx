@@ -1,101 +1,42 @@
-"use client";
-
 import Image from "next/image";
-import { useEffect, useRef } from "react";
 
 /**
- * Product image and depth interaction stage.
- * Desktop: subtle pointer tilt (±3–4°). Mobile: no tilt.
- * Presentation: full photographic environment (not a rectangular card).
+ * Product still life — the hero of every chapter.
+ *
+ * The photograph is the environment, not a card: chapter CSS dissolves its
+ * edges into the page. Pointer tilt (fine pointers only, ±3.5°) comes from the
+ * house pointer signal in CSS, so no scripting runs per stage.
  */
 type BottleStageProps = {
   fragranceId: string;
-  bottleSrc: string;
+  src: string;
   alt: string;
   width: number;
   height: number;
-  scrollShift?: number;
+  priority?: boolean;
+  sizes?: string;
 };
 
 export function BottleStage({
   fragranceId,
-  bottleSrc,
+  src,
   alt,
   width,
   height,
-  scrollShift = 0,
+  priority = false,
+  sizes = "(max-width: 768px) 100vw, 60vw",
 }: BottleStageProps) {
-  const stageRef = useRef<HTMLDivElement>(null);
-  const frameRef = useRef<number | null>(null);
-  const targetRef = useRef({ x: 0, y: 0 });
-  const currentRef = useRef({ x: 0, y: 0 });
-
-  useEffect(() => {
-    const stage = stageRef.current;
-    if (!stage) return;
-
-    const reduceMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-    const canTilt = window.matchMedia("(pointer: fine)").matches && !reduceMotion;
-
-    if (!canTilt) return;
-
-    const maxDeg = 3.5;
-
-    const animate = () => {
-      const cur = currentRef.current;
-      const tgt = targetRef.current;
-      cur.x += (tgt.x - cur.x) * 0.08;
-      cur.y += (tgt.y - cur.y) * 0.08;
-      stage.style.setProperty("--tilt-x", `${cur.y * maxDeg}deg`);
-      stage.style.setProperty("--tilt-y", `${cur.x * maxDeg}deg`);
-      frameRef.current = requestAnimationFrame(animate);
-    };
-
-    const onMove = (event: PointerEvent) => {
-      const rect = stage.getBoundingClientRect();
-      const nx = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-      const ny = ((event.clientY - rect.top) / rect.height) * 2 - 1;
-      targetRef.current = {
-        x: Math.max(-1, Math.min(1, nx)),
-        y: Math.max(-1, Math.min(1, -ny)),
-      };
-    };
-
-    const onLeave = () => {
-      targetRef.current = { x: 0, y: 0 };
-    };
-
-    frameRef.current = requestAnimationFrame(animate);
-    window.addEventListener("pointermove", onMove);
-    stage.addEventListener("pointerleave", onLeave);
-
-    return () => {
-      if (frameRef.current) cancelAnimationFrame(frameRef.current);
-      window.removeEventListener("pointermove", onMove);
-      stage.removeEventListener("pointerleave", onLeave);
-    };
-  }, []);
-
   return (
-    <div
-      ref={stageRef}
-      className="bottle-stage"
-      data-bottle-stage
-      data-fragrance={fragranceId}
-      style={{
-        ["--scroll-shift" as string]: `${scrollShift}px`,
-      }}
-    >
+    <div className="bottle-stage" data-bottle-stage data-fragrance={fragranceId}>
       <div className="bottle-stage__frame">
         <Image
-          src={bottleSrc}
+          src={src}
           alt={alt}
           width={width}
           height={height}
-          priority
-          sizes="(max-width: 768px) 140vw, 75vw"
+          priority={priority}
+          loading={priority ? undefined : "lazy"}
+          sizes={sizes}
           className="bottle-stage__image"
         />
       </div>

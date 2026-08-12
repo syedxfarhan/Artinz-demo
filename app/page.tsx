@@ -1,14 +1,30 @@
-import { DiarChapter, Footer } from "@/components/artinz";
-import { diar } from "@/data/fragrances";
+import {
+  CartPanel,
+  CollectionIndex,
+  DiarChapter,
+  Footer,
+  HourLine,
+  HouseProvider,
+  Navigation,
+} from "@/components/artinz";
+import { SkipLink } from "@/components/artinz/SkipLink";
 
 /**
- * ARTINZ homepage — Phase 1: DIAR opening + first chapter only.
+ * ARTINZ — one house, four hours, one continuous scroll.
  */
 export default function Home() {
   return (
-    <main>
-      <DiarChapter fragrance={diar} />
+    <HouseProvider>
+      <SkipLink />
+      <Navigation />
+      <HourLine />
+      <CartPanel />
+      <main id="top">
+        <h1 className="visually-hidden">ARTINZ — one house, four hours</h1>
+        <DiarChapter />
+        <CollectionIndex />
+      </main>
       <Footer />
-    </main>
+    </HouseProvider>
   );
 }

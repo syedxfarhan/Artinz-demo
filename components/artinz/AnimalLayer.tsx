@@ -1,48 +1,42 @@
 import Image from "next/image";
 
 /**
- * Animal identity / visual layer.
- * Purpose: FRAGRANCE IDENTITY — large, cropped, quiet.
+ * Animal identity layer — the second thing seen in a chapter.
+ *
+ * Large, partially cropped, discovered alongside the bottle. Depth (parallax,
+ * blend, dissolve) is chapter CSS; this only places the photograph.
  */
 type AnimalLayerProps = {
   fragranceId: string;
-  animalAsset: string;
-  animalName: string;
-  parallaxX?: number;
-  parallaxY?: number;
-  opacity?: number;
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  priority?: boolean;
+  sizes?: string;
 };
 
 export function AnimalLayer({
   fragranceId,
-  animalAsset,
-  animalName,
-  parallaxX = 0,
-  parallaxY = 0,
-  opacity = 0.35,
+  src,
+  alt,
+  width,
+  height,
+  priority = false,
+  sizes = "(max-width: 768px) 80vw, 40vw",
 }: AnimalLayerProps) {
   return (
-    <div
-      className="animal-layer"
-      data-animal-layer
-      data-fragrance={fragranceId}
-      aria-hidden="true"
-      style={{
-        ["--animal-x" as string]: `${parallaxX}px`,
-        ["--animal-y" as string]: `${parallaxY}px`,
-        ["--animal-opacity" as string]: String(opacity),
-      }}
-    >
+    <div className="animal-layer" data-animal-layer data-fragrance={fragranceId}>
       <Image
-        src={animalAsset}
-        alt=""
-        width={1024}
-        height={1536}
+        src={src}
+        alt={alt}
+        width={width}
+        height={height}
+        priority={priority}
+        loading={priority ? undefined : "lazy"}
+        sizes={sizes}
         className="animal-layer__image"
-        sizes="(max-width: 768px) 70vw, 42vw"
-        priority
       />
-      <span className="visually-hidden">{animalName}</span>
     </div>
   );
 }

@@ -1,8 +1,11 @@
+export { HouseProvider, useHouse } from "./HouseProvider";
 export { Navigation } from "./Navigation";
+export { CartPanel } from "./CartPanel";
 export { HourLine } from "./HourLine";
-export { FragranceChapter } from "./FragranceChapter";
-export { DiarChapter } from "./DiarChapter";
+export { ChapterShell } from "./ChapterShell";
 export { BottleStage } from "./BottleStage";
 export { AnimalLayer } from "./AnimalLayer";
-export { CollectionCTA } from "./CollectionCTA";
+export { IngredientLayer } from "./IngredientLayer";
+export { DiarChapter } from "./DiarChapter";
+export { CollectionIndex } from "./CollectionIndex";
 export { Footer } from "./Footer";

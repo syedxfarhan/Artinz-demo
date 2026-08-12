@@ -1,7 +1,8 @@
 /**
- * ARTINZ design tokens + DIAR chapter styles
- * Phase 1: photography leads; UI supports; interaction enhances.
- * Composition: photographic stage is the environment — not an inserted rectangle.
+ * ARTINZ — foundations and the shared editorial system.
+ *
+ * Chapter composition lives in styles/chapters/*.css, one file per hour, so an
+ * approved chapter is never edited while the next one is built.
  */
 
 :root {
@@ -10,44 +11,78 @@
   --bone: #f3ede4;
   --brass: #b8935a;
 
-  /* Chapter accents */
+  /* Hour palette */
   --dawn: #c9762e;
   --noon: #3a4a5e;
   --dusk: #5b3358;
   --night-bg: #2a1b22;
   --night-accent: #8c5a4a;
 
-  /* Typography — next/font variables win when present */
-  --font-display: var(--font-display-loaded), "Fraunces", Georgia, "Times New Roman",
-    serif;
+  /* Hour grounds — void carried toward each hour, never flooded */
+  --ground-diar: var(--void);
+  --ground-rayan: color-mix(in srgb, var(--void) 88%, var(--noon));
+  --ground-sanam: color-mix(in srgb, var(--void) 88%, var(--dusk));
+  --ground-lameis: color-mix(in srgb, var(--void) 80%, var(--night-bg));
+
+  /* Hour accents — hairlines, markers, CTA underlines */
+  --accent-diar: var(--dawn);
+  --accent-rayan: color-mix(in srgb, var(--noon) 40%, var(--bone));
+  --accent-sanam: color-mix(in srgb, var(--dusk) 45%, var(--bone));
+  --accent-lameis: color-mix(in srgb, var(--brass) 72%, var(--night-accent));
+
+  --chapter-accent: var(--accent-diar);
+
+  /* Type — families */
+  --font-display: var(--font-display-loaded), "Fraunces", Georgia,
+    "Times New Roman", serif;
   --font-ui: var(--font-ui-loaded), "Inter", system-ui, -apple-system, sans-serif;
 
-  /* Spacing scale */
-  --space-unit: 0.25rem;
-  --space-1: calc(var(--space-unit) * 1);
-  --space-2: calc(var(--space-unit) * 2);
-  --space-3: calc(var(--space-unit) * 3);
-  --space-4: calc(var(--space-unit) * 4);
-  --space-6: calc(var(--space-unit) * 6);
-  --space-8: calc(var(--space-unit) * 8);
-  --space-12: calc(var(--space-unit) * 12);
-  --space-16: calc(var(--space-unit) * 16);
+  /* Type — ramp (see DESIGN.md typography.scale) */
+  --type-display-xl: clamp(2.6rem, 8.2vw, 6.5rem);
+  --type-display-l: clamp(1.7rem, 3.4vw, 2.6rem);
+  --type-display-m: clamp(1.05rem, 1.7vw, 1.4rem);
+  --type-display-s: 1rem;
+  --type-ui-body: 0.92rem;
+  --type-ui-l: 0.82rem;
+  --type-ui-m: 0.75rem;
+  --type-ui-s: 0.7rem;
+  --type-ui-xs: 0.66rem;
 
-  /* Responsive breakpoints */
-  --bp-small-mobile: 320px;
-  --bp-mobile: 390px;
-  --bp-mobile-lg: 768px;
-  --bp-tablet: 1024px;
-  --bp-desktop: 1440px;
+  /* Spacing */
+  --gutter: clamp(1.15rem, 4vw, 3.25rem);
+  --nav-height: clamp(3.25rem, 6vh, 4.25rem);
 
   /* Motion */
-  --motion-duration-fast: 150ms;
-  --motion-duration-base: 300ms;
-  --motion-duration-slow: 600ms;
-  --motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --motion-fast: 150ms;
+  --motion-base: 300ms;
+  --motion-slow: 620ms;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Live signals written by the house */
+  --motion-scale: 1;
+  --pointer-x: 0;
+  --pointer-y: 0;
+  --house-position: 0;
+}
+
+:root[data-hour="diar"] {
+  --chapter-accent: var(--accent-diar);
+}
+:root[data-hour="rayan"] {
+  --chapter-accent: var(--accent-rayan);
+}
+:root[data-hour="sanam"] {
+  --chapter-accent: var(--accent-sanam);
+}
+:root[data-hour="lameis"] {
+  --chapter-accent: var(--accent-lameis);
 }
 
 @media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-scale: 0;
+  }
+
   *,
   *::before,
   *::after {
@@ -66,6 +101,7 @@
 
 html {
   -webkit-text-size-adjust: 100%;
+  background-color: var(--void);
 }
 
 body {
@@ -74,11 +110,7 @@ body {
   color: var(--bone);
   font-family: var(--font-ui);
   line-height: 1.5;
-}
-
-:focus-visible {
-  outline: 2px solid var(--brass);
-  outline-offset: 2px;
+  overflow-x: hidden;
 }
 
 a {
@@ -90,6 +122,21 @@ img {
   max-width: 100%;
   height: auto;
   display: block;
+}
+
+button {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid var(--chapter-accent);
+  outline-offset: 3px;
 }
 
 .visually-hidden {
@@ -104,106 +151,431 @@ img {
   border: 0;
 }
 
-/* ─── Navigation ─── */
-
-.artinz-nav {
+.skip-link {
   position: absolute;
+  top: 0;
+  left: 50%;
+  z-index: 90;
+  transform: translate(-50%, -150%);
+  padding: 0.6rem 1rem;
+  background: var(--void);
+  border: 1px solid var(--chapter-accent);
+  font-size: var(--type-ui-s);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.skip-link:focus-visible {
+  transform: translate(-50%, 0.5rem);
+}
+
+/* ─────────────── Navigation ─────────────── */
+
+.nav {
+  position: fixed;
   inset: 0 0 auto;
-  z-index: 40;
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  padding: clamp(1.25rem, 3vw, 2rem) clamp(1.25rem, 4vw, 3rem);
+  z-index: 60;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 1rem;
+  min-height: var(--nav-height);
+  padding: 0 var(--gutter);
+  animation: house-fade var(--motion-slow) var(--ease) 0.05s both;
+}
+
+.nav::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 -1.5rem;
+  z-index: -1;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--void) 66%, transparent) 0%,
+    color-mix(in srgb, var(--void) 24%, transparent) 62%,
+    transparent 100%
+  );
   pointer-events: none;
 }
 
-.artinz-nav a {
-  pointer-events: auto;
-}
-
-.artinz-nav__brand {
+.nav__brand {
   font-family: var(--font-display);
-  font-size: 0.8rem;
+  font-size: var(--type-ui-l);
   font-weight: 500;
-  letter-spacing: 0.28em;
+  letter-spacing: 0.3em;
   text-transform: uppercase;
-  color: color-mix(in srgb, var(--bone) 82%, transparent);
+  color: var(--bone);
 }
 
-.artinz-nav__links {
+.nav__links {
   display: flex;
-  gap: clamp(1rem, 2.5vw, 1.75rem);
+  justify-content: center;
+  gap: clamp(1rem, 2.4vw, 2rem);
 }
 
-.artinz-nav__links a {
+.nav__links a,
+.nav__cart,
+.nav__locale button,
+.nav__menu {
   font-family: var(--font-ui);
-  font-size: 0.68rem;
+  font-size: var(--type-ui-s);
   font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: color-mix(in srgb, var(--bone) 55%, transparent);
-  transition: color var(--motion-duration-base) var(--motion-ease);
+  color: color-mix(in srgb, var(--bone) 66%, transparent);
+  transition: color var(--motion-base) var(--ease);
 }
 
-.artinz-nav__links a:hover,
-.artinz-nav__links a:focus-visible {
+.nav__links a:hover,
+.nav__links a:focus-visible,
+.nav__cart:hover,
+.nav__menu:hover {
   color: var(--bone);
 }
 
-/* ─── Hour line (DIAR only) ─── */
+.nav__controls {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.75rem, 1.6vw, 1.35rem);
+}
+
+.nav__locale {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.nav__locale button {
+  font-size: var(--type-ui-xs);
+}
+
+.nav__locale button[aria-pressed="true"] {
+  color: var(--bone);
+}
+
+.nav__locale button + button::before {
+  content: "/";
+  margin-right: 0.4rem;
+  color: color-mix(in srgb, var(--bone) 30%, transparent);
+}
+
+.nav__cart {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.45rem;
+}
+
+.nav__cart-count {
+  font-variant-numeric: tabular-nums;
+  color: var(--chapter-accent);
+  transition: color var(--motion-slow) var(--ease);
+}
+
+.nav__menu {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+}
+
+.nav__menu-icon line {
+  stroke: currentColor;
+  stroke-width: 1.25;
+}
+
+/* Mobile menu — a quiet type-only sheet */
+
+.house-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2.5rem;
+  padding: calc(var(--nav-height) + 2rem) var(--gutter) 3rem;
+  background: color-mix(in srgb, var(--void) 96%, var(--bone));
+  animation: house-fade var(--motion-base) var(--ease) both;
+}
+
+.house-menu[hidden] {
+  display: none;
+}
+
+.house-menu__hours {
+  display: flex;
+  flex-direction: column;
+  gap: 1.35rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.house-menu__hours button {
+  display: flex;
+  align-items: baseline;
+  gap: 0.85rem;
+}
+
+.house-menu__name {
+  font-family: var(--font-display);
+  font-size: var(--type-display-l);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: color-mix(in srgb, var(--bone) 74%, transparent);
+}
+
+.house-menu__hours button[data-active="true"] .house-menu__name {
+  color: var(--bone);
+}
+
+.house-menu__time {
+  font-family: var(--font-ui);
+  font-size: var(--type-ui-m);
+  letter-spacing: 0.2em;
+  color: color-mix(in srgb, var(--bone) 55%, transparent);
+  font-variant-numeric: tabular-nums;
+}
+
+.house-menu__hours button[data-active="true"] .house-menu__time {
+  color: var(--chapter-accent);
+}
+
+.house-menu__links {
+  display: flex;
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--type-ui-s);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--bone) 66%, transparent);
+}
+
+/* ─────────────── Demo cart ─────────────── */
+
+.cart {
+  position: fixed;
+  top: calc(var(--nav-height) + 0.5rem);
+  right: var(--gutter);
+  z-index: 80;
+  width: min(20rem, calc(100vw - 2 * var(--gutter)));
+  padding: 1.15rem 1.25rem 1.05rem;
+  background: color-mix(in srgb, var(--void) 94%, var(--bone));
+  border: 1px solid color-mix(in srgb, var(--bone) 16%, transparent);
+  box-shadow: 0 24px 60px -30px color-mix(in srgb, var(--void) 92%, transparent);
+  animation: cart-in var(--motion-base) var(--ease) both;
+}
+
+.cart[hidden] {
+  display: none;
+}
+
+.cart__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.cart__title {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: var(--type-ui-s);
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--bone);
+}
+
+.cart__close,
+.cart__remove {
+  font-family: var(--font-ui);
+  font-size: var(--type-ui-xs);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--bone) 62%, transparent);
+  transition: color var(--motion-fast) var(--ease);
+}
+
+.cart__close:hover,
+.cart__remove:hover {
+  color: var(--bone);
+}
+
+.cart__lines {
+  margin: 1.1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cart__line {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: 0.15rem 0.75rem;
+  padding: 0.7rem 0;
+  border-top: 1px solid color-mix(in srgb, var(--bone) 12%, transparent);
+}
+
+.cart__line-name {
+  font-family: var(--font-display);
+  font-size: var(--type-display-s);
+  letter-spacing: 0.1em;
+}
+
+.cart__line-meta {
+  font-size: var(--type-ui-s);
+  letter-spacing: 0.1em;
+  color: color-mix(in srgb, var(--bone) 70%, transparent);
+  font-variant-numeric: tabular-nums;
+}
+
+.cart__remove {
+  grid-column: 1;
+  justify-self: start;
+}
+
+.cart__empty {
+  margin: 1rem 0 0;
+  font-size: var(--type-ui-body);
+  color: color-mix(in srgb, var(--bone) 66%, transparent);
+}
+
+.cart__subtotal {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0.9rem 0 0;
+  padding-top: 0.8rem;
+  border-top: 1px solid color-mix(in srgb, var(--bone) 18%, transparent);
+  font-size: var(--type-ui-m);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+}
+
+.cart__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin-top: 1rem;
+}
+
+.cart__action {
+  font-size: var(--type-ui-s);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--bone) 45%, transparent);
+  cursor: not-allowed;
+}
+
+.cart__notice {
+  margin: 0.9rem 0 0;
+  font-size: var(--type-ui-xs);
+  line-height: 1.55;
+  color: color-mix(in srgb, var(--bone) 62%, transparent);
+}
+
+/* ─────────────── Hour Line ─────────────── */
 
 .hour-line {
-  position: absolute;
-  right: clamp(1rem, 3vw, 2.25rem);
+  position: fixed;
   top: 50%;
-  z-index: 30;
+  right: clamp(0.85rem, 1.8vw, 1.6rem);
+  z-index: 55;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.9rem;
   transform: translateY(-50%);
-  opacity: 0.55;
+  animation: house-fade var(--motion-slow) var(--ease) 0.7s both;
 }
 
-.hour-line__track {
+.hour-line__now {
+  font-family: var(--font-display);
+  font-size: var(--type-ui-s);
+  letter-spacing: 0.14em;
+  color: color-mix(in srgb, var(--bone) 66%, transparent);
+  writing-mode: vertical-rl;
+  font-variant-numeric: tabular-nums;
+}
+
+.hour-line__hours {
   position: relative;
-  width: 1px;
-  height: min(28vh, 220px);
-  background: color-mix(in srgb, var(--bone) 18%, transparent);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: min(30vh, 15rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-.hour-line__marker {
+.hour-line__hours::before {
+  content: "";
   position: absolute;
   left: 50%;
-  top: calc(var(--hour-progress, 0) * 100%);
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: color-mix(in srgb, var(--bone) 18%, transparent);
+  transform: translateX(-50%);
+}
+
+.hour-line__hours::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 1px;
+  height: calc(var(--house-position) * 100%);
+  background: var(--chapter-accent);
+  transform: translateX(-50%);
+  transition: background-color var(--motion-slow) var(--ease);
+}
+
+.hour-line__hour button {
+  display: grid;
+  place-items: center;
+  width: 1.4rem;
+  height: 1.4rem;
+}
+
+.hour-line__dot {
+  position: relative;
+  z-index: 1;
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: var(--brass);
-  transform: translate(-50%, -50%);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--void) 70%, transparent);
+  background: color-mix(in srgb, var(--bone) 32%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--void) 82%, transparent);
+  transition:
+    background-color var(--motion-base) var(--ease),
+    transform var(--motion-base) var(--ease);
 }
 
-.hour-line__time {
-  font-family: var(--font-display);
-  font-size: 0.7rem;
-  letter-spacing: 0.12em;
-  color: color-mix(in srgb, var(--bone) 70%, transparent);
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
+.hour-line__hour button:hover .hour-line__dot {
+  background: color-mix(in srgb, var(--bone) 72%, transparent);
 }
 
-/* ─── DIAR chapter ─── */
+.hour-line__hour button[aria-current] .hour-line__dot {
+  background: var(--chapter-accent);
+  transform: scale(1.5);
+}
 
-.diar {
-  --diar-progress: 0;
+/* ─────────────── Chapter frame + shared type ─────────────── */
+
+.chapter {
+  --progress: 0;
   position: relative;
-  height: 240vh;
-  background: var(--void);
-  color: var(--bone);
+  height: 250vh;
 }
 
-.diar__sticky {
+.chapter__stage {
   position: sticky;
   top: 0;
   height: 100vh;
@@ -212,291 +584,380 @@ img {
   isolation: isolate;
 }
 
-.diar__atmosphere {
+.chapter__copy {
   position: absolute;
-  inset: 0;
-  z-index: 0;
-  background: var(--void);
-  pointer-events: none;
-}
-
-/* Soft veil on the copy side only — photography is the atmosphere */
-.diar__atmosphere::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    90deg,
-    color-mix(in srgb, var(--void) 52%, transparent) 0%,
-    color-mix(in srgb, var(--void) 16%, transparent) 26%,
-    transparent 46%
-  );
-  pointer-events: none;
-}
-
-.diar__composition {
-  position: relative;
-  z-index: 10;
-  display: block;
-  height: 100%;
-  width: 100%;
-  margin: 0;
-  padding: clamp(4.5rem, 10vh, 6.5rem) clamp(1.25rem, 4vw, 3.25rem)
-    clamp(2rem, 5vh, 3rem);
-}
-
-.diar__copy--hero {
-  position: relative;
   z-index: 12;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  max-width: min(22rem, 32vw);
-  padding-top: clamp(1rem, 8vh, 4.5rem);
   pointer-events: none;
 }
 
-.diar__copy--hero a {
+.chapter__lead,
+.chapter__tail {
+  display: flex;
+  flex-direction: column;
+  align-items: inherit;
+}
+
+.chapter__copy a,
+.chapter__copy button {
   pointer-events: auto;
 }
 
-.diar__time {
-  margin: 0 0 0.35em;
-  font-family: var(--font-display);
-  font-size: clamp(3.5rem, 11vw, 7.5rem);
-  font-weight: 300;
-  line-height: 0.85;
-  letter-spacing: -0.02em;
-  color: color-mix(in srgb, var(--bone) 16%, transparent);
-  user-select: none;
+.chapter__hour {
+  display: flex;
+  align-items: baseline;
+  gap: 0.7rem;
+  margin: 0 0 0.5rem;
 }
 
-.diar__name {
+.chapter__time {
+  font-family: var(--font-display);
+  font-size: var(--type-display-l);
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: color-mix(in srgb, var(--bone) 72%, transparent);
+  font-variant-numeric: tabular-nums;
+}
+
+.chapter__hour-name {
+  font-family: var(--font-ui);
+  font-size: var(--type-ui-s);
+  font-weight: 500;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--chapter-accent);
+  transition: color var(--motion-slow) var(--ease);
+}
+
+.chapter__name {
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(3.25rem, 8vw, 6rem);
+  font-size: var(--type-display-xl);
   font-weight: 500;
-  line-height: 0.95;
-  letter-spacing: 0.08em;
+  line-height: 0.92;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
   color: var(--bone);
 }
 
-.diar__notes {
-  margin: 1.35rem 0 0;
+.chapter__notes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1.25rem 0 0;
   font-family: var(--font-ui);
-  font-size: 0.72rem;
+  font-size: var(--type-ui-m);
   font-weight: 500;
-  letter-spacing: 0.28em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: color-mix(in srgb, var(--bone) 58%, transparent);
+  color: color-mix(in srgb, var(--bone) 66%, transparent);
 }
 
-.diar__copy--depth {
+.chapter__note {
+  display: inline-flex;
+  gap: 0.5rem;
+}
+
+.chapter__cta {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 1.6rem;
+  padding-bottom: 0.35rem;
+  font-family: var(--font-ui);
+  font-size: var(--type-ui-m);
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--bone) 86%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--chapter-accent) 65%, transparent);
+  transition:
+    color var(--motion-base) var(--ease),
+    border-color var(--motion-base) var(--ease),
+    transform var(--motion-base) var(--ease);
+}
+
+.chapter__cta:hover,
+.chapter__cta:focus-visible {
+  color: var(--bone);
+  border-color: var(--chapter-accent);
+  transform: translateX(3px);
+}
+
+.chapter__depth {
   position: absolute;
-  left: clamp(1.25rem, 4vw, 3.25rem);
-  bottom: clamp(2.5rem, 8vh, 5rem);
   z-index: 14;
-  max-width: min(26rem, 34vw);
-  transition: opacity 0.4s var(--motion-ease);
+  opacity: clamp(0, calc((var(--progress) - 0.16) / 0.2), 1);
+  transform: translateY(
+    calc(
+      (1 - clamp(0, calc((var(--progress) - 0.16) / 0.2), 1)) * 18px *
+        var(--motion-scale)
+    )
+  );
 }
 
-.diar__story {
+.chapter__story {
   margin: 0;
+  max-width: 26rem;
   font-family: var(--font-display);
-  font-size: clamp(1.05rem, 1.6vw, 1.35rem);
+  font-size: var(--type-display-m);
   font-weight: 400;
   font-style: italic;
   line-height: 1.45;
-  letter-spacing: 0.01em;
+  color: color-mix(in srgb, var(--bone) 86%, transparent);
+}
+
+.chapter__product {
+  display: flex;
+  align-items: baseline;
+  gap: 1.25rem;
+  margin: 1.15rem 0 0;
+}
+
+.chapter__price {
+  font-family: var(--font-ui);
+  font-size: var(--type-ui-m);
+  font-weight: 500;
+  letter-spacing: 0.2em;
   color: color-mix(in srgb, var(--bone) 82%, transparent);
+  font-variant-numeric: tabular-nums;
 }
 
-/* ─── Photographic stage (environment, not a card) ─── */
-
-.diar__enter--bottle {
-  position: absolute;
-  z-index: 8;
-  top: -8%;
-  right: -6%;
-  bottom: -12%;
-  left: 30%;
-  width: auto;
-  pointer-events: none;
+.chapter__add,
+.collection__add {
+  font-family: var(--font-ui);
+  font-size: var(--type-ui-s);
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--bone) 64%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--bone) 24%, transparent);
+  padding-bottom: 0.25rem;
+  transition:
+    color var(--motion-fast) var(--ease),
+    border-color var(--motion-fast) var(--ease);
 }
+
+.chapter__add:hover,
+.collection__add:hover {
+  color: var(--bone);
+  border-color: var(--chapter-accent);
+}
+
+/* Photographic layers — shared behaviour; chapter CSS places them */
 
 .bottle-stage {
-  --tilt-x: 0deg;
-  --tilt-y: 0deg;
-  --scroll-shift: 0px;
-  position: relative;
-  width: 100%;
-  height: 100%;
-  pointer-events: auto;
-  transform: translate3d(0, var(--scroll-shift), 0)
-    perspective(1200px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+  position: absolute;
+  z-index: 8;
+  pointer-events: none;
+  transform: perspective(1400px)
+    rotateY(calc(var(--pointer-x) * 3.5deg * var(--motion-scale)))
+    rotateX(calc(var(--pointer-y) * -3.5deg * var(--motion-scale)))
+    translate3d(0, calc(var(--progress) * -3vh * var(--motion-scale)), 0);
   transform-style: preserve-3d;
   will-change: transform;
 }
 
-/*
- * Soft environment dissolve:
- * Keep photographic atmosphere (wood / shadow / bokeh) visible in the blend
- * zone so the page reads as an extension of the still life — not a cutout.
- */
 .bottle-stage__frame {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  -webkit-mask-image: linear-gradient(
-    92deg,
-    transparent 0%,
-    rgba(0, 0, 0, 0.25) 6%,
-    rgba(0, 0, 0, 0.65) 14%,
-    rgba(0, 0, 0, 0.92) 22%,
-    #000 30%,
-    #000 100%
-  );
-  mask-image: linear-gradient(
-    92deg,
-    transparent 0%,
-    rgba(0, 0, 0, 0.25) 6%,
-    rgba(0, 0, 0, 0.65) 14%,
-    rgba(0, 0, 0, 0.92) 22%,
-    #000 30%,
-    #000 100%
-  );
-}
-
-.bottle-stage__frame::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  background:
-    linear-gradient(
-      90deg,
-      var(--void) 0%,
-      color-mix(in srgb, var(--void) 70%, transparent) 8%,
-      color-mix(in srgb, var(--void) 28%, transparent) 18%,
-      transparent 30%
-    ),
-    linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--void) 45%, transparent) 0%,
-      transparent 12%,
-      transparent 80%,
-      color-mix(in srgb, var(--void) 60%, transparent) 100%
-    );
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 
 .bottle-stage__image {
-  position: absolute;
-  /* Crop into the still life so source frame edges leave the viewport */
-  inset: -16% -2% -8% -4%;
-  width: auto;
-  height: auto;
-  min-width: 138%;
-  min-height: 138%;
-  max-width: none;
-  max-height: none;
-  object-fit: cover;
-  /* Prefer bottle scale while retaining left atmosphere for the dissolve */
-  object-position: 50% 38%;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
-
-/* ─── Animal layer — secondary identity, behind the stage ─── */
 
 .animal-layer {
   position: absolute;
-  right: -12%;
-  top: 10%;
-  z-index: 2;
-  width: min(34vw, 420px);
-  height: auto;
-  opacity: var(--animal-opacity, 0.2);
-  transform: translate3d(var(--animal-x, 0), var(--animal-y, 0), 0);
+  z-index: 4;
   pointer-events: none;
-  mix-blend-mode: luminosity;
-  transition: opacity 0.35s var(--motion-ease);
+  will-change: transform;
 }
 
 .animal-layer__image {
   width: 100%;
   height: auto;
-  object-fit: contain;
-  filter: contrast(1.05) brightness(0.62) sepia(0.12);
 }
 
-/* ─── Ingredients ─── */
-
-.diar__ingredients {
+.ingredient-layer {
   position: absolute;
-  inset: 0;
   z-index: 5;
   pointer-events: none;
-  transition: opacity 0.45s var(--motion-ease);
+  opacity: clamp(0, calc((var(--progress) - 0.24) / 0.3), 1);
 }
 
-.diar__ingredient {
-  position: absolute;
-  overflow: hidden;
-}
-
-.diar__ingredient--raspberry {
-  left: -2%;
-  bottom: 6%;
-  width: min(28vw, 340px);
-  transform: translateY(var(--ingredient-shift, 0));
-  mask-image: linear-gradient(90deg, transparent 0%, #000 18%, #000 78%, transparent 100%);
-}
-
-.diar__ingredient--citrus {
-  right: 4%;
-  bottom: -4%;
-  width: min(34vw, 420px);
-  transform: translateY(calc(var(--ingredient-shift, 0) * 0.7));
-  mask-image: radial-gradient(ellipse 70% 65% at 50% 40%, #000 35%, transparent 78%);
-  opacity: 0.85;
-}
-
-.diar__ingredient-image {
+.ingredient-layer__image {
   width: 100%;
   height: auto;
-  object-fit: cover;
 }
 
-/* ─── CTA ─── */
+/* ─────────────── The collection index ─────────────── */
 
-.collection-cta {
-  display: inline-flex;
-  align-items: center;
-  margin-top: 1.75rem;
+.collection {
+  position: relative;
+  z-index: 2;
+  padding: clamp(4rem, 12vh, 8rem) var(--gutter) clamp(3rem, 8vh, 5rem);
+  background: var(--ground-lameis);
+}
+
+.collection__title {
+  margin: 0 0 clamp(2rem, 5vh, 3.25rem);
   font-family: var(--font-ui);
-  font-size: 0.72rem;
+  font-size: var(--type-ui-s);
   font-weight: 500;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.32em;
   text-transform: uppercase;
-  color: color-mix(in srgb, var(--bone) 78%, transparent);
-  border-bottom: 1px solid color-mix(in srgb, var(--brass) 55%, transparent);
-  padding-bottom: 0.35rem;
-  transition:
-    color var(--motion-duration-base) var(--motion-ease),
-    border-color var(--motion-duration-base) var(--motion-ease),
-    transform var(--motion-duration-base) var(--motion-ease);
+  color: color-mix(in srgb, var(--bone) 62%, transparent);
 }
 
-.collection-cta:hover,
-.collection-cta:focus-visible {
+.collection__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.collection__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 1rem 2rem;
+  padding: clamp(1.1rem, 2.4vh, 1.75rem) 0;
+  border-top: 1px solid color-mix(in srgb, var(--bone) 14%, transparent);
+}
+
+.collection__row:last-child {
+  border-bottom: 1px solid color-mix(in srgb, var(--bone) 14%, transparent);
+}
+
+.collection__open {
+  display: flex;
+  align-items: baseline;
+  gap: 0.9rem;
+  text-align: left;
+}
+
+.collection__time {
+  font-family: var(--font-ui);
+  font-size: var(--type-ui-s);
+  letter-spacing: 0.18em;
+  color: color-mix(in srgb, var(--bone) 58%, transparent);
+  font-variant-numeric: tabular-nums;
+}
+
+.collection__name {
+  font-family: var(--font-display);
+  font-size: var(--type-display-l);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: color-mix(in srgb, var(--bone) 90%, transparent);
+  transition: color var(--motion-base) var(--ease);
+}
+
+.collection__open:hover .collection__name {
   color: var(--bone);
-  border-color: var(--brass);
-  transform: translateX(3px);
 }
 
-/* ─── Entrance motion (unchanged behavior) ─── */
+.collection__hour {
+  font-family: var(--font-ui);
+  font-size: var(--type-ui-xs);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--bone) 50%, transparent);
+}
 
-@keyframes diar-rise {
+.collection__notes {
+  margin: 0;
+  font-size: var(--type-ui-s);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--bone) 62%, transparent);
+}
+
+.collection__buy {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 1.35rem;
+  margin: 0;
+}
+
+.collection__price {
+  font-size: var(--type-ui-m);
+  letter-spacing: 0.18em;
+  color: color-mix(in srgb, var(--bone) 82%, transparent);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ─────────────── Footer ─────────────── */
+
+.footer {
+  position: relative;
+  z-index: 2;
+  padding: clamp(3rem, 9vh, 5rem) var(--gutter) 2.5rem;
+  background: var(--ground-lameis);
+  border-top: 1px solid color-mix(in srgb, var(--bone) 12%, transparent);
+}
+
+.footer__mark {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--type-ui-l);
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--bone);
+}
+
+.footer__line {
+  margin: 0.6rem 0 0;
+  font-family: var(--font-display);
+  font-size: var(--type-display-m);
+  font-style: italic;
+  color: color-mix(in srgb, var(--bone) 80%, transparent);
+}
+
+.footer__columns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(2rem, 8vw, 6rem);
+  margin-top: clamp(2.5rem, 6vh, 4rem);
+}
+
+.footer__column p {
+  margin: 0.55rem 0 0;
+  max-width: 22rem;
+  font-size: var(--type-ui-body);
+  color: color-mix(in srgb, var(--bone) 72%, transparent);
+}
+
+.footer__column-title {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: var(--type-ui-xs);
+  font-weight: 500;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--bone) 58%, transparent);
+}
+
+.footer__demo,
+.footer__legal {
+  margin: 2.5rem 0 0;
+  font-size: var(--type-ui-xs);
+  color: color-mix(in srgb, var(--bone) 60%, transparent);
+}
+
+.footer__legal {
+  margin-top: 0.6rem;
+}
+
+/* ─────────────── Entrance ─────────────── */
+
+@keyframes house-rise {
   from {
     opacity: 0;
     transform: translateY(18px);
@@ -507,7 +968,7 @@ img {
   }
 }
 
-@keyframes diar-fade {
+@keyframes house-fade {
   from {
     opacity: 0;
   }
@@ -516,311 +977,130 @@ img {
   }
 }
 
-.diar__enter {
-  opacity: 0;
-  animation: diar-rise 0.9s var(--motion-ease) forwards;
+@keyframes cart-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.diar__enter--nav {
-  animation-name: diar-fade;
-  animation-delay: 0.05s;
-}
-
-.diar__enter--time {
-  animation-delay: 0.18s;
-}
-
-.diar__enter--name {
-  animation-delay: 0.34s;
-}
-
-.diar__enter--notes {
-  animation-delay: 0.5s;
-}
-
-.diar__enter--bottle {
-  animation-delay: 0.42s;
-  /* layout lives with the photographic-stage block above — delay only here */
-}
-
-.diar__enter--cta {
-  animation-delay: 0.66s;
-}
-
-.diar__enter--hour {
-  animation-name: diar-fade;
-  animation-delay: 0.7s;
-}
-
-/* ─── Footer ─── */
-
-.artinz-footer {
-  position: relative;
-  z-index: 1;
-  padding: 3.5rem clamp(1.25rem, 4vw, 3rem) 4rem;
-  background: var(--void);
-  border-top: 1px solid color-mix(in srgb, var(--bone) 8%, transparent);
-  text-align: center;
-}
-
-.artinz-footer__mark {
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: 0.75rem;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: color-mix(in srgb, var(--bone) 70%, transparent);
-}
-
-.artinz-footer__line {
-  margin: 0.65rem 0 0;
-  font-family: var(--font-ui);
-  font-size: 0.72rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: color-mix(in srgb, var(--bone) 62%, transparent);
-}
-
-/* ─── Tablet ─── */
+/* ─────────────── Tablet ─────────────── */
 
 @media (max-width: 1024px) {
-  .diar__copy--hero {
-    max-width: min(20rem, 42vw);
-    padding-top: clamp(0.5rem, 4vh, 2rem);
+  .collection__row {
+    grid-template-columns: minmax(0, 1fr) auto;
   }
 
-  .diar__time {
-    font-size: clamp(2.75rem, 10vw, 5rem);
+  .collection__notes {
+    grid-column: 1;
   }
 
-  .diar__name {
-    font-size: clamp(2.75rem, 9vw, 4.5rem);
-  }
-
-  .diar__enter--bottle {
-    top: -6%;
-    right: -6%;
-    bottom: -10%;
-    left: 22%;
-    width: auto;
-  }
-
-  .bottle-stage__image {
-    object-position: 40% 32%;
-  }
-
-  .diar__copy--depth {
-    max-width: min(24rem, 48vw);
-  }
-
-  .animal-layer {
-    right: -18%;
-    top: 18%;
-    width: min(40vw, 340px);
-  }
-
-  .diar__ingredient--raspberry {
-    left: -8%;
-    width: min(42vw, 260px);
-  }
-
-  .diar__ingredient--citrus {
-    right: -6%;
-    width: min(48vw, 300px);
-  }
-
-  .hour-line {
-    right: 0.75rem;
-    opacity: 0.4;
+  .collection__buy {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: center;
   }
 }
 
-/* ─── Mobile ─── */
+/* ─────────────── Mobile ─────────────── */
 
 @media (max-width: 768px) {
-  .artinz-nav {
-    padding: 1.1rem 1.15rem;
+  /* Mobile chapters compose their own vertical order from the stage flow */
+  .chapter__copy {
+    display: contents;
   }
 
-  .artinz-nav__links {
-    gap: 0.85rem;
+  .nav {
+    grid-template-columns: auto auto;
+    justify-content: space-between;
   }
 
-  .artinz-nav__brand {
-    font-size: 0.75rem;
+  .nav__links {
+    display: none;
   }
 
-  .artinz-nav__links a {
-    font-size: 0.6875rem;
-    letter-spacing: 0.14em;
+  .nav__menu {
+    display: inline-flex;
   }
 
-  .diar {
-    height: 220vh;
-  }
-
-  .diar__atmosphere::after {
-    background: linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--void) 70%, transparent) 0%,
-      color-mix(in srgb, var(--void) 20%, transparent) 28%,
-      transparent 48%
-    );
-  }
-
-  .diar__composition {
-    padding: 3.6rem 1.15rem 0;
-  }
-
-  .diar__copy--hero {
-    max-width: none;
-    width: 100%;
-    align-items: center;
-    text-align: center;
-    padding-top: 0;
-  }
-
-  .diar__time {
-    font-size: clamp(2rem, 12vw, 2.85rem);
-    color: color-mix(in srgb, var(--bone) 24%, transparent);
-    margin-bottom: 0.15em;
-  }
-
-  .diar__name {
-    font-size: clamp(2.15rem, 11vw, 2.85rem);
-    letter-spacing: 0.1em;
-  }
-
-  .diar__notes {
-    margin-top: 0.75rem;
-    font-size: 0.6875rem;
-    letter-spacing: 0.18em;
-  }
-
-  .collection-cta {
-    margin-top: 0.95rem;
-    font-size: 0.6875rem;
-  }
-
-  /* Full-bleed photographic stage under the type */
-  .diar__enter--bottle {
-    top: 20%;
-    right: -8%;
-    left: -8%;
-    bottom: -8%;
-    width: auto;
-  }
-
-  .bottle-stage__frame {
-    -webkit-mask-image: linear-gradient(
-      180deg,
-      transparent 0%,
-      rgba(0, 0, 0, 0.25) 8%,
-      rgba(0, 0, 0, 0.75) 16%,
-      #000 26%,
-      #000 80%,
-      rgba(0, 0, 0, 0.5) 92%,
-      transparent 100%
-    );
-    mask-image: linear-gradient(
-      180deg,
-      transparent 0%,
-      rgba(0, 0, 0, 0.25) 8%,
-      rgba(0, 0, 0, 0.75) 16%,
-      #000 26%,
-      #000 80%,
-      rgba(0, 0, 0, 0.5) 92%,
-      transparent 100%
-    );
-  }
-
-  .bottle-stage__frame::after {
-    background:
-      linear-gradient(
-        180deg,
-        var(--void) 0%,
-        color-mix(in srgb, var(--void) 55%, transparent) 12%,
-        transparent 28%
-      ),
-      linear-gradient(
-        90deg,
-        color-mix(in srgb, var(--void) 78%, transparent) 0%,
-        color-mix(in srgb, var(--void) 25%, transparent) 10%,
-        transparent 22%,
-        transparent 78%,
-        color-mix(in srgb, var(--void) 25%, transparent) 90%,
-        color-mix(in srgb, var(--void) 78%, transparent) 100%
-      ),
-      linear-gradient(
-        0deg,
-        color-mix(in srgb, var(--void) 75%, transparent) 0%,
-        transparent 24%
-      );
-  }
-
-  .bottle-stage__image {
-    inset: -12% -10% -6% -10%;
-    min-width: 140%;
-    min-height: 140%;
-    object-position: 50% 32%;
-  }
-
-  .diar__copy--depth {
-    left: 50%;
-    bottom: 1.1rem;
-    max-width: min(28rem, 88vw);
-    transform: translateX(-50%);
-    text-align: center;
-  }
-
-  .diar__story {
-    font-size: 0.95rem;
-  }
-
-  .animal-layer {
-    right: -22%;
+  .cart {
     top: auto;
-    bottom: 8%;
-    width: min(48vw, 200px);
-    mix-blend-mode: luminosity;
-    opacity: 0.22;
-    z-index: 3;
-  }
-
-  .animal-layer__image {
-    filter: contrast(1.05) brightness(0.58) sepia(0.15);
-    object-position: center top;
-    object-fit: contain;
-    max-height: 36vh;
-  }
-
-  .diar__ingredient--raspberry {
-    left: -12%;
-    bottom: 2%;
-    width: 46vw;
-  }
-
-  .diar__ingredient--citrus {
-    right: -14%;
-    bottom: -2%;
-    width: 52vw;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    width: auto;
+    padding: 1.15rem var(--gutter) 1.5rem;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 0;
   }
 
   .hour-line {
+    top: auto;
+    right: 0;
+    left: 0;
+    bottom: 0.85rem;
+    flex-direction: row;
+    justify-content: center;
+    transform: none;
+  }
+
+  .hour-line__now {
     display: none;
+  }
+
+  .hour-line__hours {
+    flex-direction: row;
+    height: auto;
+    gap: 0.35rem;
+  }
+
+  .hour-line__hours::before,
+  .hour-line__hours::after {
+    display: none;
+  }
+
+  .hour-line__hour button {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .hour-line__dot {
+    width: 6px;
+    height: 6px;
+  }
+
+  .chapter__hour-name {
+    letter-spacing: 0.2em;
+  }
+
+  .chapter__notes {
+    gap: 0.4rem;
+    letter-spacing: 0.16em;
+  }
+
+  .collection__row {
+    grid-template-columns: 1fr;
+    gap: 0.7rem;
+  }
+
+  .collection__buy {
+    grid-column: 1;
+    grid-row: auto;
+    justify-content: flex-start;
+  }
+
+  .footer {
+    padding-bottom: 3.5rem;
   }
 }
 
 @media (max-width: 390px) {
-  .artinz-nav__links a:nth-child(3) {
+  .nav__locale {
     display: none;
-  }
-
-  .diar__name {
-    font-size: 2.35rem;
-  }
-
-  .diar__enter--bottle {
-    top: 22%;
   }
 }
