@@ -49,10 +49,10 @@
 
 .chapter--lameis .bottle-stage {
   top: -10%;
-  left: 50%;
-  width: min(43vw, 590px);
-  height: 78vh;
-  margin-left: calc(min(43vw, 590px) / -2);
+  left: 0;
+  right: 0;
+  height: min(78vh, 800px);
+  margin-inline: auto;
 }
 
 .chapter--lameis .bottle-stage__image {
@@ -122,9 +122,7 @@
 
 @media (max-width: 1024px) {
   .chapter--lameis .bottle-stage {
-    width: min(58vw, 470px);
-    height: 68vh;
-    margin-left: calc(min(58vw, 470px) / -2);
+    height: min(68vh, 560px);
   }
 
   .chapter--lameis .chapter__copy {
@@ -169,6 +167,9 @@
     position: relative;
     top: auto;
     left: auto;
+    right: auto;
+    aspect-ratio: auto;
+    margin-inline: 0;
     width: calc(100% + 2 * var(--gutter));
     height: auto;
     flex: 1 1 auto;

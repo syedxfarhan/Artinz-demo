@@ -46,9 +46,8 @@
 .chapter--diar .bottle-stage {
   top: 50%;
   right: -1.5%;
-  width: min(48vw, 660px);
-  height: 94vh;
-  margin-top: -47vh;
+  height: min(94vh, 960px);
+  margin-top: calc(min(94vh, 960px) / -2);
 }
 
 .chapter--diar .bottle-stage__image {
@@ -65,7 +64,7 @@
 .chapter--diar .animal-layer {
   left: 25.5%;
   bottom: -2%;
-  width: min(31vw, 410px);
+  width: min(31vw, 520px);
   opacity: calc(0.88 - var(--progress) * 0.5);
   transform: translate3d(
     calc(
@@ -182,9 +181,8 @@
 @media (max-width: 1024px) {
   .chapter--diar .bottle-stage {
     right: -6%;
-    width: min(58vw, 520px);
-    height: 88vh;
-    margin-top: -44vh;
+    height: min(88vh, 720px);
+    margin-top: calc(min(88vh, 720px) / -2);
   }
 
   .chapter--diar .chapter__copy {
@@ -265,6 +263,7 @@
     position: relative;
     top: auto;
     right: auto;
+    aspect-ratio: auto;
     width: calc(100% + 2 * var(--gutter));
     height: auto;
     flex: 1 1 auto;

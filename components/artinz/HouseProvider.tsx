@@ -33,6 +33,8 @@ type HouseValue = {
   locale: Locale;
   setLocale: (locale: Locale) => void;
   activeId: FragranceId;
+  /** True while one of the four hours holds the viewport. */
+  inChapters: boolean;
   registerChapter: (id: FragranceId, element: HTMLElement) => () => void;
   goToChapter: (id: FragranceId) => void;
   /** DEMO ONLY — client-side state, no order, inventory or payment. */
@@ -59,6 +61,7 @@ export function HouseProvider({ children }: { children: React.ReactNode }) {
   const chapters = useRef(new Map<FragranceId, HTMLElement>());
   const frame = useRef<number | null>(null);
   const [activeId, setActiveId] = useState<FragranceId>("diar");
+  const [inChapters, setInChapters] = useState(true);
   const [locale, setLocale] = useState<Locale>("en");
   const [cartOpen, setCartOpen] = useState(false);
   const [lastAdded, setLastAdded] = useState<FragranceId | null>(null);
@@ -82,6 +85,7 @@ export function HouseProvider({ children }: { children: React.ReactNode }) {
       frame.current = null;
       const viewport = window.innerHeight;
       let next = current;
+      let held = false;
 
       chapterIds.forEach((id, index) => {
         const element = chapters.current.get(id);
@@ -95,6 +99,7 @@ export function HouseProvider({ children }: { children: React.ReactNode }) {
         const holdsCentre = rect.top <= viewport * 0.5 && rect.bottom > viewport * 0.5;
         if (holdsCentre) {
           next = id;
+          held = true;
           const span = Math.max(chapterIds.length - 1, 1);
           document.documentElement.style.setProperty(
             "--house-position",
@@ -108,6 +113,7 @@ export function HouseProvider({ children }: { children: React.ReactNode }) {
         setActiveId(next);
         document.documentElement.dataset.hour = next;
       }
+      setInChapters(held);
     };
 
     const onScroll = () => {
@@ -219,6 +225,7 @@ export function HouseProvider({ children }: { children: React.ReactNode }) {
       locale,
       setLocale,
       activeId,
+      inChapters,
       registerChapter,
       goToChapter,
       lines,
@@ -232,6 +239,7 @@ export function HouseProvider({ children }: { children: React.ReactNode }) {
     [
       locale,
       activeId,
+      inChapters,
       registerChapter,
       goToChapter,
       lines,

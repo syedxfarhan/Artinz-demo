@@ -43,9 +43,8 @@ export function ChapterNotes({
 }) {
   return (
     <p className="chapter__notes">
-      {notes.map((note, index) => (
+      {notes.map((note) => (
         <span key={note.en} className="chapter__note">
-          {index > 0 ? <span aria-hidden="true">·</span> : null}
           {note[locale]}
         </span>
       ))}

@@ -9,11 +9,15 @@ import { useHouse } from "./HouseProvider";
  * Desktop: a thin vertical track with four hours. Mobile: four dots.
  */
 export function HourLine() {
-  const { activeId, goToChapter, locale } = useHouse();
+  const { activeId, goToChapter, locale, inChapters } = useHouse();
   const active = fragrances.find((fragrance) => fragrance.id === activeId);
 
   return (
-    <nav className="hour-line" aria-label={t("hourLineLabel", locale)}>
+    <nav
+      className="hour-line"
+      data-visible={inChapters}
+      aria-label={t("hourLineLabel", locale)}
+    >
       <span className="hour-line__now" aria-hidden="true">
         {active?.time}
       </span>

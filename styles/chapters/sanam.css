@@ -51,8 +51,7 @@
 .chapter--sanam .bottle-stage {
   right: 7%;
   bottom: -8%;
-  width: min(40vw, 545px);
-  height: 88vh;
+  height: min(88vh, 900px);
 }
 
 .chapter--sanam .bottle-stage__image {
@@ -69,7 +68,7 @@
 .chapter--sanam .animal-layer {
   left: -6%;
   bottom: -19%;
-  width: min(54vw, 745px);
+  width: min(54vw, 980px);
   mix-blend-mode: screen;
   opacity: calc(0.94 - var(--progress) * 0.42);
   transform: translate3d(
@@ -150,8 +149,7 @@
 @media (max-width: 1024px) {
   .chapter--sanam .bottle-stage {
     right: 2%;
-    width: min(48vw, 420px);
-    height: 66vh;
+    height: min(66vh, 560px);
   }
 
   .chapter--sanam .chapter__copy {
@@ -210,6 +208,7 @@
     position: relative;
     right: auto;
     bottom: auto;
+    aspect-ratio: auto;
     width: calc(100% + 2 * var(--gutter));
     height: auto;
     flex: 1 1 auto;

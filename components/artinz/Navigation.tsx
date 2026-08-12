@@ -80,7 +80,9 @@ export function Navigation() {
           aria-controls="house-menu"
           onClick={() => setMenuOpen(!menuOpen)}
         >
-          <span className="visually-hidden">{t("menu", locale)}</span>
+          <span className="visually-hidden">
+            {menuOpen ? t("close", locale) : t("menu", locale)}
+          </span>
           <svg
             className="nav__menu-icon"
             viewBox="0 0 18 12"
@@ -89,8 +91,17 @@ export function Navigation() {
             aria-hidden="true"
             focusable="false"
           >
-            <line x1="0" y1="1.5" x2="18" y2="1.5" />
-            <line x1="0" y1="10.5" x2="18" y2="10.5" />
+            {menuOpen ? (
+              <>
+                <line x1="1.5" y1="0" x2="16.5" y2="12" />
+                <line x1="16.5" y1="0" x2="1.5" y2="12" />
+              </>
+            ) : (
+              <>
+                <line x1="0" y1="1.5" x2="18" y2="1.5" />
+                <line x1="0" y1="10.5" x2="18" y2="10.5" />
+              </>
+            )}
           </svg>
         </button>
       </div>
@@ -127,6 +138,10 @@ export function Navigation() {
             </li>
           ))}
         </ul>
+
+        <div className="house-menu__locale">
+          <LocaleSwitch locale={locale} setLocale={setLocale} />
+        </div>
       </div>
     </header>
   );

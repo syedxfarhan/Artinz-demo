@@ -174,7 +174,8 @@ button {
 .nav {
   position: fixed;
   inset: 0 0 auto;
-  z-index: 60;
+  /* Above the mobile sheet: the bar keeps the wordmark and the close control */
+  z-index: 75;
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
@@ -196,6 +197,14 @@ button {
     transparent 100%
   );
   pointer-events: none;
+}
+
+.nav__brand,
+.nav__links,
+.nav__controls {
+  /* Sit above the mobile sheet, which is a child of the same bar */
+  position: relative;
+  z-index: 80;
 }
 
 .nav__brand {
@@ -340,6 +349,14 @@ button {
 
 .house-menu__hours button[data-active="true"] .house-menu__time {
   color: var(--chapter-accent);
+}
+
+.house-menu__locale {
+  display: flex;
+}
+
+.house-menu__locale .nav__locale {
+  display: flex;
 }
 
 .house-menu__links {
@@ -493,6 +510,13 @@ button {
   gap: 0.9rem;
   transform: translateY(-50%);
   animation: house-fade var(--motion-slow) var(--ease) 0.7s both;
+  transition: opacity var(--motion-slow) var(--ease);
+}
+
+/* The hour line belongs to the hours: below the last one it stands down */
+.hour-line[data-visible="false"] {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .hour-line__now {
@@ -656,9 +680,11 @@ button {
   color: color-mix(in srgb, var(--bone) 66%, transparent);
 }
 
-.chapter__note {
-  display: inline-flex;
-  gap: 0.5rem;
+/* Separators trail their note, so a wrapped line never opens with a dot */
+.chapter__note:not(:last-child)::after {
+  content: "·";
+  margin-left: 0.5rem;
+  color: color-mix(in srgb, var(--bone) 40%, transparent);
 }
 
 .chapter__cta {
@@ -751,6 +777,9 @@ button {
 .bottle-stage {
   position: absolute;
   z-index: 8;
+  /* Every still life is shot 1086×1448; the box keeps that ratio so the mask
+     dissolves the photograph's own edges, not empty letterbox space. */
+  aspect-ratio: 1086 / 1448;
   pointer-events: none;
   transform: perspective(1400px)
     rotateY(calc(var(--pointer-x) * 3.5deg * var(--motion-scale)))
@@ -786,7 +815,7 @@ button {
 .bottle-stage__image {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
 }
 
 .animal-layer {
@@ -840,9 +869,9 @@ button {
 
 .collection__row {
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) auto;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: baseline;
-  gap: 1rem 2rem;
+  gap: 1rem clamp(2rem, 6vw, 5rem);
   padding: clamp(1.1rem, 2.4vh, 1.75rem) 0;
   border-top: 1px solid color-mix(in srgb, var(--bone) 14%, transparent);
 }

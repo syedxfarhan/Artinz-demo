@@ -52,9 +52,8 @@
 .chapter--rayan .bottle-stage {
   top: 50%;
   left: -3%;
-  width: min(42vw, 580px);
-  height: 92vh;
-  margin-top: -46vh;
+  height: min(92vh, 940px);
+  margin-top: calc(min(92vh, 940px) / -2);
 }
 
 .chapter--rayan .bottle-stage__image {
@@ -71,7 +70,7 @@
 .chapter--rayan .animal-layer {
   right: -8%;
   bottom: -8%;
-  width: min(32vw, 430px);
+  width: min(32vw, 545px);
   mix-blend-mode: screen;
   opacity: calc(0.92 - var(--progress) * 0.45);
   transform: translate3d(
@@ -172,9 +171,8 @@
 @media (max-width: 1024px) {
   .chapter--rayan .bottle-stage {
     left: -8%;
-    width: min(56vw, 500px);
-    height: 86vh;
-    margin-top: -43vh;
+    height: min(86vh, 700px);
+    margin-top: calc(min(86vh, 700px) / -2);
   }
 
   .chapter--rayan .chapter__copy {
@@ -238,6 +236,7 @@
     position: relative;
     top: auto;
     left: auto;
+    aspect-ratio: auto;
     width: calc(100% + 2 * var(--gutter));
     height: auto;
     flex: 1 1 auto;
