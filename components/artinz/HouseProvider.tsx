@@ -95,6 +95,10 @@ export function HouseProvider({ children }: { children: React.ReactNode }) {
         const travel = Math.max(element.offsetHeight - viewport, 1);
         const progress = Math.min(Math.max(-rect.top / travel, 0), 1);
         element.style.setProperty("--progress", progress.toFixed(4));
+        /* Depth copy is invisible until the chapter is scrolled into: keep it
+           out of the tab order and the accessibility tree until then. */
+        const depth = progress > 0.12 ? "open" : "closed";
+        if (element.dataset.depth !== depth) element.dataset.depth = depth;
 
         const holdsCentre = rect.top <= viewport * 0.5 && rect.bottom > viewport * 0.5;
         if (holdsCentre) {

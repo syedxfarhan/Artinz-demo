@@ -43,7 +43,7 @@ export function CollectionIndex() {
                 onClick={() => addLine(fragrance.id)}
               >
                 {lastAdded === fragrance.id ? t("added", locale) : t("addToCart", locale)}
-                <span className="visually-hidden"> — {fragrance.name}</span>
+                <span className="visually-hidden">, {fragrance.name}</span>
               </button>
             </p>
           </li>

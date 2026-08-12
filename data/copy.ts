@@ -25,8 +25,8 @@ export const ui = {
   viewCart: { en: "VIEW CART", de: "WARENKORB ANSEHEN" } as Dict,
   checkout: { en: "CHECKOUT", de: "ZUR KASSE" } as Dict,
   demoNotice: {
-    en: "Demo cart — checkout and payment are not connected.",
-    de: "Demo-Warenkorb — Kasse und Zahlung sind nicht angebunden.",
+    en: "Demo cart. Checkout and payment are not connected.",
+    de: "Demo-Warenkorb. Kasse und Zahlung sind nicht angebunden.",
   } as Dict,
   demoControl: { en: "DEMO", de: "DEMO" } as Dict,
   addToCart: { en: "ADD TO CART", de: "IN DEN WARENKORB" } as Dict,

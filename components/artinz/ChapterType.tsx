@@ -74,7 +74,7 @@ export function ChapterProduct({ fragrance }: { fragrance: Fragrance }) {
         onClick={() => addLine(fragrance.id)}
       >
         {justAdded ? t("added", locale) : t("addToCart", locale)}
-        <span className="visually-hidden"> — {fragrance.name}</span>
+        <span className="visually-hidden">, {fragrance.name}</span>
       </button>
     </p>
   );

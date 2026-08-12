@@ -69,7 +69,7 @@ export function Navigation() {
             {String(count).padStart(2, "0")}
           </span>
           <span className="visually-hidden">
-            {count} — {t("demoControl", locale)}
+            {count}, {t("demoControl", locale)}
           </span>
         </button>
 

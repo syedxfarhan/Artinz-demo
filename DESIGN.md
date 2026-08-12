@@ -19,11 +19,10 @@ typography:
     display-m: "1.4rem"
     display-m-min: "1.05rem"
     display-s: "1rem"
-    ui-body: "0.92rem"
-    ui-l: "0.82rem"
-    ui-m: "0.75rem"
-    ui-s: "0.7rem"
-    ui-xs: "0.66rem"
+    ui-body: "0.95rem"
+    ui-l: "0.85rem"
+    ui-m: "0.8rem"
+    ui-s: "0.75rem"
   name:
     fontFamily: "Fraunces, Georgia, Times New Roman, serif"
     fontSize: "clamp(2.6rem, 8.2vw, 6.5rem)"
@@ -44,17 +43,17 @@ typography:
     lineHeight: 1.45
   label:
     fontFamily: "Inter, system-ui, sans-serif"
-    fontSize: "0.7rem"
+    fontSize: "0.75rem"
     fontWeight: 500
     letterSpacing: "0.2em"
   notes:
     fontFamily: "Inter, system-ui, sans-serif"
-    fontSize: "0.75rem"
+    fontSize: "0.8rem"
     fontWeight: 500
     letterSpacing: "0.24em"
   body:
     fontFamily: "Inter, system-ui, sans-serif"
-    fontSize: "0.92rem"
+    fontSize: "0.95rem"
     fontWeight: 400
     lineHeight: 1.5
 spacing:
@@ -71,7 +70,7 @@ components:
     padding: "0 0 0.35rem"
   navigation-brand:
     fontFamily: "{typography.name.fontFamily}"
-    fontSize: "0.82rem"
+    fontSize: "0.85rem"
     letterSpacing: "0.3em"
     textColor: "{colors.bone}"
   demo-cart:

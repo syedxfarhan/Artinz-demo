@@ -42,11 +42,10 @@
   --type-display-l: clamp(1.7rem, 3.4vw, 2.6rem);
   --type-display-m: clamp(1.05rem, 1.7vw, 1.4rem);
   --type-display-s: 1rem;
-  --type-ui-body: 0.92rem;
-  --type-ui-l: 0.82rem;
-  --type-ui-m: 0.75rem;
-  --type-ui-s: 0.7rem;
-  --type-ui-xs: 0.66rem;
+  --type-ui-body: 0.95rem;
+  --type-ui-l: 0.85rem;
+  --type-ui-m: 0.8rem;
+  --type-ui-s: 0.75rem;
 
   /* Spacing */
   --gutter: clamp(1.15rem, 4vw, 3.25rem);
@@ -255,7 +254,7 @@ button {
 }
 
 .nav__locale button {
-  font-size: var(--type-ui-xs);
+  font-size: var(--type-ui-s);
 }
 
 .nav__locale button[aria-pressed="true"] {
@@ -381,8 +380,7 @@ button {
   width: min(20rem, calc(100vw - 2 * var(--gutter)));
   padding: 1.15rem 1.25rem 1.05rem;
   background: color-mix(in srgb, var(--void) 94%, var(--bone));
-  border: 1px solid color-mix(in srgb, var(--bone) 16%, transparent);
-  box-shadow: 0 24px 60px -30px color-mix(in srgb, var(--void) 92%, transparent);
+  border: 1px solid color-mix(in srgb, var(--bone) 20%, transparent);
   animation: cart-in var(--motion-base) var(--ease) both;
 }
 
@@ -410,7 +408,7 @@ button {
 .cart__close,
 .cart__remove {
   font-family: var(--font-ui);
-  font-size: var(--type-ui-xs);
+  font-size: var(--type-ui-s);
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: color-mix(in srgb, var(--bone) 62%, transparent);
@@ -492,7 +490,7 @@ button {
 
 .cart__notice {
   margin: 0.9rem 0 0;
-  font-size: var(--type-ui-xs);
+  font-size: var(--type-ui-s);
   line-height: 1.55;
   color: color-mix(in srgb, var(--bone) 62%, transparent);
 }
@@ -712,9 +710,14 @@ button {
   transform: translateX(3px);
 }
 
+.chapter[data-depth="closed"] .chapter__depth {
+  visibility: hidden;
+}
+
 .chapter__depth {
   position: absolute;
   z-index: 14;
+  transition: visibility var(--motion-base) linear;
   opacity: clamp(0, calc((var(--progress) - 0.16) / 0.2), 1);
   transform: translateY(
     calc(
@@ -910,7 +913,7 @@ button {
 
 .collection__hour {
   font-family: var(--font-ui);
-  font-size: var(--type-ui-xs);
+  font-size: var(--type-ui-s);
   letter-spacing: 0.24em;
   text-transform: uppercase;
   color: color-mix(in srgb, var(--bone) 50%, transparent);
@@ -983,7 +986,7 @@ button {
 .footer__column-title {
   margin: 0;
   font-family: var(--font-ui);
-  font-size: var(--type-ui-xs);
+  font-size: var(--type-ui-s);
   font-weight: 500;
   letter-spacing: 0.26em;
   text-transform: uppercase;
@@ -993,7 +996,7 @@ button {
 .footer__demo,
 .footer__legal {
   margin: 2.5rem 0 0;
-  font-size: var(--type-ui-xs);
+  font-size: var(--type-ui-s);
   color: color-mix(in srgb, var(--bone) 60%, transparent);
 }
 

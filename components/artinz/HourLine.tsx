@@ -31,7 +31,7 @@ export function HourLine() {
             >
               <span className="hour-line__dot" aria-hidden="true" />
               <span className="visually-hidden">
-                {fragrance.name} — {fragrance.time}
+                {fragrance.name}, {fragrance.time}
               </span>
             </button>
           </li>
