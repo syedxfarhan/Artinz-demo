@@ -39,7 +39,7 @@ This repo is configured for Vercel (Next.js framework preset).
 4. Node: `22` (see `.nvmrc` / `engines`).
 5. Connect the project so every push to `main` deploys to Production and every PR gets a Preview URL.
 
-No environment variables are required for Phase 1 (static DIAR chapter + local assets under `public/`).
+No environment variables are required: the demo is static, with all photography served from `public/artinz/`.
 
 ### Option B — CLI
 
@@ -51,7 +51,7 @@ vercel --prod   # production
 
 ### Notes
 
-- Runtime images are served from `public/artinz/`. Root-level source uploads are excluded from the Vercel upload via `.vercelignore` to keep deploys lean.
+- Runtime images are served from `public/artinz/`. The remaining root-level DIAR source uploads are excluded from the Vercel upload via `.vercelignore` to keep deploys lean.
 - Custom domain (e.g. `artinz.co`) can be attached in Vercel → Project → Domains after the first successful deploy.
 
 ## Documentation
@@ -63,4 +63,10 @@ vercel --prod   # production
 
 ## Status
 
-Phase 1: DIAR opening + first chapter.
+Demo build — all four hours: DIAR 06:40, RAYAN 12:00, SANAM 18:30, LAMEIS 21:15,
+one Hour Line, global navigation, and a deliberately fake cart. The cart holds
+client-side state only: there is no payment, checkout, order, inventory or
+account, and `VIEW CART` / `CHECKOUT` are inert placeholders.
+
+Copy is available in English and German from one visual system (`data/copy.ts`);
+the EN / DE control is in the navigation.
