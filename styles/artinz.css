@@ -636,13 +636,14 @@ img {
   }
 
   .bottle-stage {
-    width: min(94vw, 440px);
+    width: min(84vw, 390px);
     margin-top: 0.5rem;
+    margin-right: 8vw;
     align-self: center;
   }
 
   .bottle-stage__image {
-    max-height: min(56vh, 520px);
+    max-height: min(54vh, 500px);
   }
 
   .diar__copy--depth {
@@ -654,13 +655,22 @@ img {
   }
 
   .animal-layer {
-    right: -18%;
-    top: 42%;
+    right: -2%;
+    top: 38%;
     bottom: auto;
-    width: min(68vw, 300px);
-    mix-blend-mode: luminosity;
-    opacity: calc(var(--animal-opacity, 0.38) * 1.15);
-    z-index: 4;
+    width: min(52vw, 240px);
+    mix-blend-mode: normal;
+    opacity: 0.5;
+    z-index: 11;
+    filter: none;
+  }
+
+  .animal-layer__image {
+    filter: contrast(1.1) brightness(0.68) sepia(0.2);
+    object-position: 55% 15%;
+    object-fit: cover;
+    max-height: 46vh;
+    width: 100%;
   }
 
   .diar__ingredient--raspberry {

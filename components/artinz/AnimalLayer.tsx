@@ -40,7 +40,7 @@ export function AnimalLayer({
         height={1536}
         className="animal-layer__image"
         sizes="(max-width: 768px) 70vw, 42vw"
-        priority={false}
+        priority
       />
       <span className="visually-hidden">{animalName}</span>
     </div>
