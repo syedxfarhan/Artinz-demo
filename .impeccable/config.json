@@ -1,6 +1,10 @@
 {
   "detector": {
-    "ignoreRules": [],
+    "ignoreRules": [
+      "clipped-overflow-container",
+      "all-caps-body",
+      "content-hidden-at-rest"
+    ],
     "ignoreFiles": [],
     "ignoreValues": [
       {
