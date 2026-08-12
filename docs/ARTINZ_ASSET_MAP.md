@@ -19,7 +19,7 @@ public/artinz/
   lameis/
 ```
 
-Directories are scaffolded. No assets are committed yet.
+Source files also exist at repository root (uploaded originals). DIAR assets are copied into `public/artinz/diar/` for Next.js serving.
 
 ---
 
@@ -27,14 +27,15 @@ Directories are scaffolded. No assets are committed yet.
 
 | Asset type | Path | Status |
 |------------|------|--------|
-| Bottle | `public/artinz/diar/bottle.*` | MISSING ASSET: diar-bottle |
-| Animal (Falcon) | `public/artinz/diar/animal.*` | MISSING ASSET: diar-falcon |
-| Atmosphere / background | `public/artinz/diar/atmosphere.*` | MISSING ASSET: diar-atmosphere |
-| Ingredient — Raspberry | `public/artinz/diar/ingredient-raspberry.*` | MISSING ASSET: diar-ingredient-raspberry |
-| Ingredient — Cinnamon | `public/artinz/diar/ingredient-cinnamon.*` | MISSING ASSET: diar-ingredient-cinnamon |
-| Ingredient — Bergamot | `public/artinz/diar/ingredient-bergamot.*` | MISSING ASSET: diar-ingredient-bergamot |
+| Bottle (product still life) | `public/artinz/diar/bottle.webp` (from `diar.webp`) | Available — 1086×1448 |
+| Animal (Falcon, cutout) | `public/artinz/diar/animal.png` (from `eaglediar.webp`) | Available — 1024×1536 RGBA |
+| Animal source | `public/artinz/diar/animal-source.jpg` | Available (studio original) |
+| Ingredient — Raspberry | `public/artinz/diar/ingredient-raspberry.webp` (from `diarraspberry.webp`) | Available — 1536×1024 |
+| Ingredient — Citrus + Cinnamon | `public/artinz/diar/ingredient-citrus-cinnamon.webp` (from `diarlemon.webp`) | Available — 1536×1024 |
 
-**Fragrance association:** Dawn, raspberry/cinnamon/bergamot, falcon identity, warm `--dawn` accent (`#C9762E`).
+**Notes:** There is no single combined raspberry+lemon+cinnamon file. The bottle still life already includes all three ingredients at the base. Separate raspberry and citrus/cinnamon photographs are used as secondary scroll layers.
+
+**Fragrance association:** Dawn, raspberry / lemon / cinnamon, falcon identity, warm `--dawn` accent (`#C9762E`).
 
 ---
 
@@ -42,14 +43,12 @@ Directories are scaffolded. No assets are committed yet.
 
 | Asset type | Path | Status |
 |------------|------|--------|
-| Bottle | `public/artinz/rayan/bottle.*` | MISSING ASSET: rayan-bottle |
-| Animal (Falcon) | `public/artinz/rayan/animal.*` | MISSING ASSET: rayan-falcon |
-| Atmosphere / background | `public/artinz/rayan/atmosphere.*` | MISSING ASSET: rayan-atmosphere |
-| Ingredient — Apple | `public/artinz/rayan/ingredient-apple.*` | MISSING ASSET: rayan-ingredient-apple |
-| Ingredient — Lavender | `public/artinz/rayan/ingredient-lavender.*` | MISSING ASSET: rayan-ingredient-lavender |
-| Ingredient — Bergamot | `public/artinz/rayan/ingredient-bergamot.*` | MISSING ASSET: rayan-ingredient-bergamot |
+| Bottle | `Rayan.webp` (root) | Available at root — UI not built |
+| Animal | — | MISSING ASSET: rayan-animal |
+| Atmosphere | — | MISSING ASSET: rayan-atmosphere |
+| Ingredients | — | MISSING ASSET: rayan-ingredients |
 
-**Fragrance association:** Noon, apple/lavender/bergamot, falcon identity, cool `--noon` accent (`#3A4A5E`).
+**Fragrance association:** Noon, apple/lavender/bergamot, `--noon` accent (`#3A4A5E`). UI not built yet.
 
 ---
 
@@ -57,12 +56,12 @@ Directories are scaffolded. No assets are committed yet.
 
 | Asset type | Path | Status |
 |------------|------|--------|
-| Bottle | `public/artinz/sanam/bottle.*` | MISSING ASSET: sanam-bottle |
-| Animal | `public/artinz/sanam/animal.*` | MISSING ASSET: sanam-animal |
-| Atmosphere / background | `public/artinz/sanam/atmosphere.*` | MISSING ASSET: sanam-atmosphere |
-| Ingredients | `public/artinz/sanam/ingredient-*` | MISSING ASSET: sanam-ingredients (notes TBD) |
+| Bottle | `Sanam.webp` (root) | Available at root — UI not built |
+| Animal | — | MISSING ASSET: sanam-animal |
+| Atmosphere | — | MISSING ASSET: sanam-atmosphere |
+| Ingredients | — | MISSING ASSET: sanam-ingredients (notes TBD) |
 
-**Fragrance association:** Dusk, `--dusk` accent (`#5B3358`). UI not built yet — data model only.
+**Fragrance association:** Dusk, `--dusk` accent (`#5B3358`). UI not built yet.
 
 ---
 
@@ -70,12 +69,12 @@ Directories are scaffolded. No assets are committed yet.
 
 | Asset type | Path | Status |
 |------------|------|--------|
-| Bottle | `public/artinz/lameis/bottle.*` | MISSING ASSET: lameis-bottle |
-| Animal | `public/artinz/lameis/animal.*` | MISSING ASSET: lameis-animal |
-| Atmosphere / background | `public/artinz/lameis/atmosphere.*` | MISSING ASSET: lameis-atmosphere |
-| Ingredients | `public/artinz/lameis/ingredient-*` | MISSING ASSET: lameis-ingredients (notes TBD) |
+| Bottle | `Lameis.webp` (root) | Available at root — UI not built |
+| Animal | — | MISSING ASSET: lameis-animal |
+| Atmosphere | — | MISSING ASSET: lameis-atmosphere |
+| Ingredients | — | MISSING ASSET: lameis-ingredients (notes TBD) |
 
-**Fragrance association:** Night, `--night-bg` (`#2A1B22`), `--night-accent` (`#8C5A4A`). UI not built yet — data model only.
+**Fragrance association:** Night, `--night-bg` / `--night-accent`. UI not built yet.
 
 ---
 
@@ -83,12 +82,16 @@ Directories are scaffolded. No assets are committed yet.
 
 | Asset type | Path | Status |
 |------------|------|--------|
-| Logo | `public/artinz/logo.*` | MISSING ASSET: artinz-logo |
-| Favicon | `public/favicon.ico` | MISSING ASSET: artinz-favicon |
-| OG image | `public/artinz/og.*` | MISSING ASSET: artinz-og-image |
+| Logo | — | MISSING ASSET: artinz-logo (wordmark is typographic for now) |
+| Favicon | — | MISSING ASSET: artinz-favicon |
+| OG image | — | MISSING ASSET: artinz-og-image |
 
 ---
 
-## Next step
+## Phase 1 usage
 
-Phase 1 requires an **asset audit** for DIAR before static art direction begins. Source candidates: supplied files and artinz.co existing assets.
+DIAR chapter uses real assets only:
+
+1. Bottle photograph — primary hero
+2. Falcon cutout — secondary identity layer
+3. Raspberry + citrus/cinnamon photographs — scroll-reveal scent layers

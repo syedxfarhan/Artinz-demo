@@ -1,10 +1,18 @@
 /**
- * Final conversion moment — structure only.
+ * Final conversion moment — text CTA only.
  */
-export function CollectionCTA() {
+type CollectionCTAProps = {
+  href?: string;
+  label?: string;
+};
+
+export function CollectionCTA({
+  href = "#diar-story",
+  label = "DISCOVER DIAR →",
+}: CollectionCTAProps) {
   return (
-    <aside aria-label="Collection">
-      {/* Collection CTA composition TBD */}
-    </aside>
+    <a className="collection-cta" href={href}>
+      {label}
+    </a>
   );
 }

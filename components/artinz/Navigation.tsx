@@ -1,11 +1,20 @@
+import Link from "next/link";
+
 /**
- * Global navigation — structure only.
- * Implementation deferred to Phase 1.
+ * Global navigation — quiet brand mark + links.
+ * Product photography leads; nav stays subordinate.
  */
 export function Navigation() {
   return (
-    <nav aria-label="Main navigation">
-      {/* Navigation composition TBD */}
-    </nav>
+    <header className="artinz-nav">
+      <Link className="artinz-nav__brand" href="/">
+        ARTINZ
+      </Link>
+      <nav className="artinz-nav__links" aria-label="Main navigation">
+        <a href="#shop">SHOP</a>
+        <a href="#about">ABOUT</a>
+        <a href="#journal">JOURNAL</a>
+      </nav>
+    </header>
   );
 }
