@@ -1,0 +1,97 @@
+/**
+ * ARTINZ design tokens
+ * Central foundation for all fragrance chapters.
+ */
+
+:root {
+  /* Core palette */
+  --void: #0b0d10;
+  --bone: #f3ede4;
+  --brass: #b8935a;
+
+  /* Chapter accents */
+  --dawn: #c9762e;
+  --noon: #3a4a5e;
+  --dusk: #5b3358;
+  --night-bg: #2a1b22;
+  --night-accent: #8c5a4a;
+
+  /* Typography families */
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-ui: "Inter", system-ui, -apple-system, sans-serif;
+
+  /* Spacing scale (foundation only — composition TBD) */
+  --space-unit: 0.25rem;
+  --space-1: calc(var(--space-unit) * 1);
+  --space-2: calc(var(--space-unit) * 2);
+  --space-3: calc(var(--space-unit) * 3);
+  --space-4: calc(var(--space-unit) * 4);
+  --space-6: calc(var(--space-unit) * 6);
+  --space-8: calc(var(--space-unit) * 8);
+  --space-12: calc(var(--space-unit) * 12);
+  --space-16: calc(var(--space-unit) * 16);
+
+  /* Responsive breakpoints (reference values for media queries) */
+  --bp-small-mobile: 320px;
+  --bp-mobile: 390px;
+  --bp-mobile-lg: 768px;
+  --bp-tablet: 1024px;
+  --bp-desktop: 1440px;
+
+  /* Motion — respect user preference */
+  --motion-duration-fast: 150ms;
+  --motion-duration-base: 300ms;
+  --motion-duration-slow: 600ms;
+  --motion-ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+/* Reduced motion foundation */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Base reset — minimal, not a design */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: var(--void);
+  color: var(--bone);
+  font-family: var(--font-ui);
+  line-height: 1.5;
+}
+
+/* Focus foundation for keyboard navigation */
+:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 2px;
+}
+
+/* Future interaction hooks (not implemented) */
+[data-chapter] {
+  /* scroll-driven chapter state */
+}
+
+[data-hour-line] {
+  /* timeline / progress indicator */
+}
+
+[data-bottle-stage] {
+  /* bottle depth interaction — pointer position TBD */
+  will-change: transform;
+}
