@@ -6,6 +6,7 @@ import { useEffect, useRef } from "react";
 /**
  * Product image and depth interaction stage.
  * Desktop: subtle pointer tilt (±3–4°). Mobile: no tilt.
+ * Presentation: full photographic environment (not a rectangular card).
  */
 type BottleStageProps = {
   fragranceId: string;
@@ -87,15 +88,17 @@ export function BottleStage({
         ["--scroll-shift" as string]: `${scrollShift}px`,
       }}
     >
-      <Image
-        src={bottleSrc}
-        alt={alt}
-        width={width}
-        height={height}
-        priority
-        sizes="(max-width: 768px) 88vw, (max-width: 1200px) 52vw, 560px"
-        className="bottle-stage__image"
-      />
+      <div className="bottle-stage__frame">
+        <Image
+          src={bottleSrc}
+          alt={alt}
+          width={width}
+          height={height}
+          priority
+          sizes="(max-width: 768px) 140vw, 75vw"
+          className="bottle-stage__image"
+        />
+      </div>
     </div>
   );
 }

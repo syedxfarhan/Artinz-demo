@@ -1,6 +1,7 @@
 /**
  * ARTINZ design tokens + DIAR chapter styles
  * Phase 1: photography leads; UI supports; interaction enhances.
+ * Composition: photographic stage is the environment — not an inserted rectangle.
  */
 
 :root {
@@ -215,31 +216,20 @@ img {
   position: absolute;
   inset: 0;
   z-index: 0;
-  background:
-    radial-gradient(
-      ellipse 70% 55% at 62% 48%,
-      color-mix(in srgb, var(--dawn) calc(var(--warm-overlay, 0.1) * 100%), transparent)
-        0%,
-      transparent 62%
-    ),
-    radial-gradient(
-      ellipse 90% 80% at 50% 100%,
-      color-mix(in srgb, #1a120c 55%, transparent) 0%,
-      transparent 55%
-    ),
-    var(--void);
+  background: var(--void);
   pointer-events: none;
 }
 
+/* Soft veil on the copy side only — photography is the atmosphere */
 .diar__atmosphere::after {
   content: "";
   position: absolute;
   inset: 0;
   background: linear-gradient(
     90deg,
-    color-mix(in srgb, var(--void) 72%, transparent) 0%,
-    color-mix(in srgb, var(--void) 18%, transparent) 42%,
-    color-mix(in srgb, var(--void) 35%, transparent) 100%
+    color-mix(in srgb, var(--void) 52%, transparent) 0%,
+    color-mix(in srgb, var(--void) 16%, transparent) 26%,
+    transparent 46%
   );
   pointer-events: none;
 }
@@ -247,15 +237,12 @@ img {
 .diar__composition {
   position: relative;
   z-index: 10;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
-  align-items: center;
+  display: block;
   height: 100%;
-  width: min(1400px, 100%);
-  margin: 0 auto;
-  padding: clamp(4.5rem, 10vh, 6.5rem) clamp(1.5rem, 5vw, 4rem)
+  width: 100%;
+  margin: 0;
+  padding: clamp(4.5rem, 10vh, 6.5rem) clamp(1.25rem, 4vw, 3.25rem)
     clamp(2rem, 5vh, 3rem);
-  gap: clamp(1rem, 3vw, 3rem);
 }
 
 .diar__copy--hero {
@@ -264,8 +251,13 @@ img {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  max-width: 28rem;
-  padding-top: 1rem;
+  max-width: min(22rem, 32vw);
+  padding-top: clamp(1rem, 8vh, 4.5rem);
+  pointer-events: none;
+}
+
+.diar__copy--hero a {
+  pointer-events: auto;
 }
 
 .diar__time {
@@ -302,10 +294,10 @@ img {
 
 .diar__copy--depth {
   position: absolute;
-  left: clamp(1.5rem, 5vw, 4rem);
+  left: clamp(1.25rem, 4vw, 3.25rem);
   bottom: clamp(2.5rem, 8vh, 5rem);
   z-index: 14;
-  max-width: min(28rem, 42vw);
+  max-width: min(26rem, 34vw);
   transition: opacity 0.4s var(--motion-ease);
 }
 
@@ -320,40 +312,110 @@ img {
   color: color-mix(in srgb, var(--bone) 82%, transparent);
 }
 
-/* ─── Bottle stage ─── */
+/* ─── Photographic stage (environment, not a card) ─── */
+
+.diar__enter--bottle {
+  position: absolute;
+  z-index: 8;
+  top: -8%;
+  right: -6%;
+  bottom: -12%;
+  left: 30%;
+  width: auto;
+  pointer-events: none;
+}
 
 .bottle-stage {
   --tilt-x: 0deg;
   --tilt-y: 0deg;
   --scroll-shift: 0px;
   position: relative;
-  z-index: 8;
-  justify-self: center;
-  width: min(100%, 560px);
+  width: 100%;
+  height: 100%;
+  pointer-events: auto;
   transform: translate3d(0, var(--scroll-shift), 0)
     perspective(1200px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
   transform-style: preserve-3d;
   will-change: transform;
 }
 
-.bottle-stage__image {
-  width: 100%;
-  height: auto;
-  max-height: min(72vh, 820px);
-  object-fit: contain;
-  filter: drop-shadow(0 28px 48px color-mix(in srgb, #000 55%, transparent));
+/*
+ * Soft environment dissolve:
+ * Keep photographic atmosphere (wood / shadow / bokeh) visible in the blend
+ * zone so the page reads as an extension of the still life — not a cutout.
+ */
+.bottle-stage__frame {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(
+    92deg,
+    transparent 0%,
+    rgba(0, 0, 0, 0.25) 6%,
+    rgba(0, 0, 0, 0.65) 14%,
+    rgba(0, 0, 0, 0.92) 22%,
+    #000 30%,
+    #000 100%
+  );
+  mask-image: linear-gradient(
+    92deg,
+    transparent 0%,
+    rgba(0, 0, 0, 0.25) 6%,
+    rgba(0, 0, 0, 0.65) 14%,
+    rgba(0, 0, 0, 0.92) 22%,
+    #000 30%,
+    #000 100%
+  );
 }
 
-/* ─── Animal layer ─── */
+.bottle-stage__frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      90deg,
+      var(--void) 0%,
+      color-mix(in srgb, var(--void) 70%, transparent) 8%,
+      color-mix(in srgb, var(--void) 28%, transparent) 18%,
+      transparent 30%
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--void) 45%, transparent) 0%,
+      transparent 12%,
+      transparent 80%,
+      color-mix(in srgb, var(--void) 60%, transparent) 100%
+    );
+}
+
+.bottle-stage__image {
+  position: absolute;
+  /* Crop into the still life so source frame edges leave the viewport */
+  inset: -16% -2% -8% -4%;
+  width: auto;
+  height: auto;
+  min-width: 138%;
+  min-height: 138%;
+  max-width: none;
+  max-height: none;
+  object-fit: cover;
+  /* Prefer bottle scale while retaining left atmosphere for the dissolve */
+  object-position: 50% 38%;
+}
+
+/* ─── Animal layer — secondary identity, behind the stage ─── */
 
 .animal-layer {
   position: absolute;
-  right: -4%;
-  top: 6%;
-  z-index: 3;
-  width: min(46vw, 560px);
+  right: -12%;
+  top: 10%;
+  z-index: 2;
+  width: min(34vw, 420px);
   height: auto;
-  opacity: var(--animal-opacity, 0.38);
+  opacity: var(--animal-opacity, 0.2);
   transform: translate3d(var(--animal-x, 0), var(--animal-y, 0), 0);
   pointer-events: none;
   mix-blend-mode: luminosity;
@@ -364,7 +426,7 @@ img {
   width: 100%;
   height: auto;
   object-fit: contain;
-  filter: contrast(1.08) brightness(0.78) sepia(0.15);
+  filter: contrast(1.05) brightness(0.62) sepia(0.12);
 }
 
 /* ─── Ingredients ─── */
@@ -432,7 +494,7 @@ img {
   transform: translateX(3px);
 }
 
-/* ─── Entrance motion ─── */
+/* ─── Entrance motion (unchanged behavior) ─── */
 
 @keyframes diar-rise {
   from {
@@ -478,6 +540,7 @@ img {
 
 .diar__enter--bottle {
   animation-delay: 0.42s;
+  /* layout lives with the photographic-stage block above — delay only here */
 }
 
 .diar__enter--cta {
@@ -521,50 +584,39 @@ img {
 /* ─── Tablet ─── */
 
 @media (max-width: 1024px) {
-  .diar__composition {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr;
-    align-content: start;
-    padding-top: clamp(4.5rem, 9vh, 5.5rem);
-    gap: 0.5rem;
-  }
-
   .diar__copy--hero {
-    max-width: none;
-    align-items: center;
-    text-align: center;
-    padding-top: 0;
+    max-width: min(20rem, 42vw);
+    padding-top: clamp(0.5rem, 4vh, 2rem);
   }
 
   .diar__time {
-    font-size: clamp(2.75rem, 14vw, 5rem);
+    font-size: clamp(2.75rem, 10vw, 5rem);
   }
 
   .diar__name {
-    font-size: clamp(2.75rem, 12vw, 4.5rem);
+    font-size: clamp(2.75rem, 9vw, 4.5rem);
   }
 
-  .bottle-stage {
-    width: min(78vw, 460px);
+  .diar__enter--bottle {
+    top: -6%;
+    right: -6%;
+    bottom: -10%;
+    left: 22%;
+    width: auto;
   }
 
   .bottle-stage__image {
-    max-height: min(52vh, 560px);
+    object-position: 40% 32%;
   }
 
   .diar__copy--depth {
-    left: 50%;
-    bottom: clamp(1.5rem, 5vh, 3rem);
-    max-width: min(28rem, 86vw);
-    transform: translateX(-50%);
-    text-align: center;
+    max-width: min(24rem, 48vw);
   }
 
   .animal-layer {
     right: -18%;
-    top: 22%;
-    width: min(58vw, 420px);
-    opacity: calc(var(--animal-opacity, 0.22) * 0.85);
+    top: 18%;
+    width: min(40vw, 340px);
   }
 
   .diar__ingredient--raspberry {
@@ -607,10 +659,25 @@ img {
     height: 220vh;
   }
 
+  .diar__atmosphere::after {
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--void) 70%, transparent) 0%,
+      color-mix(in srgb, var(--void) 20%, transparent) 28%,
+      transparent 48%
+    );
+  }
+
   .diar__composition {
-    padding: 3.75rem 1.15rem 1.25rem;
-    gap: 0;
-    grid-template-rows: auto minmax(0, 1fr);
+    padding: 3.6rem 1.15rem 0;
+  }
+
+  .diar__copy--hero {
+    max-width: none;
+    width: 100%;
+    align-items: center;
+    text-align: center;
+    padding-top: 0;
   }
 
   .diar__time {
@@ -635,19 +702,75 @@ img {
     font-size: 0.6875rem;
   }
 
-  .bottle-stage {
-    width: min(84vw, 390px);
-    margin-top: 0.5rem;
-    margin-right: 8vw;
-    align-self: center;
+  /* Full-bleed photographic stage under the type */
+  .diar__enter--bottle {
+    top: 20%;
+    right: -8%;
+    left: -8%;
+    bottom: -8%;
+    width: auto;
+  }
+
+  .bottle-stage__frame {
+    -webkit-mask-image: linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(0, 0, 0, 0.25) 8%,
+      rgba(0, 0, 0, 0.75) 16%,
+      #000 26%,
+      #000 80%,
+      rgba(0, 0, 0, 0.5) 92%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(0, 0, 0, 0.25) 8%,
+      rgba(0, 0, 0, 0.75) 16%,
+      #000 26%,
+      #000 80%,
+      rgba(0, 0, 0, 0.5) 92%,
+      transparent 100%
+    );
+  }
+
+  .bottle-stage__frame::after {
+    background:
+      linear-gradient(
+        180deg,
+        var(--void) 0%,
+        color-mix(in srgb, var(--void) 55%, transparent) 12%,
+        transparent 28%
+      ),
+      linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--void) 78%, transparent) 0%,
+        color-mix(in srgb, var(--void) 25%, transparent) 10%,
+        transparent 22%,
+        transparent 78%,
+        color-mix(in srgb, var(--void) 25%, transparent) 90%,
+        color-mix(in srgb, var(--void) 78%, transparent) 100%
+      ),
+      linear-gradient(
+        0deg,
+        color-mix(in srgb, var(--void) 75%, transparent) 0%,
+        transparent 24%
+      );
   }
 
   .bottle-stage__image {
-    max-height: min(54vh, 500px);
+    inset: -12% -10% -6% -10%;
+    min-width: 140%;
+    min-height: 140%;
+    object-position: 50% 32%;
   }
 
   .diar__copy--depth {
-    bottom: 1rem;
+    left: 50%;
+    bottom: 1.1rem;
+    max-width: min(28rem, 88vw);
+    transform: translateX(-50%);
+    text-align: center;
   }
 
   .diar__story {
@@ -655,22 +778,20 @@ img {
   }
 
   .animal-layer {
-    right: -2%;
-    top: 38%;
-    bottom: auto;
-    width: min(52vw, 240px);
-    mix-blend-mode: normal;
-    opacity: 0.5;
-    z-index: 11;
-    filter: none;
+    right: -22%;
+    top: auto;
+    bottom: 8%;
+    width: min(48vw, 200px);
+    mix-blend-mode: luminosity;
+    opacity: 0.22;
+    z-index: 3;
   }
 
   .animal-layer__image {
-    filter: contrast(1.1) brightness(0.68) sepia(0.2);
-    object-position: 55% 15%;
-    object-fit: cover;
-    max-height: 46vh;
-    width: 100%;
+    filter: contrast(1.05) brightness(0.58) sepia(0.15);
+    object-position: center top;
+    object-fit: contain;
+    max-height: 36vh;
   }
 
   .diar__ingredient--raspberry {
@@ -699,7 +820,7 @@ img {
     font-size: 2.35rem;
   }
 
-  .bottle-stage__image {
-    max-height: 42vh;
+  .diar__enter--bottle {
+    top: 22%;
   }
 }
