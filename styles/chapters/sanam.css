@@ -55,12 +55,34 @@
 }
 
 .chapter--sanam .bottle-stage__image {
-  -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 16%),
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 24%),
     linear-gradient(270deg, transparent 0%, black 14%);
-  mask-image: linear-gradient(90deg, transparent 0%, black 16%),
+  mask-image: linear-gradient(90deg, transparent 0%, black 24%),
     linear-gradient(270deg, transparent 0%, black 14%);
   -webkit-mask-composite: source-in;
   mask-composite: intersect;
+}
+
+/* The lit sky at the top of this still life is the brightest thing on the page,
+   so it needs a long fall to reach the plum instead of the shared horizon band.
+   The fall ends above the bottle, which stays at full strength. */
+@media (min-width: 769px) {
+  .chapter--sanam .bottle-stage__frame {
+    -webkit-mask-image: linear-gradient(
+      180deg,
+      transparent 0%,
+      black 30%,
+      black 92%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      180deg,
+      transparent 0%,
+      black 30%,
+      black 92%,
+      transparent 100%
+    );
+  }
 }
 
 /* ── Peacock: dusk identity, spread wide and low ── */
@@ -80,14 +102,18 @@
   );
 }
 
+/* The trailing side gets its own fade: the spread ends inside the frame, where
+   the vignette alone still leaves a readable straight edge. */
 .chapter--sanam .animal-layer__image {
   -webkit-mask-image: radial-gradient(
       74% 84% at 40% 52%,
       black 42%,
       transparent 92%
     ),
+    linear-gradient(270deg, transparent 0%, black 18%),
     linear-gradient(180deg, transparent 0%, black 16%);
   mask-image: radial-gradient(74% 84% at 40% 52%, black 42%, transparent 92%),
+    linear-gradient(270deg, transparent 0%, black 18%),
     linear-gradient(180deg, transparent 0%, black 16%);
   -webkit-mask-composite: source-in;
   mask-composite: intersect;
@@ -148,8 +174,8 @@
 
 @media (max-width: 1024px) {
   .chapter--sanam .bottle-stage {
-    right: 2%;
-    height: min(66vh, 560px);
+    right: -6%;
+    height: min(98vh, 780px);
   }
 
   .chapter--sanam .chapter__copy {
@@ -162,10 +188,36 @@
     max-width: min(18rem, 40vw);
   }
 
+  /* The photograph ends inside the frame here, so its left edge gets more room
+     to dissolve than it needs on a wide screen. */
+  .chapter--sanam .bottle-stage__image {
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 26%),
+      linear-gradient(270deg, transparent 0%, black 10%);
+    mask-image: linear-gradient(90deg, transparent 0%, black 26%),
+      linear-gradient(270deg, transparent 0%, black 10%);
+  }
+
+  /* Stands further back here so the product still leads the frame */
   .chapter--sanam .animal-layer {
-    left: -20%;
-    bottom: -14%;
-    width: min(88vw, 700px);
+    left: -14%;
+    bottom: -16%;
+    width: min(92vw, 760px);
+    opacity: calc(0.8 - var(--progress) * 0.38);
+  }
+
+  /* The spread now stops mid-frame instead of near the far edge: carry its
+     trailing side into the plum so no cut shows where it meets the still life. */
+  .chapter--sanam .animal-layer__image {
+    -webkit-mask-image: radial-gradient(
+        78% 86% at 34% 52%,
+        black 36%,
+        transparent 88%
+      ),
+      linear-gradient(270deg, transparent 0%, black 24%),
+      linear-gradient(180deg, transparent 0%, black 16%);
+    mask-image: radial-gradient(78% 86% at 34% 52%, black 36%, transparent 88%),
+      linear-gradient(270deg, transparent 0%, black 24%),
+      linear-gradient(180deg, transparent 0%, black 16%);
   }
 
   .chapter--sanam .ingredient-layer[data-ingredient="pear-blossom"] {

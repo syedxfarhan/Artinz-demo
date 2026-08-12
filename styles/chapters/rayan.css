@@ -49,11 +49,33 @@
 
 /* ── Product still life: left, edge-anchored ── */
 
+/* Hung from the bar and run off the lower frame: a still life that stopped
+   short of both edges read as a picture placed on the page. */
 .chapter--rayan .bottle-stage {
-  top: 50%;
+  top: var(--nav-height);
   left: -3%;
-  height: min(92vh, 940px);
-  margin-top: calc(min(92vh, 940px) / -2);
+  height: min(104vh, 1120px);
+}
+
+/* The base leaves the frame over a long fall of light, so nothing terminates
+   inside the picture. The bottle sits well above where the fall begins. */
+@media (min-width: 769px) {
+  .chapter--rayan .bottle-stage__frame {
+    -webkit-mask-image: linear-gradient(
+      180deg,
+      transparent 0%,
+      black 8%,
+      black 78%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      180deg,
+      transparent 0%,
+      black 8%,
+      black 78%,
+      transparent 100%
+    );
+  }
 }
 
 .chapter--rayan .bottle-stage__image {
@@ -169,10 +191,10 @@
 /* ── Tablet ── */
 
 @media (max-width: 1024px) {
+  /* Further left at this width, so the wordmark keeps clear ground */
   .chapter--rayan .bottle-stage {
-    left: -8%;
-    height: min(86vh, 700px);
-    margin-top: calc(min(86vh, 700px) / -2);
+    left: -15%;
+    height: min(104vh, 900px);
   }
 
   .chapter--rayan .chapter__copy {

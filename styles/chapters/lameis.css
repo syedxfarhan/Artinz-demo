@@ -55,11 +55,20 @@
   margin-inline: auto;
 }
 
+/* This hour is the only one where the photograph sits inside the frame on both
+   sides, so the light has to fall away in every direction — a pool, not a plate.
+   The vignette is centred low and wide enough to leave the product untouched. */
 .chapter--lameis .bottle-stage__image {
-  -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 12%),
-    linear-gradient(270deg, transparent 0%, black 12%);
-  mask-image: linear-gradient(90deg, transparent 0%, black 12%),
-    linear-gradient(270deg, transparent 0%, black 12%);
+  -webkit-mask-image: radial-gradient(
+      64% 82% at 50% 56%,
+      black 46%,
+      transparent 96%
+    ),
+    linear-gradient(90deg, transparent 0%, black 22%),
+    linear-gradient(270deg, transparent 0%, black 22%);
+  mask-image: radial-gradient(64% 82% at 50% 56%, black 46%, transparent 96%),
+    linear-gradient(90deg, transparent 0%, black 22%),
+    linear-gradient(270deg, transparent 0%, black 22%);
   -webkit-mask-composite: source-in;
   mask-composite: intersect;
 }
